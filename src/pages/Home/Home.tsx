@@ -4,6 +4,7 @@ import { HomePageWrapper, CategoryTextWrapper, CategoryText, CategoryWrapper, Gr
 import CategoryCard from "../../components/CategoryCard/CategoryCard";
 import { v4 } from "uuid";
 import { categoriesData } from "./types";
+import Button from "components/Button/Button";
 
 function Home() {
     const [categoryCards, setCategoryCards] = useState<CategoryCardProps[]>([]);
@@ -34,7 +35,7 @@ function Home() {
                </IntroductionText>                                                  
                </IntroductionTextWrapper>
                <IntroductionButtonWrapper>
-               Create offer
+               <Button name="Create offer" onButtonClick={()=>{}}></Button>
                </IntroductionButtonWrapper> 
                
                
@@ -45,11 +46,11 @@ function Home() {
         </WaveContainer>  
 
             
-            <CategoryTextWrapper>
+            {/* <CategoryTextWrapper>
                 <CategoryText>
                     Category
                 </CategoryText>
-            </CategoryTextWrapper>
+            </CategoryTextWrapper> */}
 
             <CategoryWrapper>
                 <GridContainer>

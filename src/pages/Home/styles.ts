@@ -15,13 +15,14 @@ export const TextHomeWrapper = styled.div`
 `;
 
 export const CategoryWrapper = styled.div`
-  width: 2000px;    
+  width: 2000px;   
+  padding-top: 40px;
 `;
 
 export const CategoryTextWrapper = styled.div`
   display: flex;  
   justify-content: left; 
-  padding: 20px 0px 0px 100px;
+  padding: 0px 0px 0px 100px;
   width: 2000px;    
 `;
 
@@ -69,7 +70,7 @@ export const IntroductionContainerWrapper = styled.div`
 
 export const IntroductionContainer = styled.div`
   display: flex; 
-  justify-content: space-between;
+  justify-content: space-evenly;
   width: 1800px;   
 `;
 
@@ -85,7 +86,7 @@ export const IntroductionText = styled.p`
 `;
 
 export const IntroductionButtonWrapper = styled.div`
-  width: 500px;
+  width: 250px;
   display: flex;
   justify-content: center;
   align-items: center;  
