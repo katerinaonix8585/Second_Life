@@ -1,4 +1,5 @@
 import styled from "@emotion/styled";
+import { arrowRight } from "../../shared/assets/images";
 
 
 export const HomePageWrapper = styled.div`
@@ -21,14 +22,16 @@ export const CategoryWrapper = styled.div`
 
 export const CategoryTextWrapper = styled.div`
   display: flex;  
-  justify-content: left; 
-  padding: 0px 0px 0px 100px;
+  justify-content: center; 
+  padding: 50px 0px 0px 50px;
   width: 2000px;    
 `;
 
 export const CategoryText = styled.p`
   font-size: 30px;
   font-weight: bold;
+  color: #56119C;  
+  font-family: 'LibreFranklin', sans-serif;
 `;
 
 export const GridContainer = styled.div`
@@ -42,21 +45,7 @@ export const GridContainer = styled.div`
   box-sizing: border-box; 
 `;
 
-// последняя карточка в Grid - ссылка на пункт меню Категории
-export const Card = styled.div`
-  background-color: gainsboro;
-  border: 1px solid #e0e0e0;
-  border-radius: 8px;
-  display: flex;
-  flex-direction: column;
-  gap: 20px;
-  align-items: center;
-  justify-content: center;
-  padding: 50px;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-  font-size: 18px;
-  font-weight: bold;
-`;
+
 
 
 export const IntroductionContainerWrapper = styled.div`
@@ -124,6 +113,59 @@ export const GradientBackground = styled.div`
     border-radius: 50% 50% 0 0;
   }
 `;
+
+// последняя карточка в Grid - ссылка на пункт меню Категории
+export const CardLink = styled.a`
+   cursor: pointer;
+
+  /* background-color: gainsboro;
+  border: 1px solid #e0e0e0;
+  border-radius: 8px;
+  display: flex;  
+  gap: 20px;
+  align-items: center;
+  justify-content: center;
+  padding: 50px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  font-size: 18px;
+  font-weight: bold; */
+`;
+
+
+export const Card = styled.div`
+  background-color: gainsboro;
+  border: 1px solid #e0e0e0;
+  border-radius: 8px;
+  display: flex;  
+  height: 100%;
+  gap: 20px;
+  align-items: center;
+  justify-content: center;
+  padding: 50px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  font-size: 18px;
+  font-weight: bold;
+`;
+
+export const CardTextContainer = styled.p`
+  font-size: 18px;
+  font-weight: bold;
+  font-family: 'LibreFranklin', sans-serif;
+`;
+
+export const CardImageContainer = styled.div`
+  width: 30px;
+  height: 30px; 
+`;
+
+export const CardImage = styled.img`
+  width: 100%;
+  height: 100%;
+`;
+
+CardImage.defaultProps = { src: arrowRight };
+
+
 
 
 

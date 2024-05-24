@@ -1,10 +1,13 @@
 import { useEffect, useState } from "react";
 import { CategoryCardProps } from "../../components/CategoryCard/types";
-import { HomePageWrapper, CategoryWrapper, GridContainer, Card, IntroductionContainer, IntroductionTextWrapper, IntroductionButtonWrapper, IntroductionText, WaveContainer, GradientBackground, IntroductionContainerWrapper } from "./styles";
+import { HomePageWrapper, CategoryWrapper, GridContainer, Card, IntroductionContainer, IntroductionTextWrapper, IntroductionButtonWrapper, IntroductionText, WaveContainer, GradientBackground, IntroductionContainerWrapper, CategoryTextWrapper, CategoryText, CardTextContainer, CardImageContainer, CardImage, CardLink } from "./styles";
 import CategoryCard from "../../components/CategoryCard/CategoryCard";
 import { v4 } from "uuid";
 import { categoriesData } from "./types";
 import Button from "components/Button/Button";
+import { shuffle } from "lodash";
+import { Link } from "react-router-dom";
+
 
 function Home() {
     const [categoryCards, setCategoryCards] = useState<CategoryCardProps[]>([]);
@@ -13,7 +16,12 @@ function Home() {
         setCategoryCards(categoriesData);
     }, []);
 
-    const categoryCardElements = categoryCards.map((categoryData) => (
+    const shuffledCategoryCards = shuffle(categoryCards);
+
+    const limitedCategoryCards = shuffledCategoryCards.slice(0, 7);
+
+
+    const categoryCardElements = limitedCategoryCards.map((categoryData) => (
         <CategoryCard key={v4()} categoryCardData={categoryData.categoryCardData} />
     ));
 
@@ -46,16 +54,25 @@ function Home() {
         </WaveContainer>  
 
             
-            {/* <CategoryTextWrapper>
+            <CategoryTextWrapper>
                 <CategoryText>
-                    Category
+                    Choose category
                 </CategoryText>
-            </CategoryTextWrapper> */}
+            </CategoryTextWrapper> 
 
             <CategoryWrapper>
                 <GridContainer>
                     {categoryCardElements}
-                    <Card></Card>
+                    <CardLink href="/category">
+                    <Card>
+                        <CardTextContainer>NEXT CATEGORY</CardTextContainer>
+                        
+                        <CardImageContainer>
+                            <CardImage />
+                        </CardImageContainer>
+                        
+                    </Card>   
+                    </CardLink>                 
                 </GridContainer>
             </CategoryWrapper>  
         </HomePageWrapper>

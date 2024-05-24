@@ -29,7 +29,7 @@ const globalStyles = css`
     min-height: 100%;
   }
  
-  @font-face {
+@font-face {
   font-family: 'LibreFranklin';
   src: url('src/fonts/logoFont/LibreFranklin-Bold.ttf') format('truetype');
   font-weight: bold;
