@@ -16,18 +16,13 @@ import {
   HeaderLoginContainer,
   HeaderLogin,
   UpHeaderWrapper,
-  DownWrapper,
-  FooterNavContainer,
-  Footer,
-  StyledLink,
-  FooterNavText,
+  DownWrapper,  
+  Footer,  
   InfoContainer,
   InfoContainerText,
   InfoContainerWrapper,
   MailContainer,
   MailContainerText,
-  SocialMediaContainer,
-  SocialMedia,
   SearchInput,
   SearchWrapper,
   SearchButton,
@@ -123,22 +118,18 @@ function Layout({ children }: LayoutProps) {
         <InfoContainerWrapper>
            <InfoContainer>
               <InfoContainerText>Give a second life to your belongings with SecondLife - your best partner in buying and selling quality goods!</InfoContainerText>            
-           </InfoContainer>
+           </InfoContainer>            
+        </InfoContainerWrapper>
+        
+        
+        <InfoContainerWrapper>
+           <MailContainer>
+              <MailContainerText>+3 333-333-333</MailContainerText>
+           </MailContainer>
            <MailContainer>
               <MailContainerText>example@gmail.com</MailContainerText>
-           </MailContainer>
-           <SocialMediaContainer>
-               <SocialMedia />
-           </SocialMediaContainer>            
-        </InfoContainerWrapper>
-
-        <FooterNavContainer>
-          <FooterNavText>Menu</FooterNavText>  
-          <StyledLink to="/">Home</StyledLink>
-          <StyledLink to="/categories">Category</StyledLink>
-          <StyledLink to="/offers">Offers</StyledLink>
-          <StyledLink to="/aboutUs">About us</StyledLink>
-        </FooterNavContainer>
+           </MailContainer>  
+        </InfoContainerWrapper>        
 
         </FooterWrapper>
       </Footer>

@@ -157,7 +157,7 @@ export const DownWrapper = styled.div`
   align-items: center;
   justify-content: center;  
   width: 100%;
-  height: 40px;
+  height: 55px;
   background-color: gainsboro; 
 `;
 
@@ -203,23 +203,6 @@ export const FooterWrapper = styled.footer`
   
 `;
 
-export const FooterNavContainer = styled.nav`
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
-  align-items: center;
-  gap: 15px;
-  
-`;
-
-export const FooterNavText = styled.p`
-font-size: 20px;
-font-weight: 700;
-font-style: initial;
-color: black;
-text-decoration: underline;
-`;
-
 export const InfoContainerWrapper = styled.div`
   display: flex;
   flex-direction: column; 
@@ -241,6 +224,8 @@ font-family: 'IndieFlower', sans-serif;
 
 export const MailContainer = styled.div`
   width: 400px;  
+  display: flex;
+  justify-content: center;
 `;
 
 export const MailContainerText = styled.p`
@@ -251,17 +236,6 @@ color: black;
 
 `;
 
-export const SocialMediaContainer = styled.div`
- width: 100px;
- cursor: pointer;
-`;
-
-export const SocialMedia = styled.img`
-  width: 100%;
-  
-`;
-
-SocialMedia.defaultProps = { src: socialMedia };
 
 
 
