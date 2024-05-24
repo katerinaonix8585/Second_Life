@@ -105,7 +105,7 @@ export const WaveContainer = styled.div`
 export const GradientBackground = styled.div`
   width: 100%;
   height: 100%;
-  background: linear-gradient(to right, #9796F0, #FBC7D4); /* Градиентный фон */
+  background: linear-gradient(to right, #9796F0, #fde8ed); /* Градиентный фон */
   position: absolute;
   top: 0;
   left: 0;

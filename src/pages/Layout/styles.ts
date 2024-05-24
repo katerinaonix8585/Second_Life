@@ -17,7 +17,7 @@ export const Header = styled.header`
   flex-direction: column;
   align-items: center;
   width: 100%; 
-  background: linear-gradient(to right, #9796F0, #FBC7D4);
+  background: linear-gradient(to right, #9796F0, #fde8ed);
 `;
 
 // Стиль для headerа
@@ -190,7 +190,7 @@ export const Footer = styled.footer`
   justify-content: center;
   width: 100%;  
   margin-top: 40px;
-  background: linear-gradient(to right, #D2D4F5, #FDE0E9);  
+  background: linear-gradient(to right, #dadcf7, #fde8ed);  
 `;
 
 export const FooterWrapper = styled.footer`
