@@ -75,28 +75,32 @@ export const IntroductionContainer = styled.div`
 `;
 
 export const IntroductionTextWrapper = styled.div`
-  width: 1300px;   
-  padding: 50px 50px 50px 50px;  
+  width: 1450px;   
+  padding: 50px 50px 50px 0px;  
 `;
 
 export const IntroductionText = styled.p`
   font-size: 30px;
   font-weight: bold;
   padding: 20px;
+  font-family: 'Chivo', sans-serif;
+  font-style: italic;
+  color: #4d418b;
 `;
 
 export const IntroductionButtonWrapper = styled.div`
-  width: 250px;
+  width: 300px;
   display: flex;
   justify-content: center;
-  align-items: center;  
+  align-items: center; 
+  padding-right: 100px ;
   `;
 
 
 // Контейнер с плавными границами внизу
 export const WaveContainer = styled.div`
   width: 100%;
-  height: 300px; /* Фиксированная высота */
+  height: 350px; /* Фиксированная высота */
   position: relative;
   overflow: hidden; /* Скрытие лишнего содержимого */
 `;

@@ -57,9 +57,9 @@ export const HeaderTitleContainer = styled.div`
 export const HeaderTitle = styled.h2`
 color: white;
 font-size: 36px;
-font-weight: 700;
-font-style: initial;
 color: #56119C;
+font-family: 'IndieFlower', sans-serif;
+font-style: italic;
 `;
 
 // Область поиска
@@ -174,12 +174,14 @@ export const StyledNavLink = styled(NavLink)`
   font-size: 18px;
   font-weight: bold;
   color: black;
+  font-family: 'LibreFranklin', sans-serif;
 `;
 
 export const StyledLink = styled(Link)`
   text-decoration: none;
   font-size: 16px;
   color: black;
+  font-family: 'LibreFranklin', sans-serif;
 `;
 
 
@@ -232,8 +234,9 @@ export const InfoContainer = styled.div`
 export const InfoContainerText = styled.p`
 font-size: 18px;
 font-weight: 600;
-font-style: initial;
+font-style: italic;
 color: #56119C;
+font-family: 'IndieFlower', sans-serif;
 `;
 
 export const MailContainer = styled.div`
@@ -241,10 +244,11 @@ export const MailContainer = styled.div`
 `;
 
 export const MailContainerText = styled.p`
-font-size: 14px;
+font-size: 16px;
 font-weight: 700;
-font-style: initial;
+font-family: 'LibreFranklin', sans-serif;
 color: black;
+
 `;
 
 export const SocialMediaContainer = styled.div`

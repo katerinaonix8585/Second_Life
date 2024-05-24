@@ -18,6 +18,7 @@ export const CardWrapper = styled.div`
 export const CardTextContainer = styled.p`
   font-size: 18px;
   font-weight: bold;
+  font-family: 'LibreFranklin', sans-serif;
 `;
 
 export const CardImageContainer = styled.div`

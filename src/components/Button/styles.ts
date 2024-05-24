@@ -14,4 +14,6 @@ export const ButtonComponent = styled.button<ButtonComponent>`
   color: white;
   font-size: 16px;
   cursor: pointer;
+  font-weight: bold;  
+  font-family: 'LibreFranklin', sans-serif;
 `;

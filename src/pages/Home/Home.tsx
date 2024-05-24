@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { CategoryCardProps } from "../../components/CategoryCard/types";
-import { HomePageWrapper, CategoryTextWrapper, CategoryText, CategoryWrapper, GridContainer, Card, IntroductionContainer, IntroductionTextWrapper, IntroductionButtonWrapper, IntroductionText, WaveContainer, GradientBackground, IntroductionContainerWrapper } from "./styles";
+import { HomePageWrapper, CategoryWrapper, GridContainer, Card, IntroductionContainer, IntroductionTextWrapper, IntroductionButtonWrapper, IntroductionText, WaveContainer, GradientBackground, IntroductionContainerWrapper } from "./styles";
 import CategoryCard from "../../components/CategoryCard/CategoryCard";
 import { v4 } from "uuid";
 import { categoriesData } from "./types";
