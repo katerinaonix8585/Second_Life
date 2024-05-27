@@ -1,21 +1,21 @@
 import { useParams } from 'react-router-dom';
-import { CategoryPageWrapper, CategoryText, CategoryTextWrapper } from './styles';
+
+import {
+  CategoryPageWrapper,
+  CategoryText,
+  CategoryTextWrapper,
+} from './styles';
 
 function CategoryPage() {
-    const { name } = useParams();
-    
-    return (
-        <CategoryPageWrapper> 
+  const { name } = useParams();
 
-            <CategoryTextWrapper>
-                <CategoryText>
-                {name?.toUpperCase()}
-                </CategoryText>
-            </CategoryTextWrapper> 
-
-        </CategoryPageWrapper>
-        
-    );
+  return (
+    <CategoryPageWrapper>
+      <CategoryTextWrapper>
+        <CategoryText>{name?.toUpperCase()}</CategoryText>
+      </CategoryTextWrapper>
+    </CategoryPageWrapper>
+  );
 }
 
 export default CategoryPage;

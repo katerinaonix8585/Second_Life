@@ -1,12 +1,15 @@
-import { useNavigate } from "react-router-dom"
-import { LayoutProps } from "./types"
+import { useNavigate } from "react-router-dom";
+import { FaSearch } from "react-icons/fa";
+
+import { LayoutProps } from "./types";
 import {
   LayoutWrapper,
-  Header,  
+  Container,
+  Header,
   HeaderTitleContainer,
   NavContainer,
-  Main,  
-  StyledNavLink,  
+  Main,
+  StyledNavLink,
   HeaderTitle,
   HeaderLogoContainer,
   HeaderLogo,
@@ -16,8 +19,8 @@ import {
   HeaderLoginContainer,
   HeaderLogin,
   UpHeaderWrapper,
-  DownWrapper,  
-  Footer,  
+  DownWrapper,
+  Footer,
   InfoContainer,
   InfoContainerText,
   InfoContainerWrapper,
@@ -26,116 +29,112 @@ import {
   SearchInput,
   SearchWrapper,
   SearchButton,
-  FooterWrapper
-} from "./styles"
-import { FaSearch } from 'react-icons/fa'
-
+  FooterWrapper,
+} from "./styles";
 
 function Layout({ children }: LayoutProps) {
-  const navigate = useNavigate()
-  
-  const goToHomePage = () => navigate("/")
+  const navigate = useNavigate();
+
+  const goToHomePage = () => navigate("/");
 
   return (
-    
     <LayoutWrapper>
-      
       <Header>
-        <UpHeaderWrapper>
-           <HeaderTitleContainer onClick={goToHomePage}>
+        <Container>
+          <UpHeaderWrapper>
+            <HeaderTitleContainer onClick={goToHomePage}>
               <HeaderLogoContainer>
-              <HeaderLogo /> 
-              </HeaderLogoContainer> 
+                <HeaderLogo />
+              </HeaderLogoContainer>
               <HeaderTitle>SECOND LIFE</HeaderTitle>
             </HeaderTitleContainer>
-            
+
             <SearchWrapper>
-               <SearchInput placeholder="Search..." />
-               <SearchButton>
+              <SearchInput placeholder="Search..." />
+              <SearchButton>
                 <FaSearch />
-               </SearchButton>
-            
+              </SearchButton>
             </SearchWrapper>
-            
+
             <IconsContainer>
-               <HeaderUserContainer>
+              <HeaderUserContainer>
                 {/* TO DO Нужно добавить для этого элемента отображение только для авторизованных пользователей */}
-                  <HeaderUser />    
-               </HeaderUserContainer>
-               <HeaderLoginContainer>
-                  <HeaderLogin /> 
-               </HeaderLoginContainer>
+                <HeaderUser />
+              </HeaderUserContainer>
+              <HeaderLoginContainer>
+                <HeaderLogin />
+              </HeaderLoginContainer>
             </IconsContainer>
-        </UpHeaderWrapper>
-
+          </UpHeaderWrapper>
+        </Container>
         <DownWrapper>
-        <NavContainer>
-          <StyledNavLink
-            style={({ isActive }) => ({
-              textDecoration: isActive ? "underline" : "none",
-            })}
-            to="/"
-          >
-            Home
-          </StyledNavLink>
-          
-          <StyledNavLink
-            style={({ isActive }) => ({
-              textDecoration: isActive ? "underline" : "none",
-            })}
-            to="/category"
-          >
-            Category
-          </StyledNavLink>
+          <Container>
+            <NavContainer>
+              <StyledNavLink
+                style={({ isActive }) => ({
+                  textDecoration: isActive ? "underline" : "none",
+                })}
+                to="/"
+              >
+                Home
+              </StyledNavLink>
 
-          <StyledNavLink
-            style={({ isActive }) => ({
-              textDecoration: isActive ? "underline" : "none",
-            })}
-            to="/offers"
-          >
-            Offers
-          </StyledNavLink>
+              <StyledNavLink
+                style={({ isActive }) => ({
+                  textDecoration: isActive ? "underline" : "none",
+                })}
+                to="/category"
+              >
+                Category
+              </StyledNavLink>
 
-          <StyledNavLink
-            style={({ isActive }) => ({
-              textDecoration: isActive ? "underline" : "none",
-            })}
-            to="/aboutUs"
-          >
-            About us
-          </StyledNavLink>
-        </NavContainer>  
+              <StyledNavLink
+                style={({ isActive }) => ({
+                  textDecoration: isActive ? "underline" : "none",
+                })}
+                to="/offers"
+              >
+                Offers
+              </StyledNavLink>
+
+              <StyledNavLink
+                style={({ isActive }) => ({
+                  textDecoration: isActive ? "underline" : "none",
+                })}
+                to="/aboutUs"
+              >
+                About us
+              </StyledNavLink>
+            </NavContainer>
+          </Container>
         </DownWrapper>
-      
       </Header>
-
-      <Main>{children}</Main>  
+      <Main>{children}</Main>
 
       <Footer>
-        
-        <FooterWrapper>
-        <InfoContainerWrapper>
-           <InfoContainer>
-              <InfoContainerText>Give a second life to your belongings with SecondLife - your best partner in buying and selling quality goods!</InfoContainerText>            
-           </InfoContainer>            
-        </InfoContainerWrapper>
-        
-        
-        <InfoContainerWrapper>
-           <MailContainer>
-              <MailContainerText>+3 333-333-333</MailContainerText>
-           </MailContainer>
-           <MailContainer>
-              <MailContainerText>example@gmail.com</MailContainerText>
-           </MailContainer>  
-        </InfoContainerWrapper>        
-
-        </FooterWrapper>
+        <Container>
+          <FooterWrapper>
+            <InfoContainerWrapper>
+              <InfoContainer>
+                <InfoContainerText>
+                  Give a second life to your belongings with SecondLife - your
+                  best partner in buying and selling quality goods!
+                </InfoContainerText>
+              </InfoContainer>
+            </InfoContainerWrapper>
+            <InfoContainerWrapper>
+              <MailContainer>
+                <MailContainerText>+3 333-333-333</MailContainerText>
+              </MailContainer>
+              <MailContainer>
+                <MailContainerText>example@gmail.com</MailContainerText>
+              </MailContainer>
+            </InfoContainerWrapper>
+          </FooterWrapper>
+        </Container>
       </Footer>
-
     </LayoutWrapper>
-  )
+  );
 }
 
 export default Layout;

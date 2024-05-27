@@ -1,23 +1,19 @@
 import styled from "@emotion/styled";
 import { NavLink, Link } from "react-router-dom";
+
 import { login, logo, user } from "../../shared/assets/images";
 
 // Стиль для всего слоя
-export const LayoutWrapper = styled.div`
-  display: flex;
-  flex-direction: column;  
-  flex: 1;  
-  align-items: center;  
-  background-size: cover;  
+export const LayoutWrapper = styled.div``;
+
+export const Container = styled.div`
+  max-width: 1270px;
+  margin: 0 auto;
 `;
 
-// Стиль для headerа (header + nav)
+// Стиль для headerа (header + nav)Ï
 export const Header = styled.header`
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  width: 100%; 
-  background: linear-gradient(to right, #9796F0, #fde8ed);
+  background: linear-gradient(to right, #9796f0, #fde8ed);
 `;
 
 // Стиль для headerа
@@ -26,9 +22,8 @@ export const UpHeaderWrapper = styled.div`
   justify-content: space-between;
   align-items: center;
   height: 90px;
-  width: 2200px;
-  padding: 0px 250px 0px 250px;
-  `;
+  gap: 30px;
+`;
 
 // Логотип
 export const HeaderLogoContainer = styled.div`
@@ -38,7 +33,7 @@ export const HeaderLogoContainer = styled.div`
 `;
 
 export const HeaderLogo = styled.img`
-  width: 100%;
+  width: auto;
   height: 100%;
   src: url(logo);
 `;
@@ -49,31 +44,28 @@ HeaderLogo.defaultProps = { src: logo };
 export const HeaderTitleContainer = styled.div`
   display: flex;
   align-items: center;
-  width: 400px;
+  width: auto;
   cursor: pointer;
-  gap: 30px
+  gap: 30px;
 `;
 
 export const HeaderTitle = styled.h2`
-color: white;
-font-size: 36px;
-color: #56119C;
-font-family: 'IndieFlower', sans-serif;
-font-style: italic;
+  font-size: 36px;
+  color: #56119c;
+  font-family: "IndieFlower", sans-serif;
+  font-style: italic;
 `;
 
 // Область поиска
 export const SearchWrapper = styled.div`
   display: flex;
   align-items: center;
-  width: 100%;
-  max-width: 400px;
+  width: 400px;
   margin: 0 auto;
   /* padding: 10px; */
   border-radius: 25px;
   background-color: gainsboro;
 `;
-
 
 export const SearchInput = styled.input`
   flex: 1;
@@ -84,14 +76,14 @@ export const SearchInput = styled.input`
   outline: none;
 
   &:focus {
-    border: 1px solid #9796F0; 
+    border: 1px solid #9796f0;
   }
 `;
 
 export const SearchButton = styled.button`
   padding: 10px;
   border: none;
-  background-color: #9796F0;
+  background-color: #9796f0;
   color: white;
   border-radius: 0 25px 25px 0;
   cursor: pointer;
@@ -100,18 +92,12 @@ export const SearchButton = styled.button`
   justify-content: center;
 
   &:hover {
-    background-color: #6a67ce; 
+    background-color: #6a67ce;
   }
 `;
 
-
 // Основное содержимое
-export const Main = styled.main`
-  width: 100%;
-  display: flex;
-  flex-direction: column;
-  flex: 1; 
-`;
+export const Main = styled.main``;
 
 // Иконки логина и ЛК
 export const IconsContainer = styled.div`
@@ -120,7 +106,7 @@ export const IconsContainer = styled.div`
   align-items: center;
   width: 400px;
   cursor: pointer;
-  gap: 30px
+  gap: 30px;
 `;
 
 // Иконка логина
@@ -131,7 +117,7 @@ export const HeaderLoginContainer = styled.div`
 `;
 
 export const HeaderLogin = styled.img`
-  width: 100%;
+  width: auto;
   height: 100%;
 `;
 
@@ -145,7 +131,7 @@ export const HeaderUserContainer = styled.div`
 `;
 
 export const HeaderUser = styled.img`
-  width: 100%;
+  width: auto;
   height: 100%;
 `;
 
@@ -153,20 +139,15 @@ HeaderUser.defaultProps = { src: user };
 
 // Панель ссылок
 export const DownWrapper = styled.div`
-  display: flex;
-  align-items: center;
-  justify-content: center;  
-  width: 100%;
-  height: 55px;
-  background-color: gainsboro; 
+  background-color: #ededede0;
 `;
 
 export const NavContainer = styled.nav`
   display: flex;
   flex-direction: row;
-  justify-content: space-evenly;
-  width: 2200px;
+  justify-content: center;
   gap: 50px;
+  padding: 10px;
 `;
 
 export const StyledNavLink = styled(NavLink)`
@@ -174,70 +155,57 @@ export const StyledNavLink = styled(NavLink)`
   font-size: 18px;
   font-weight: bold;
   color: black;
-  font-family: 'LibreFranklin', sans-serif;
+  font-family: "LibreFranklin", sans-serif;
 `;
 
 export const StyledLink = styled(Link)`
   text-decoration: none;
   font-size: 16px;
   color: black;
-  font-family: 'LibreFranklin', sans-serif;
+  font-family: "LibreFranklin", sans-serif;
 `;
-
 
 // Footer
 export const Footer = styled.footer`
-  display: flex;  
-  flex-direction: row;
-  justify-content: center;
-  width: 100%;  
+  width: auto;
   margin-top: 40px;
-  background: linear-gradient(to right, #dadcf7, #fde8ed);  
+  background: linear-gradient(to right, #dadcf7, #fde8ed);
 `;
 
 export const FooterWrapper = styled.footer`
-  display: flex;    
-  width: 1800px; 
+  display: flex;
   padding: 20px;
-  justify-content: space-between;   
-  
+  justify-content: space-between;
 `;
 
 export const InfoContainerWrapper = styled.div`
   display: flex;
-  flex-direction: column; 
+  flex-direction: column;
   justify-content: space-around;
   gap: 20px;
 `;
 
 export const InfoContainer = styled.div`
-  width: 400px;
+  width: auto;
 `;
 
 export const InfoContainerText = styled.p`
-font-size: 18px;
-font-weight: 600;
-font-style: italic;
-color: #56119C;
-font-family: 'IndieFlower', sans-serif;
+  font-size: 18px;
+  font-weight: 600;
+  font-style: italic;
+  color: #56119c;
+  font-family: "IndieFlower", sans-serif;
 `;
 
 export const MailContainer = styled.div`
-  width: 400px;  
+  width: auto;
   display: flex;
   justify-content: center;
 `;
 
 export const MailContainerText = styled.p`
-font-size: 16px;
-font-weight: 700;
-font-family: 'LibreFranklin', sans-serif;
-color: black;
-
+  font-size: 16px;
+  font-weight: 700;
+  font-family: "LibreFranklin", sans-serif;
+  color: black;
 `;
-
-
-
-
-
-
