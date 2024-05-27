@@ -1,8 +1,8 @@
 interface CategoryCard {
-    name: string,    
-    image: string 
-  }
-  
+  name: string;
+  image: string;
+}
+
 export interface CategoryCardProps {
-    categoryCardData: CategoryCard
+  categoryCardData: CategoryCard;
 }

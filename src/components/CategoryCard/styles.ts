@@ -1,34 +1,27 @@
 import styled from "@emotion/styled";
 
 export const CardWrapper = styled.div`
-  background-color: gainsboro;
-  border: 1px solid #e0e0e0;
-  border-radius: 8px;
+  background-color: #dcdcdc30;
+  border-radius: 20px;
+  border: 1px solid #0000000d;
   display: flex;
-  flex-direction: column;
-  gap: 20px;
-  align-items: center;
   justify-content: center;
-  padding: 50px;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-  font-size: 18px;
-  font-weight: bold;
+  flex-direction: column;
+  align-items: center;
+  gap: 20px;
+  padding: 10px;
 `;
 
 export const CardTextContainer = styled.p`
-  font-size: 18px;
+  font-size: 15px;
+  color: #56119c;
   font-weight: bold;
-  font-family: 'LibreFranklin', sans-serif;
+  font-family: "LibreFranklin", sans-serif;
 `;
 
-export const CardImageContainer = styled.div`
-  width: 300px;
-  height: 300px; 
-`;
+export const CardImageContainer = styled.div``;
 
 export const CardImage = styled.img`
-  width: 100%;
-  height: 100%;
+  width: 200px;
+  height: 200px;
 `;
-
-
