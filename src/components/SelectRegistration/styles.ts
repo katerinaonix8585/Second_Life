@@ -1,22 +1,18 @@
 import styled from "@emotion/styled";
 
-export const InputComponentContainer = styled.div`
+export const SelectComponentContainer = styled.div`
   display: flex;
   flex-direction: column;
   gap: 4px;
   width: 100%;
-  height: fit-content;
+  height: fit-content;    
 `;
 
-export const InputLabel = styled.label`
-  font-size: 16px;
-  color: #6f6f6f;
-`;
-
-export const InputWrapper = styled.div`
+export const SelectWrapper = styled.div`
   position: relative;
   width: 100%;
   display: flex;
+  justify-content: space-between;  
   align-items: center;
 `;
 
@@ -29,10 +25,10 @@ export const Icon = styled.div`
   pointer-events: none;
 `;
 
-export const InputComponent = styled.input`
+export const SelectComponent = styled.select`  
   width: 100%;
   height: 50px;
-  padding: 12px 12px 12px 40px; 
+  padding: 12px 12px 20px 50px;   
   outline: none;
   border: 1px solid white;
   border-radius: 20px;
@@ -46,6 +42,7 @@ export const InputComponent = styled.input`
   &:focus {
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
   }
+
 `;
 
 export const ErrorMessage = styled.p`

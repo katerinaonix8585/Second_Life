@@ -10,8 +10,8 @@ export const SignInFormWrapper = styled.div`
   flex: 1;
   display: flex;
   align-items: center;
-  justify-content: center;
-  background: linear-gradient(to right, #9796f0, #fde8ed);
+  justify-content: center;  
+  
 `;
 
 export const SignUpFormWrapper = styled.div`
@@ -21,6 +21,7 @@ export const SignUpFormWrapper = styled.div`
   gap: 40px;
   align-items: center;
   justify-content: center;
+  background: linear-gradient(to right, #fde8ed, #9796f0);
 `;
 
 export const SignUpFormName = styled.p`
@@ -28,6 +29,7 @@ export const SignUpFormName = styled.p`
   font-weight: bold;
   color: #ee4266;
   font-family: "LibreFranklin", sans-serif;
+
 `;
 
 export const SignUpTextWrapper = styled.div`

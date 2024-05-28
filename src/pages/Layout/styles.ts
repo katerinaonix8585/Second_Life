@@ -1,5 +1,6 @@
 import styled from "@emotion/styled";
 import { NavLink, Link } from "react-router-dom";
+import { MdOutlineEmail } from "react-icons/md";
 
 import { login, logo, user } from "../../shared/assets/images";
 

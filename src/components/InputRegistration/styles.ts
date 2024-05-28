@@ -8,15 +8,11 @@ export const InputComponentContainer = styled.div`
   height: fit-content;
 `;
 
-export const InputLabel = styled.label`
-  font-size: 16px;
-  color: #6f6f6f;
-`;
-
 export const InputWrapper = styled.div`
   position: relative;
   width: 100%;
   display: flex;
+  justify-content: space-between;  
   align-items: center;
 `;
 
@@ -32,7 +28,7 @@ export const Icon = styled.div`
 export const InputComponent = styled.input`
   width: 100%;
   height: 50px;
-  padding: 12px 12px 12px 40px; 
+  padding: 12px 12px 12px 50px; 
   outline: none;
   border: 1px solid white;
   border-radius: 20px;
