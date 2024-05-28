@@ -4,7 +4,12 @@ import { NavLink, Link } from "react-router-dom";
 import { login, logo, user } from "../../shared/assets/images";
 
 // Стиль для всего слоя
-export const LayoutWrapper = styled.div``;
+export const LayoutWrapper = styled.div`
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+  `;
+  
 
 export const Container = styled.div`
   max-width: 1270px;
@@ -97,7 +102,10 @@ export const SearchButton = styled.button`
 `;
 
 // Основное содержимое
-export const Main = styled.main``;
+export const Main = styled.main`
+  flex: 1; 
+
+   `;
 
 // Иконки логина и ЛК
 export const IconsContainer = styled.div`
@@ -167,8 +175,7 @@ export const StyledLink = styled(Link)`
 
 // Footer
 export const Footer = styled.footer`
-  width: auto;
-  margin-top: 40px;
+  width: auto;  
   background: linear-gradient(to right, #dadcf7, #fde8ed);
 `;
 

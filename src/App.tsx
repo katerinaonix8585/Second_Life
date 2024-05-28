@@ -5,6 +5,8 @@ import Category from 'pages/Category/Category';
 
 import Layout from './pages/Layout/Layout';
 import Home from './pages/Home/Home';
+import SignIn from 'pages/SignIn/SignIn';
+
 
 function App() {
   return (
@@ -12,6 +14,7 @@ function App() {
       <Layout>
         <Routes>
           <Route path='/' element={<Home />} />
+          <Route path='/signin' element={<SignIn />} />
           <Route path='/category' element={<Category />} />
           <Route path='/category/:name' element={<CategoryPage />} />
           <Route path='*' element='Page Not Found' />
