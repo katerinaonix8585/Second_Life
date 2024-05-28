@@ -8,7 +8,7 @@ function Input({ name, type = "text", placeholder, label, onInputChange, value, 
       <InputComponent
         name={name}
         type={type}
-        placeholder={placeholder}
+        placeholder={placeholder} 
         onChange={onInputChange}
         value={value}
         onBlur={onBlur}

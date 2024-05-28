@@ -1,3 +1,4 @@
+import RegistrationForm from "components/RegistrationForm/RegistrationForm";
 import {
   ButtonWrapper,
   LoginPageWrapper,
@@ -9,38 +10,37 @@ import {
   SignUpTextWrapper,
 } from "./styles";
 import Button from "components/Button/Button";
-import LoginForm from "components/LoginForm/LoginForm";
 import { Link } from "react-router-dom";
 
-function SignIn() {
+function SignUp() {
+
   return (
     <LoginPageWrapper>
-      <SignInFormWrapper>
+      <SignInFormWrapper onClick={(e) => e.preventDefault()}>
         <PartPageWrapper>
-          <LoginForm />
+          <RegistrationForm />
         </PartPageWrapper>
       </SignInFormWrapper>
       <SignUpFormWrapper>
         <PartPageWrapper>
-          <SignUpFormName>New Here?</SignUpFormName>
+          <SignUpFormName>Welcome Back!</SignUpFormName>
           <SignUpTextWrapper>
             <SignUpText>
-              Join our community and unlock a world of possibilities.
+            To keep connected with us please
             </SignUpText>
             <SignUpText>
-              Create your account now and dive into a realm of exciting
-            </SignUpText>
-            <SignUpText>opportunities!</SignUpText>
+            log in with your personal info
+            </SignUpText>            
           </SignUpTextWrapper>
-          <Link to="/signup" style={{ textDecoration: "none" }}>
-            <ButtonWrapper>
-              <Button type="button" background="#EE4266" name="Sign up" />
-            </ButtonWrapper>
-          </Link>
+          <Link to="/signin" style={{ textDecoration: "none" }}>
+          <ButtonWrapper>
+                 <Button type="button" background="#EE4266" name="Sign in" />
+          </ButtonWrapper>
+          </Link>    
         </PartPageWrapper>
       </SignUpFormWrapper>
     </LoginPageWrapper>
   );
 }
 
-export default SignIn;
+export default SignUp;

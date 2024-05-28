@@ -11,12 +11,10 @@ import { LoginFormValues, LOGIN_FIELD_NAMES } from "./types.ts";
 import * as Yup from "yup";
 
 function LoginForm() {
-  //создаем валидационную схему yup
   const shema = Yup.object().shape({
     [LOGIN_FIELD_NAMES.EMAIL]: Yup.string()
       .required("Field email required")
       .email("Field type email"),
-    // [LOGIN_FIELD_NAMES.PASSWORD]: Yup.string().required('Field password required'),
     [LOGIN_FIELD_NAMES.PASSWORD]: Yup.number()
       .typeError("Password must be number")
       .required("Field password required")
@@ -24,7 +22,6 @@ function LoginForm() {
       .min(3, "Min 3 symbols"),
   });
 
-  // сохранение возвращаемого useFormik значения в переменную formik
   const formik = useFormik({
     initialValues: {
       [LOGIN_FIELD_NAMES.EMAIL]: "",
@@ -33,17 +30,20 @@ function LoginForm() {
     validationSchema: shema,
     validateOnMount: false,
     validateOnChange: false,
-    validateOnBlur: true,
+    validateOnBlur: false,
     onSubmit: (values: LoginFormValues) => {
-      console.log(values);
+      console.log("Form submitted with values: ", values);
     },
   });
 
-  console.log(formik);
+  console.log("Formik state: ", formik);
 
   return (
-    //привязываем к элементу формы действие submit
-    <LoginFormComponent onSubmit={formik.handleSubmit}>
+    <LoginFormComponent onSubmit={(e) => { 
+      e.preventDefault(); 
+      console.log("Form submit event triggered"); 
+      formik.handleSubmit(e);
+    }}>
       <LoginFormName>Login to Your Account</LoginFormName>
       <InputsContainer>
         <Input
@@ -66,8 +66,7 @@ function LoginForm() {
       </InputsContainer>
       <ButtonWrapper>
         <Button type="submit" name="Sign in" />
-      </ButtonWrapper>
-      <div>{formik.values[LOGIN_FIELD_NAMES.EMAIL]}</div>
+      </ButtonWrapper>      
     </LoginFormComponent>
   );
 }

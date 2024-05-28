@@ -10,7 +10,7 @@ function Button({
 }: ButtonProps) {
   return (
     <ButtonComponent disabled={disabled} background={background} type={type} onClick={onButtonClick}>
-      {name}
+    {name}
     </ButtonComponent>
   );
 }
