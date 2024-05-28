@@ -9,6 +9,7 @@ const globalStyles = css`
 
   body,
   html {
+    height: 100%;
   }
 
   h1,
@@ -21,6 +22,14 @@ const globalStyles = css`
     margin: 0;
     padding: 0;
   }
+
+  #root {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+
+}
+
 
   @font-face {
     font-family: "LibreFranklin";

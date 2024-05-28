@@ -5,10 +5,11 @@ function Button({
   name,
   type = 'button',
   disabled = false,
+  background = '#4d418b', 
   onButtonClick,
 }: ButtonProps) {
   return (
-    <ButtonComponent disabled={disabled} type={type} onClick={onButtonClick}>
+    <ButtonComponent disabled={disabled} background={background} type={type} onClick={onButtonClick}>
       {name}
     </ButtonComponent>
   );

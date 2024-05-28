@@ -4,7 +4,8 @@ import { arrowRight } from "../../shared/assets/images";
 
 export const HomePageWrapper = styled.div`
   width: auto;
-  display: flex;
+  display: flex;  
+  flex: 1;
   flex-direction: column;
   align-items: center;
   justify-content: center;
@@ -60,7 +61,8 @@ export const IntroductionButtonWrapper = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
-  width: 300px;
+  width: 200px;
+  
 `;
 
 // Контейнер с плавными границами внизу

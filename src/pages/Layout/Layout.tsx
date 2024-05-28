@@ -1,4 +1,4 @@
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { FaSearch } from "react-icons/fa";
 
 import { LayoutProps } from "./types";
@@ -61,9 +61,11 @@ function Layout({ children }: LayoutProps) {
                 {/* TO DO Нужно добавить для этого элемента отображение только для авторизованных пользователей */}
                 <HeaderUser />
               </HeaderUserContainer>
-              <HeaderLoginContainer>
-                <HeaderLogin />
-              </HeaderLoginContainer>
+              <Link to="/signin" style={{ textDecoration: "none" }}>
+                 <HeaderLoginContainer>
+                 <HeaderLogin />
+                 </HeaderLoginContainer>
+              </Link>           
             </IconsContainer>
           </UpHeaderWrapper>
         </Container>
