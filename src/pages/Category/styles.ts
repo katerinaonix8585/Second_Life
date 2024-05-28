@@ -10,7 +10,7 @@ export const CategoryPageWrapper = styled.div`
 
 export const CategoryWrapper = styled.div`
   width: auto;
-  padding-top: 40px;
+  padding: 40px 0;
 `;
 
 export const CategoryTextWrapper = styled.div`

@@ -4,7 +4,7 @@ import { arrowRight } from "../../shared/assets/images";
 
 export const HomePageWrapper = styled.div`
   width: auto;
-  display: flex;  
+  display: flex;
   flex: 1;
   flex-direction: column;
   align-items: center;
@@ -12,7 +12,7 @@ export const HomePageWrapper = styled.div`
 `;
 
 export const CategoryWrapper = styled.div`
-  padding-top: 40px;
+  padding: 40px 0;
 `;
 
 export const CategoryTextWrapper = styled.div`
@@ -62,7 +62,6 @@ export const IntroductionButtonWrapper = styled.div`
   justify-content: center;
   align-items: center;
   width: 200px;
-  
 `;
 
 // Контейнер с плавными границами внизу

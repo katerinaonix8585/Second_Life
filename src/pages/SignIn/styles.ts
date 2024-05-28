@@ -4,6 +4,7 @@ export const LoginPageWrapper = styled.div`
   display: flex;
   width: 100%;
   height: 100%;
+  padding: 0 0 40px 0;
 `;
 
 export const SignInFormWrapper = styled.div`
@@ -26,41 +27,39 @@ export const SignUpFormWrapper = styled.div`
 export const SignUpFormName = styled.p`
   font-size: 30px;
   font-weight: bold;
-  color: #EE4266;
+  color: #ee4266;
   font-family: "LibreFranklin", sans-serif;
-`
+`;
 
 export const SignUpTextWrapper = styled.div`
   display: flex;
   flex-direction: column;
-  
+
   align-items: center;
   justify-content: center;
 `;
 
 export const SignUpText = styled.p`
-  font-size: 24px;
+  font-size: 20px;
   font-weight: bold;
   padding: 10px;
   font-family: "Chivo", sans-serif;
   font-style: italic;
-  color: #4d418b;  
+  color: #4d418b;
 `;
 
 export const ButtonWrapper = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
-  width: 200px;  
-
+  width: 200px;
 `;
 
 export const PartPageWrapper = styled.div`
   display: flex;
-  flex-direction: column;  
+  flex-direction: column;
   gap: 30px;
   align-items: center;
   justify-content: center;
   height: 100%;
 `;
-
