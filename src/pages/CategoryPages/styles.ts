@@ -1,4 +1,4 @@
-import styled from '@emotion/styled';
+import styled from "@emotion/styled";
 
 export const CategoryPageWrapper = styled.div`
   width: auto;
@@ -19,5 +19,5 @@ export const CategoryText = styled.p`
   font-size: 30px;
   font-weight: bold;
   color: #56119c;
-  font-family: 'LibreFranklin', sans-serif;
+  font-family: "LibreFranklin", sans-serif;
 `;

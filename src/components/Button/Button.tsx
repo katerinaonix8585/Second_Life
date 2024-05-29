@@ -1,16 +1,21 @@
-import { ButtonComponent } from './styles';
-import { ButtonProps } from './types';
+import { ButtonComponent } from "./styles";
+import { ButtonProps } from "./types";
 
 function Button({
   name,
-  type = 'button',
+  type = "button",
   disabled = false,
-  background = '#4d418b', 
+  background = "#4d418b",
   onButtonClick,
 }: ButtonProps) {
   return (
-    <ButtonComponent disabled={disabled} background={background} type={type} onClick={onButtonClick}>
-    {name}
+    <ButtonComponent
+      disabled={disabled}
+      background={background}
+      type={type}
+      onClick={onButtonClick}
+    >
+      {name}
     </ButtonComponent>
   );
 }

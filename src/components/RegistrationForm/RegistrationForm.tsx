@@ -1,18 +1,23 @@
+import { useFormik } from "formik";
+import * as Yup from "yup";
+import { MdOutlineEmail } from "react-icons/md";
+import { RiLockPasswordLine } from "react-icons/ri";
+import { CiLocationOn, CiUser } from "react-icons/ci";
+import { useState } from "react";
+
 import Button from "components/Button/Button.tsx";
+import Input from "components/Input/Input.tsx";
+import InputPassword from "components/InputPassword/InputPassword.tsx";
+import Select from "components/Select/Select.tsx";
+import { locationsData } from "components/Select/SelectData.ts";
+
+import { LoginFormValues, LOGIN_FIELD_NAMES, LocationType } from "./types.ts";
 import {
   LoginFormComponent,
   LoginFormName,
   InputsContainer,
   ButtonWrapper,
 } from "./styles.ts";
-import { useFormik } from "formik";
-import { LoginFormValues, LOGIN_FIELD_NAMES, LocationType } from "./types.ts";
-import * as Yup from "yup";
-import InputRegistration from "components/InputRegistration/InputRegistration.tsx";
-import { MdOutlineEmail } from "react-icons/md";
-import { RiLockPasswordLine } from "react-icons/ri";
-import { CiLocationOn, CiUser } from "react-icons/ci";
-import SelectRegistration from "components/SelectRegistration/SelectRegistration.tsx";
 
 function RegistrationForm() {
   //создаем валидационную схему yup
@@ -20,21 +25,35 @@ function RegistrationForm() {
     [LOGIN_FIELD_NAMES.EMAIL]: Yup.string()
       .required("Field email required")
       .email("Please enter a valid email address"),
-    // [LOGIN_FIELD_NAMES.PASSWORD]: Yup.string().required('Field password required'),
     [LOGIN_FIELD_NAMES.PASSWORD]: Yup.string()
-      .typeError("Password must be number")
       .required("Field password required")
-      .max(10, "Max 10 symbols")
+      .test("password", "Password must contain at least one digit", (value) =>
+        /\d/.test(value),
+      )
+      .test("password", "Password must contain at least one letter", (value) =>
+        /[a-zA-Z]/.test(value),
+      )
+      .test(
+        "password",
+        "Password must contain at least one special character",
+        (value) => /[\W_]/.test(value),
+      )
+      .test(
+        "password",
+        "Password must be at most 10 characters",
+        (value) => value.length <= 10,
+      )
       .min(3, "Min 3 symbols"),
     [LOGIN_FIELD_NAMES.REPEATPASSWORD]: Yup.string()
       .required("Field password required")
-      .oneOf([Yup.ref(LOGIN_FIELD_NAMES.PASSWORD)], "Passwords must match"), 
-    [LOGIN_FIELD_NAMES.NAME]: Yup.string()
-      .required("Field password required"),
-    [LOGIN_FIELD_NAMES.SURNAME]: Yup.string()
-      .required("Field password required"),
-    [LOGIN_FIELD_NAMES.LOCATION]: Yup.string()
-      .required("Field password required"), 
+      .oneOf([Yup.ref(LOGIN_FIELD_NAMES.PASSWORD)], "Passwords must match"),
+    [LOGIN_FIELD_NAMES.NAME]: Yup.string().required("Field password required"),
+    [LOGIN_FIELD_NAMES.SURNAME]: Yup.string().required(
+      "Field surname required",
+    ),
+    [LOGIN_FIELD_NAMES.LOCATION]: Yup.string().required(
+      "Field location required",
+    ),
   });
 
   // сохранение возвращаемого useFormik значения в переменную formik
@@ -58,76 +77,85 @@ function RegistrationForm() {
 
   console.log(formik);
 
+  const [selectedValue, setSelectedValue] = useState("");
+
+  const handleChange = (value: string | null) => {
+    setSelectedValue(value !== null ? value : "");
+  };
+
   return (
-    //привязываем к элементу формы действие submit
-    <LoginFormComponent onSubmit={formik.handleSubmit}>
+    <LoginFormComponent
+      onSubmit={(e) => {
+        e.preventDefault();
+        console.log("Form submit event triggered");
+        formik.handleSubmit(e);
+      }}
+    >
       <LoginFormName>Login to Your Account</LoginFormName>
       <InputsContainer>
-         <InputRegistration
+        <Input
+          iconDisable={true}
           name={LOGIN_FIELD_NAMES.EMAIL}
           placeholder="Email"
-          icon={<MdOutlineEmail />} 
+          icon={<MdOutlineEmail />}
           onInputChange={formik.handleChange}
           value={formik.values[LOGIN_FIELD_NAMES.EMAIL]}
           error={formik.errors[LOGIN_FIELD_NAMES.EMAIL]}
           onBlur={formik.handleBlur}
         />
-        <InputRegistration
+        <InputPassword
+          iconDisable={true}
           name={LOGIN_FIELD_NAMES.PASSWORD}
           type="password"
           placeholder="Password"
-          icon={<RiLockPasswordLine />} 
+          icon={<RiLockPasswordLine />}
           onInputChange={formik.handleChange}
           value={formik.values[LOGIN_FIELD_NAMES.PASSWORD]}
           error={formik.errors[LOGIN_FIELD_NAMES.PASSWORD]}
           onBlur={formik.handleBlur}
-        />         
-        <InputRegistration
+        />
+        <InputPassword
+          iconDisable={true}
           name={LOGIN_FIELD_NAMES.REPEATPASSWORD}
           placeholder="Repeat password"
-          icon={<RiLockPasswordLine />} 
+          icon={<RiLockPasswordLine />}
           onInputChange={formik.handleChange}
           value={formik.values[LOGIN_FIELD_NAMES.REPEATPASSWORD]}
           error={formik.errors[LOGIN_FIELD_NAMES.REPEATPASSWORD]}
           onBlur={formik.handleBlur}
         />
-        <InputRegistration
+        <Input
+          iconDisable={true}
           name={LOGIN_FIELD_NAMES.NAME}
           placeholder="Name"
-          icon={<CiUser />} 
+          icon={<CiUser />}
           onInputChange={formik.handleChange}
           value={formik.values[LOGIN_FIELD_NAMES.NAME]}
           error={formik.errors[LOGIN_FIELD_NAMES.NAME]}
           onBlur={formik.handleBlur}
         />
-        <InputRegistration
+        <Input
+          iconDisable={true}
           name={LOGIN_FIELD_NAMES.SURNAME}
           placeholder="Surname"
-          icon={<CiUser />} 
+          icon={<CiUser />}
           onInputChange={formik.handleChange}
           value={formik.values[LOGIN_FIELD_NAMES.SURNAME]}
           error={formik.errors[LOGIN_FIELD_NAMES.SURNAME]}
           onBlur={formik.handleBlur}
-        />      
-      <SelectRegistration
-          name={LOGIN_FIELD_NAMES.LOCATION}
+        />
+        <Select
+          iconDisable={true}
+          options={locationsData}
+          value={selectedValue}
+          onChange={handleChange}
           placeholder="Location"
-          type=""
-          options={[
-            { label: 'Location 1', value: 'location1' },
-            { label: 'Location 2', value: 'location2' },
-            { label: 'Location 3', value: 'location3' },
-          ]}
-          icon={<CiLocationOn />} 
-          onInputChange={formik.handleChange}
-          value={formik.values[LOGIN_FIELD_NAMES.LOCATION]}
-          error={formik.errors[LOGIN_FIELD_NAMES.LOCATION]}
-          onBlur={formik.handleBlur}
+          icon={<CiLocationOn />}
         />
       </InputsContainer>
       <ButtonWrapper>
         <Button type="submit" name="Sign up" />
-      </ButtonWrapper>      
+      </ButtonWrapper>
     </LoginFormComponent>
   );
 }

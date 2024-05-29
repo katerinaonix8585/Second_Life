@@ -3,7 +3,7 @@ import styled from "@emotion/styled";
 export const LoginPageWrapper = styled.div`
   display: flex;
   width: 100%;
-  height: 100%;  
+  height: 100%;
 `;
 
 export const SignInFormWrapper = styled.div`

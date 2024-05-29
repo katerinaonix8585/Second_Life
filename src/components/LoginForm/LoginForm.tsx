@@ -1,25 +1,30 @@
+import { useFormik } from "formik";
+import * as Yup from "yup";
+import { useState } from "react";
+import { MdOutlineEmail } from "react-icons/md";
+
 import Input from "components/Input/Input.tsx";
 import Button from "components/Button/Button.tsx";
+import InputPassword from "components/InputPassword/InputPassword.tsx";
+
 import {
   LoginFormComponent,
   LoginFormName,
   InputsContainer,
   ButtonWrapper,
 } from "./styles.ts";
-import { useFormik } from "formik";
 import { LoginFormValues, LOGIN_FIELD_NAMES } from "./types.ts";
-import * as Yup from "yup";
 
 function LoginForm() {
+  const [showPassword, setShowPassword] = useState(false);
+
   const shema = Yup.object().shape({
     [LOGIN_FIELD_NAMES.EMAIL]: Yup.string()
       .required("Field email required")
       .email("Field type email"),
-    [LOGIN_FIELD_NAMES.PASSWORD]: Yup.number()
-      .typeError("Password must be number")
-      .required("Field password required")
-      .max(10, "Max 10 symbols")
-      .min(3, "Min 3 symbols"),
+    [LOGIN_FIELD_NAMES.PASSWORD]: Yup.string().required(
+      "Field password required",
+    ),
   });
 
   const formik = useFormik({
@@ -36,14 +41,14 @@ function LoginForm() {
     },
   });
 
-  console.log("Formik state: ", formik);
-
   return (
-    <LoginFormComponent onSubmit={(e) => { 
-      e.preventDefault(); 
-      console.log("Form submit event triggered"); 
-      formik.handleSubmit(e);
-    }}>
+    <LoginFormComponent
+      onSubmit={(e) => {
+        e.preventDefault();
+        console.log("Form submit event triggered");
+        formik.handleSubmit(e);
+      }}
+    >
       <LoginFormName>Login to Your Account</LoginFormName>
       <InputsContainer>
         <Input
@@ -54,19 +59,22 @@ function LoginForm() {
           error={formik.errors[LOGIN_FIELD_NAMES.EMAIL]}
           onBlur={formik.handleBlur}
         />
-        <Input
+        <InputPassword
+          iconDisable={false}
           name={LOGIN_FIELD_NAMES.PASSWORD}
-          type="password"
+          type={showPassword ? "text" : "password"}
+          icon={<MdOutlineEmail />}
           placeholder="Enter your password"
           onInputChange={formik.handleChange}
           value={formik.values[LOGIN_FIELD_NAMES.PASSWORD]}
           error={formik.errors[LOGIN_FIELD_NAMES.PASSWORD]}
           onBlur={formik.handleBlur}
+          onClick={() => setShowPassword(!showPassword)}
         />
       </InputsContainer>
       <ButtonWrapper>
         <Button type="submit" name="Sign in" />
-      </ButtonWrapper>      
+      </ButtonWrapper>
     </LoginFormComponent>
   );
 }
