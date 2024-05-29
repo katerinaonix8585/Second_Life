@@ -2,8 +2,10 @@ import { useEffect, useState } from "react";
 import { v4 } from "uuid";
 
 import { CategoryCardProps } from "components/CategoryCard/types";
-import { categoriesData } from "pages/Home/types";
 import CategoryCard from "components/CategoryCard/CategoryCard";
+
+import { categoriesData } from "../../components/CategoryCard/CategoryCardData.ts";
+import { Container } from "../Layout/styles.ts";
 
 import {
   CategoryPageWrapper,
@@ -12,7 +14,6 @@ import {
   CategoryWrapper,
   GridContainer,
 } from "./styles";
-import { Container } from "../Layout/styles.ts";
 
 function CategoryPage() {
   const [categoryCards, setCategoryCards] = useState<CategoryCardProps[]>([]);
