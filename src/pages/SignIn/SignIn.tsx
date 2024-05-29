@@ -1,3 +1,8 @@
+import { Link } from "react-router-dom";
+
+import Button from "components/Button/Button";
+import LoginForm from "components/LoginForm/LoginForm";
+
 import {
   ButtonWrapper,
   LoginPageWrapper,
@@ -8,9 +13,6 @@ import {
   SignUpText,
   SignUpTextWrapper,
 } from "./styles";
-import Button from "components/Button/Button";
-import LoginForm from "components/LoginForm/LoginForm";
-import { Link } from "react-router-dom";
 
 function SignIn() {
   return (

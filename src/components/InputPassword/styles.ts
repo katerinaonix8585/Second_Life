@@ -25,15 +25,6 @@ export const PasswordInput = styled.input<InputComponentProps>`
   &:focus {
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
   }
-
-  &:-webkit-autofill,
-  &:-webkit-autofill:hover,
-  &:-webkit-autofill:focus {
-    // -webkit-box-shadow: 0 0 0px 1000px white inset !important;
-    // box-shadow: 0 0 0px 1000px white inset !important;
-    -webkit-text-fill-color: #000 !important;
-    transition: background-color 5000s ease-in-out 0s;
-  }
 `;
 
 export const IconWrapper = styled.div`
@@ -56,11 +47,6 @@ export const InputComponentContainer = styled.div`
   gap: 4px;
   width: 100%;
   height: fit-content;
-`;
-
-export const InputLabel = styled.label`
-  font-size: 16px;
-  color: #6f6f6f;
 `;
 
 export const InputWrapper = styled.div`

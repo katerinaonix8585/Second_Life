@@ -3,15 +3,14 @@ import styled from "@emotion/styled";
 export const LoginPageWrapper = styled.div`
   display: flex;
   width: 100%;
-  height: 100%;  
+  height: 100%;
 `;
 
 export const SignInFormWrapper = styled.div`
   flex: 1;
   display: flex;
   align-items: center;
-  justify-content: center;  
-  
+  justify-content: center;
 `;
 
 export const SignUpFormWrapper = styled.div`
@@ -29,13 +28,11 @@ export const SignUpFormName = styled.p`
   font-weight: bold;
   color: #ee4266;
   font-family: "LibreFranklin", sans-serif;
-
 `;
 
 export const SignUpTextWrapper = styled.div`
   display: flex;
   flex-direction: column;
-
   align-items: center;
   justify-content: center;
 `;
