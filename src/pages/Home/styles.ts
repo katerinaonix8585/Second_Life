@@ -1,6 +1,6 @@
 import styled from "@emotion/styled";
 
-import { arrowRight } from "../../shared/assets/images";
+import { ArrowRight } from "../../shared/assets/images";
 
 export const HomePageWrapper = styled.div`
   width: auto;
@@ -112,4 +112,4 @@ export const CardImage = styled.img`
   height: 100%;
 `;
 
-CardImage.defaultProps = { src: arrowRight };
+CardImage.defaultProps = { src: ArrowRight };

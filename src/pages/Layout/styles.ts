@@ -1,8 +1,7 @@
 import styled from "@emotion/styled";
 import { NavLink, Link } from "react-router-dom";
-import { MdOutlineEmail } from "react-icons/md";
 
-import { login, logo, user } from "../../shared/assets/images";
+import { Login, Logo, User } from "../../shared/assets/images";
 
 // Стиль для всего слоя
 export const LayoutWrapper = styled.div`
@@ -40,10 +39,9 @@ export const HeaderLogoContainer = styled.div`
 export const HeaderLogo = styled.img`
   width: auto;
   height: 100%;
-  src: url(logo);
 `;
 
-HeaderLogo.defaultProps = { src: logo };
+HeaderLogo.defaultProps = { src: Logo };
 
 // Название сайта
 export const HeaderTitleContainer = styled.div`
@@ -128,7 +126,7 @@ export const HeaderLogin = styled.img`
   height: 100%;
 `;
 
-HeaderLogin.defaultProps = { src: login };
+HeaderLogin.defaultProps = { src: Login };
 
 // Иконка user
 export const HeaderUserContainer = styled.div`
@@ -142,7 +140,7 @@ export const HeaderUser = styled.img`
   height: 100%;
 `;
 
-HeaderUser.defaultProps = { src: user };
+HeaderUser.defaultProps = { src: User };
 
 // Панель ссылок
 export const DownWrapper = styled.div`
