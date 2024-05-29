@@ -24,7 +24,7 @@ jobs:
             npm run build
         
         - name: 📂 Sync files
-          uses: SamKirkland/FTP-Deploy-Action@v3.1.2-patch
+          uses: SamKirkland/FTP-Deploy-Action@v3.1.2
           with:
             server: ychepel.ftp.tools
             username: ${{ secrets.FTP_USERNAME }}
