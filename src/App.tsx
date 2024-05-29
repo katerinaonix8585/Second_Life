@@ -8,6 +8,7 @@ import SignUp from "pages/SignUp/SignUp";
 import Layout from "./pages/Layout/Layout";
 import Home from "./pages/Home/Home";
 import Offers from "./pages/Offers/Offers.tsx";
+import AboutUs from "./pages/About/AboutUs.tsx";
 
 function App() {
   return (
@@ -20,6 +21,7 @@ function App() {
           <Route path="/category" element={<Category />} />
           <Route path="/category/:name" element={<CategoryPage />} />
           <Route path="/offers" element={<Offers />} />
+          <Route path="/aboutUs" element={<AboutUs />} />
           <Route path="*" element="Page Not Found" />
         </Routes>
       </Layout>
