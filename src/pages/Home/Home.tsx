@@ -6,6 +6,8 @@ import Button from "components/Button/Button";
 
 import { CategoryCardProps } from "../../components/CategoryCard/types";
 import CategoryCard from "../../components/CategoryCard/CategoryCard";
+import { Container } from "../Layout/styles";
+import { categoriesData } from "../../components/CategoryCard/CategoryCardData.ts";
 
 import {
   HomePageWrapper,
@@ -25,9 +27,6 @@ import {
   CardLink,
   IntroductionSectionWrapper,
 } from "./styles";
-import { categoriesData } from "./types";
-
-import { Container } from "../Layout/styles";
 
 function Home() {
   const [categoryCards, setCategoryCards] = useState<CategoryCardProps[]>([]);

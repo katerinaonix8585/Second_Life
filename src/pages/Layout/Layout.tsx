@@ -48,7 +48,6 @@ function Layout({ children }: LayoutProps) {
               </HeaderLogoContainer>
               <HeaderTitle>SECOND LIFE</HeaderTitle>
             </HeaderTitleContainer>
-
             <SearchWrapper>
               <SearchInput placeholder="Search..." />
               <SearchButton>
@@ -62,10 +61,10 @@ function Layout({ children }: LayoutProps) {
                 <HeaderUser />
               </HeaderUserContainer>
               <Link to="/signin" style={{ textDecoration: "none" }}>
-                 <HeaderLoginContainer>
-                 <HeaderLogin />
-                 </HeaderLoginContainer>
-              </Link>           
+                <HeaderLoginContainer>
+                  <HeaderLogin />
+                </HeaderLoginContainer>
+              </Link>
             </IconsContainer>
           </UpHeaderWrapper>
         </Container>

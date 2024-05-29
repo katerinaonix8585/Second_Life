@@ -1,10 +1,10 @@
-import { useParams } from 'react-router-dom';
+import { useParams } from "react-router-dom";
 
 import {
   CategoryPageWrapper,
   CategoryText,
   CategoryTextWrapper,
-} from './styles';
+} from "./styles";
 
 function CategoryPage() {
   const { name } = useParams();
