@@ -2,15 +2,20 @@ import styled from "@emotion/styled";
 
 import { InputComponentProps } from "./types";
 
+export const PasswordVisibilityToggle = styled.div`
+  position: absolute;
+  right: 16px;
+  cursor: pointer;
+`;
+
 export const PasswordInput = styled.input<InputComponentProps>`
   width: 100%;
   height: 50px;
-  padding: 12px 12px 12px 20px;
+  padding: 12px 12px 12px 50px;
   outline: none;
   border: 1px solid ${(props) => (props.error ? "red" : "white")};
   border-radius: 20px;
   font-size: 16px;
-  font-family: "LibreFranklin", sans-serif;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
 
   &::placeholder {
@@ -24,9 +29,25 @@ export const PasswordInput = styled.input<InputComponentProps>`
   &:-webkit-autofill,
   &:-webkit-autofill:hover,
   &:-webkit-autofill:focus {
+    // -webkit-box-shadow: 0 0 0px 1000px white inset !important;
+    // box-shadow: 0 0 0px 1000px white inset !important;
     -webkit-text-fill-color: #000 !important;
     transition: background-color 5000s ease-in-out 0s;
   }
+`;
+
+export const IconWrapper = styled.div`
+  position: absolute;
+  left: 16px;
+  top: 50%;
+  transform: translateY(-50%);
+`;
+
+export const LockIcon = styled.img`
+  position: absolute;
+  left: 16px;
+  top: 50%;
+  transform: translateY(-50%);
 `;
 
 export const InputComponentContainer = styled.div`

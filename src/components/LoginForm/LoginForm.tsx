@@ -3,9 +3,9 @@ import * as Yup from "yup";
 import { useState } from "react";
 import { MdOutlineEmail } from "react-icons/md";
 
-import Input from "components/Input/Input.tsx";
 import Button from "components/Button/Button.tsx";
 import InputPassword from "components/InputPassword/InputPassword.tsx";
+import InputWithIcon from "components/InputWithIcon/InputWithIcon.tsx";
 
 import {
   LoginFormComponent,
@@ -51,7 +51,7 @@ function LoginForm() {
     >
       <LoginFormName>Login to Your Account</LoginFormName>
       <InputsContainer>
-        <Input
+        <InputWithIcon
           name={LOGIN_FIELD_NAMES.EMAIL}
           placeholder="Enter your email"
           onInputChange={formik.handleChange}

@@ -3,7 +3,7 @@ import { Key, ReactNode } from "react";
 interface SelectData<T> {
   index?: number;
   label: string;
-  value: T | undefined;
+  value: T;
 }
 
 export interface SelectDataProps<T> {
@@ -12,8 +12,8 @@ export interface SelectDataProps<T> {
 
 export interface SelectProps<T extends Key> {
   options: SelectDataProps<T>[];
-  value: T | undefined;
-  onChange: (value: T | undefined) => void;
+  value: T;
+  onChange: (value: T) => void;
   placeholder: string;
   icon?: ReactNode;
   iconDisable?: boolean;

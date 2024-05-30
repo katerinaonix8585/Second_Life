@@ -11,11 +11,13 @@ import {
 } from "./styles";
 import { SelectDataProps, SelectProps } from "./types";
 
-function Select<T extends Key>({
+function SelectWithIcon<T extends Key>({
   options,
   value,
   onChange,
   placeholder,
+  icon,
+  iconDisable,
   defaultIndex,
 }: SelectProps<T>) {
   const [isOpen, setIsOpen] = useState(false);
@@ -42,20 +44,16 @@ function Select<T extends Key>({
   return (
     <SelectContainer>
       <SelectWrapper onClick={() => setIsOpen(!isOpen)} hasError={""}>
-        <SelectLabel style={{ color: selectedValue ? "black" : "#6f6f6f" }}>
-          {displayValue}
-        </SelectLabel>
+        <SelectLabel>{displayValue}</SelectLabel>
         <IconWrapper>
-          {isOpen ? (
-            <IoMdArrowDropup size="25px" />
-          ) : (
-            <IoMdArrowDropdown size="25px" />
-          )}
+          {isOpen ? <IoMdArrowDropup /> : <IoMdArrowDropdown />}
         </IconWrapper>
+        {iconDisable && icon && (
+          <IconWrapper style={{ right: "435px" }}>{icon}</IconWrapper>
+        )}
       </SelectWrapper>
       {isOpen && (
         <OptionsList>
-          {/* Остальные опции */}
           {options.map((option, index) => (
             <OptionItem key={index} onClick={() => handleSelect(option)}>
               {option.selectData.label}
@@ -67,4 +65,4 @@ function Select<T extends Key>({
   );
 }
 
-export default Select;
+export default SelectWithIcon;

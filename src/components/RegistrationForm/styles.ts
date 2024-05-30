@@ -5,7 +5,7 @@ export const LoginFormComponent = styled.form`
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  gap: 30px;
+  gap: 45px;
   width: 590px;
   height: 100%;
   padding: 60px;
@@ -21,7 +21,7 @@ export const LoginFormName = styled.p`
 export const InputsContainer = styled.div`
   display: flex;
   flex-direction: column;
-  gap: 20px;
+  gap: 35px;
   width: 100%;
 `;
 

@@ -4,10 +4,12 @@ import {
   InputWrapper,
   ErrorMessage,
   PasswordInput,
+  IconWrapper,
   InputLabel,
 } from "./styles";
 
-function Input({
+function InputWithIcon({
+  iconDisable,
   name,
   placeholder,
   label,
@@ -15,11 +17,13 @@ function Input({
   value,
   error,
   onBlur,
+  icon,
 }: InputProps) {
   return (
     <InputComponentContainer>
       <InputWrapper>
         <InputLabel>{label}</InputLabel>
+        <IconWrapper>{iconDisable && icon}</IconWrapper>
         <PasswordInput
           name={name}
           type={"text"}
@@ -35,4 +39,4 @@ function Input({
   );
 }
 
-export default Input;
+export default InputWithIcon;

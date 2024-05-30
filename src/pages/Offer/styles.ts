@@ -1,0 +1,62 @@
+import styled from "@emotion/styled";
+
+export const OfferWrapper = styled.div`
+  width: 100%;
+  height: auto;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: left;
+`;
+
+export const OfferUpWrapper = styled.div`
+  margin-top: 20px;
+  padding-bottom: 20px;
+  background-color: #dcdcdc30;
+  border-radius: 20px;
+  border: 1px solid #0000000d;
+  height: auto;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  width: 100%;
+  max-width: 1270px;
+  gap: 20px;
+`;
+
+export const OfferImageWrapper = styled.div`
+  width: 100%;
+  height: auto;
+  display: flex;
+  justify-content: left;
+  padding: 0 20px 0 20px;
+`;
+
+export const OfferInfoWrapper = styled.div`
+  display: flex;
+  width: 100%;
+  justify-content: left;
+  padding: 0 15px;
+`;
+
+export const OfferTextWrapper = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: baseline;
+  justify-content: left;
+  padding: 20px 0 0 20px;
+`;
+
+export const OfferText = styled.p`
+  font-size: 30px;
+  font-weight: bold;
+  color: #56119c;
+  font-family: "LibreFranklin", sans-serif;
+`;
+
+export const OfferSelectWrapper = styled.div`
+  display: flex;
+  width: 50%;
+  justify-content: left;
+  padding: 0 15px;
+`;
