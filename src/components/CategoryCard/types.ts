@@ -1,4 +1,4 @@
-interface CategoryCard {
+export interface CategoryCard {
   name: string;
   image: string;
 }
