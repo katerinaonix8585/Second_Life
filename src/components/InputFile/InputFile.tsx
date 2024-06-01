@@ -12,6 +12,7 @@ import { CustomFileInputProps } from "./types";
 function InputFile({ name, onChange }: CustomFileInputProps) {
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const [fileName, setFileName] = useState<string | null>(null);
+  console.log(fileName);
 
   const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const file = event.target.files?.[0];
