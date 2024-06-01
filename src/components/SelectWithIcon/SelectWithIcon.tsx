@@ -8,17 +8,16 @@ import {
   SelectContainer,
   SelectLabel,
   SelectWrapper,
-  InputLabel,
-  SelectComponentContainer,
 } from "./styles";
 import { SelectDataProps, SelectProps } from "./types";
 
-function Select<T extends Key>({
-  label,
+function SelectWithIcon<T extends Key>({
   options,
   value,
   onChange,
   placeholder,
+  icon,
+  iconDisable,
   defaultIndex,
 }: SelectProps<T>) {
   const [isOpen, setIsOpen] = useState(false);
@@ -43,33 +42,27 @@ function Select<T extends Key>({
     : placeholder;
 
   return (
-    <SelectComponentContainer>
-      {label && <InputLabel>{label}</InputLabel>}
-      <SelectContainer>
-        <SelectWrapper onClick={() => setIsOpen(!isOpen)} hasError={""}>
-          <SelectLabel style={{ color: selectedValue ? "black" : "#6f6f6f" }}>
-            {displayValue}
-          </SelectLabel>
-          <IconWrapper>
-            {isOpen ? (
-              <IoMdArrowDropup size="25px" />
-            ) : (
-              <IoMdArrowDropdown size="25px" />
-            )}
-          </IconWrapper>
-        </SelectWrapper>
-        {isOpen && (
-          <OptionsList>
-            {options.map((option, index) => (
-              <OptionItem key={index} onClick={() => handleSelect(option)}>
-                {option.selectData.label}
-              </OptionItem>
-            ))}
-          </OptionsList>
+    <SelectContainer>
+      <SelectWrapper onClick={() => setIsOpen(!isOpen)} hasError={""}>
+        <SelectLabel>{displayValue}</SelectLabel>
+        <IconWrapper>
+          {isOpen ? <IoMdArrowDropup /> : <IoMdArrowDropdown />}
+        </IconWrapper>
+        {iconDisable && icon && (
+          <IconWrapper style={{ right: "435px" }}>{icon}</IconWrapper>
         )}
-      </SelectContainer>
-    </SelectComponentContainer>
+      </SelectWrapper>
+      {isOpen && (
+        <OptionsList>
+          {options.map((option, index) => (
+            <OptionItem key={index} onClick={() => handleSelect(option)}>
+              {option.selectData.label}
+            </OptionItem>
+          ))}
+        </OptionsList>
+      )}
+    </SelectContainer>
   );
 }
 
-export default Select;
+export default SelectWithIcon;

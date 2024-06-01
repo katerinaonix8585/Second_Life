@@ -2,22 +2,24 @@ import styled from "@emotion/styled";
 
 export const LoginPageWrapper = styled.div`
   display: flex;
+  width: 100%;
   height: 100%;
-  width: auto;
 `;
 
 export const SignInFormWrapper = styled.div`
+  flex: 1;
   display: flex;
-  width: 50%;
+  align-items: center;
+  justify-content: center;
   background: linear-gradient(to right, #9796f0, #fde8ed);
-  justify-content: right;
 `;
 
 export const SignUpFormWrapper = styled.div`
+  flex: 1;
   display: flex;
   flex-direction: column;
   gap: 40px;
-  width: 50%;
+  align-items: center;
   justify-content: center;
 `;
 
@@ -31,6 +33,7 @@ export const SignUpFormName = styled.p`
 export const SignUpTextWrapper = styled.div`
   display: flex;
   flex-direction: column;
+
   align-items: center;
   justify-content: center;
 `;
@@ -58,14 +61,4 @@ export const PartPageWrapper = styled.div`
   align-items: center;
   justify-content: center;
   height: 100%;
-`;
-
-export const PartPageContainerLeft = styled.div`
-  max-width: 635px;
-  margin-right: 50px;
-`;
-
-export const PartPageContainerRight = styled.div`
-  max-width: 635px;
-  margin-left: 50px;
 `;

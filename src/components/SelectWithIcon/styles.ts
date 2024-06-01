@@ -1,21 +1,5 @@
 import styled from "@emotion/styled";
 
-export const SelectComponentContainer = styled.div`
-  display: flex;
-  flex-direction: column;
-  gap: 4px;
-  width: 100%;
-  height: fit-content;
-`;
-
-export const InputLabel = styled.label`
-  font-size: 16px;
-  padding: 0 0 10px 15px;
-  color: #56119c;
-  font-weight: bold;
-  font-family: "LibreFranklin", sans-serif;
-`;
-
 export const SelectContainer = styled.div`
   position: relative;
   width: 100%;
@@ -25,17 +9,17 @@ export const SelectWrapper = styled.div<{ hasError: string }>`
   position: relative;
   display: flex;
   align-items: center;
-  padding: 12px 50px 12px 20px;
-  background-color: white;
+  padding: 12px 50px 12px 52px;
   border: 1px solid ${({ hasError }) => (hasError ? "red" : "white")};
   border-radius: 20px;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  cursor: pointer;
   width: 100%;
 `;
 
 export const SelectLabel = styled.span`
   flex-grow: 1;
-  font-family: "LibreFranklin", sans-serif;
+  font-family: Arial, sans-serif;
 `;
 
 export const IconWrapper = styled.div`
@@ -53,7 +37,7 @@ export const OptionsList = styled.ul`
   overflow-y: auto;
   background-color: #ffffff;
   border: 1px solid #cccccc;
-  border-radius: 20px;
+  border-radius: 4px;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
   list-style: none;
   padding: 0;
@@ -62,10 +46,8 @@ export const OptionsList = styled.ul`
 `;
 
 export const OptionItem = styled.li`
-  padding: 20px 10px 10px 20px;
-  font-family: "LibreFranklin", sans-serif;
+  padding: 8px;
   cursor: pointer;
-
   &:hover {
     background-color: #f0f0f0;
   }

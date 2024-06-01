@@ -6,6 +6,8 @@ import Button from "components/Button/Button";
 import {
   ButtonWrapper,
   LoginPageWrapper,
+  PartPageContainerLeft,
+  PartPageContainerRight,
   PartPageWrapper,
   SignInFormWrapper,
   SignUpFormName,
@@ -18,23 +20,27 @@ function SignUp() {
   return (
     <LoginPageWrapper>
       <SignInFormWrapper>
-        <PartPageWrapper>
-          <RegistrationForm />
-        </PartPageWrapper>
+        <PartPageContainerLeft>
+          <PartPageWrapper>
+            <RegistrationForm />
+          </PartPageWrapper>
+        </PartPageContainerLeft>
       </SignInFormWrapper>
       <SignUpFormWrapper>
-        <PartPageWrapper>
-          <SignUpFormName>Welcome Back!</SignUpFormName>
-          <SignUpTextWrapper>
-            <SignUpText>To keep connected with us please</SignUpText>
-            <SignUpText>log in with your personal info</SignUpText>
-          </SignUpTextWrapper>
-          <Link to="/signin" style={{ textDecoration: "none" }}>
-            <ButtonWrapper>
-              <Button type="button" background="#EE4266" name="Sign in" />
-            </ButtonWrapper>
-          </Link>
-        </PartPageWrapper>
+        <PartPageContainerRight>
+          <PartPageWrapper>
+            <SignUpFormName>Welcome Back!</SignUpFormName>
+            <SignUpTextWrapper>
+              <SignUpText>To keep connected with us please</SignUpText>
+              <SignUpText>log in with your personal info</SignUpText>
+            </SignUpTextWrapper>
+            <Link to="/signin" style={{ textDecoration: "none" }}>
+              <ButtonWrapper>
+                <Button type="button" background="#EE4266" name="Sign in" />
+              </ButtonWrapper>
+            </Link>
+          </PartPageWrapper>
+        </PartPageContainerRight>
       </SignUpFormWrapper>
     </LoginPageWrapper>
   );

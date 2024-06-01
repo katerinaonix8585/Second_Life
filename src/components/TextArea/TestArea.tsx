@@ -3,11 +3,11 @@ import {
   InputComponentContainer,
   InputWrapper,
   ErrorMessage,
-  PasswordInput,
   InputLabel,
+  TextAreaContent,
 } from "./styles";
 
-function Input({
+function TextArea({
   name,
   placeholder,
   label,
@@ -19,14 +19,12 @@ function Input({
   return (
     <InputComponentContainer>
       <InputWrapper>
-        <InputLabel htmlFor={name}>{label}</InputLabel>
-        <PasswordInput
-          id={name}
+        <InputLabel>{label}</InputLabel>
+        <TextAreaContent
           name={name}
-          type={"text"}
           placeholder={placeholder}
           onChange={onInputChange}
-          value={String(value)}
+          value={value}
           error={error}
           onBlur={onBlur}
         />
@@ -36,4 +34,4 @@ function Input({
   );
 }
 
-export default Input;
+export default TextArea;

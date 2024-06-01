@@ -2,8 +2,9 @@ import styled from "@emotion/styled";
 
 export const OfferCardWrapper = styled.div`
   display: grid;
-  grid-template-columns: repeat(4, 4fr);
+  grid-template-columns: 1fr;
   place-items: center;
+  gap: 30px;
 `;
 
 export const OfferCardContainer = styled.div`
@@ -12,15 +13,13 @@ export const OfferCardContainer = styled.div`
   border-radius: 8px;
   display: flex;
   height: 100%;
-  width: 100%;
-  gap: 10px;
+  width: 1270px;
   align-items: center;
-  justify-content: center;
-  padding: 20px;
+  padding: 30px;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
   font-size: 18px;
   font-weight: bold;
-  flex-direction: column;
+  justify-content: space-between;
 `;
 
 export const ImgContainer = styled.div``;
@@ -30,8 +29,40 @@ export const Image = styled.img`
   height: 200px;
 `;
 
-export const Description = styled.p``;
+export const DescriptionContainer = styled.div`
+  gap: 18px;
+  display: flex;
+  flex-direction: column;
+  font-size: 20px;
+  color: #56119c;
+  font-weight: bold;
+  font-family: "LibreFranklin", sans-serif;
+  width: 700px;
+`;
+
+export const TitleContainer = styled.div``;
+
+export const Title = styled.h3``;
+
+export const Description = styled.h5``;
+
+export const Location = styled.h5`
+  gap: 5px;
+  display: flex;
+  align-items: center;
+`;
+
+export const Date = styled.h5`
+  gap: 5px;
+  display: flex;
+  align-items: center;
+`;
+
+export const Type = styled.h4``;
 
 export const ButtonContainer = styled.div`
-  width: 150px;
+  width: 140px;
+  display: flex;
+  gap: 10px;
+  flex-direction: column;
 `;

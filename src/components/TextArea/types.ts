@@ -7,13 +7,12 @@ export interface InputComponentProps {
 export interface InputProps {
   iconDisable?: boolean;
   name: string;
-  type?: string;
   placeholder: string;
   label?: string;
-  onInputChange: (event: ChangeEvent<HTMLInputElement>) => void;
-  value: string | number;
+  onInputChange: (event: ChangeEvent<HTMLTextAreaElement>) => void;
+  value: string;
   error?: string | undefined;
-  onBlur?: (event: FocusEvent<HTMLInputElement>) => void;
+  onBlur?: (event: FocusEvent<HTMLTextAreaElement>) => void;
   icon?: ReactNode;
   onClick?: () => void;
 }

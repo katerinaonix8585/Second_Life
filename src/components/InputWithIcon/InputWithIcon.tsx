@@ -4,10 +4,12 @@ import {
   InputWrapper,
   ErrorMessage,
   PasswordInput,
+  IconWrapper,
   InputLabel,
 } from "./styles";
 
-function Input({
+function InputWithIcon({
+  iconDisable,
   name,
   placeholder,
   label,
@@ -15,18 +17,19 @@ function Input({
   value,
   error,
   onBlur,
+  icon,
 }: InputProps) {
   return (
     <InputComponentContainer>
       <InputWrapper>
-        <InputLabel htmlFor={name}>{label}</InputLabel>
+        <InputLabel>{label}</InputLabel>
+        <IconWrapper>{iconDisable && icon}</IconWrapper>
         <PasswordInput
-          id={name}
           name={name}
           type={"text"}
           placeholder={placeholder}
           onChange={onInputChange}
-          value={String(value)}
+          value={value}
           error={error}
           onBlur={onBlur}
         />
@@ -36,4 +39,4 @@ function Input({
   );
 }
 
-export default Input;
+export default InputWithIcon;

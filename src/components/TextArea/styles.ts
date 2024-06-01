@@ -2,9 +2,9 @@ import styled from "@emotion/styled";
 
 import { InputComponentProps } from "./types";
 
-export const PasswordInput = styled.input<InputComponentProps>`
+export const TextAreaContent = styled.textarea<InputComponentProps>`
   width: 100%;
-  height: 50px;
+  height: 100%;
   padding: 12px 12px 12px 20px;
   outline: none;
   border: 1px solid ${(props) => (props.error ? "red" : "white")};
@@ -12,6 +12,7 @@ export const PasswordInput = styled.input<InputComponentProps>`
   font-size: 16px;
   font-family: "LibreFranklin", sans-serif;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  resize: vertical;
 
   &::placeholder {
     color: #6f6f6f;
@@ -20,13 +21,6 @@ export const PasswordInput = styled.input<InputComponentProps>`
   &:focus {
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
   }
-
-  &:-webkit-autofill,
-  &:-webkit-autofill:hover,
-  &:-webkit-autofill:focus {
-    -webkit-text-fill-color: #000 !important;
-    transition: background-color 5000s ease-in-out 0s;
-  }
 `;
 
 export const InputComponentContainer = styled.div`
@@ -34,25 +28,21 @@ export const InputComponentContainer = styled.div`
   flex-direction: column;
   gap: 4px;
   width: 100%;
-  height: fit-content;
+  height: 100%;
 `;
 
 export const InputLabel = styled.label`
   font-size: 16px;
-  padding-left: 15px;
-  color: #56119c;
-  font-weight: bold;
-  font-family: "LibreFranklin", sans-serif;
+  color: #6f6f6f;
 `;
 
 export const InputWrapper = styled.div`
   position: relative;
   width: 100%;
+  height: 100%;
   display: flex;
-  flex-direction: column;
-  gap: 10px;
   justify-content: space-between;
-  align-items: start;
+  align-items: center;
 `;
 
 export const ErrorMessage = styled.p`

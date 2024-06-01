@@ -1,6 +1,7 @@
 import styled from "@emotion/styled";
 
 export const OffersWrapper = styled.div`
-  position: relative;
-  top: 10%;
+  justify-content: center;
+  display: flex;
+  margin: 30px 0;
 `;
