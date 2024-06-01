@@ -3,8 +3,6 @@ import styled from "@emotion/styled";
 import { useState } from "react";
 import { HiEye, HiEyeOff } from "react-icons/hi";
 
-import { InputLabel } from "components/Input/styles";
-
 import { InputProps } from "./types";
 import {
   InputComponentContainer,
@@ -21,7 +19,6 @@ function InputPassword({
   iconDisable,
   name,
   placeholder,
-  label,
   onInputChange,
   value,
   error,
@@ -32,7 +29,7 @@ function InputPassword({
   return (
     <InputComponentContainer>
       <InputWrapper>
-        <InputLabel>{label}</InputLabel>
+        {/* <InputLabel>{label}</InputLabel> */}
         <IconWrapper>{iconDisable && <LockIcon />}</IconWrapper>
         <PasswordInput
           name={name}

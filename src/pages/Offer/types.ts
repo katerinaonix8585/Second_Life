@@ -15,6 +15,7 @@ export interface OfferFormValues {
   location: LocationData;
   startPrice?: number;
   step?: number;
+  winbid?: number;
 }
 
 export enum OFFER_DATA {
@@ -26,4 +27,5 @@ export enum OFFER_DATA {
   CATEGORY = "category",
   STARTPRICE = "startPrice",
   STEP = "step",
+  WINBID = "winbid",
 }

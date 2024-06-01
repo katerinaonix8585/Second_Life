@@ -35,8 +35,15 @@ export const OfferImageWrapper = styled.div`
 export const OfferInfoWrapper = styled.div`
   display: flex;
   width: 100%;
+  height: 100%;
   justify-content: left;
   padding: 0 15px;
+`;
+
+export const OfferTextAreaWrapper = styled.div`
+  width: 100%;
+  display: flex;
+  height: 370px;
 `;
 
 export const OfferTextWrapper = styled.div`
@@ -59,4 +66,22 @@ export const OfferSelectWrapper = styled.div`
   width: 50%;
   justify-content: left;
   padding: 0 15px;
+`;
+
+export const OfferButtonsWrapper = styled.div`
+  display: flex;
+  width: 100%;
+  justify-content: right;
+  padding-right: 20px;
+`;
+
+export const OfferButtonContainer = styled.div`
+  display: flex;
+  justify-content: end;
+  gap: 20px;
+  width: 50%;
+`;
+
+export const OfferButtonWrapper = styled.div`
+  width: 200px;
 `;

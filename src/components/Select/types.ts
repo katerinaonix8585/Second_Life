@@ -11,6 +11,8 @@ export interface SelectDataProps<T> {
 }
 
 export interface SelectProps<T extends Key> {
+  label?: string;
+  name: string;
   options: SelectDataProps<T>[];
   value: T | undefined;
   onChange: (value: T | undefined) => void;

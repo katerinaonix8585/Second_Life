@@ -4,7 +4,7 @@ import { InputComponentProps } from "./types";
 
 export const TextAreaContent = styled.textarea<InputComponentProps>`
   width: 100%;
-  height: 150px;
+  height: 100%;
   padding: 12px 12px 12px 20px;
   outline: none;
   border: 1px solid ${(props) => (props.error ? "red" : "white")};
@@ -28,7 +28,7 @@ export const InputComponentContainer = styled.div`
   flex-direction: column;
   gap: 4px;
   width: 100%;
-  height: fit-content;
+  height: 100%;
 `;
 
 export const InputLabel = styled.label`
@@ -39,6 +39,7 @@ export const InputLabel = styled.label`
 export const InputWrapper = styled.div`
   position: relative;
   width: 100%;
+  height: 100%;
   display: flex;
   justify-content: space-between;
   align-items: center;

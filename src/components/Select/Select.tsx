@@ -8,10 +8,13 @@ import {
   SelectContainer,
   SelectLabel,
   SelectWrapper,
+  InputLabel,
+  SelectComponentContainer,
 } from "./styles";
 import { SelectDataProps, SelectProps } from "./types";
 
 function Select<T extends Key>({
+  label,
   options,
   value,
   onChange,
@@ -40,30 +43,32 @@ function Select<T extends Key>({
     : placeholder;
 
   return (
-    <SelectContainer>
-      <SelectWrapper onClick={() => setIsOpen(!isOpen)} hasError={""}>
-        <SelectLabel style={{ color: selectedValue ? "black" : "#6f6f6f" }}>
-          {displayValue}
-        </SelectLabel>
-        <IconWrapper>
-          {isOpen ? (
-            <IoMdArrowDropup size="25px" />
-          ) : (
-            <IoMdArrowDropdown size="25px" />
-          )}
-        </IconWrapper>
-      </SelectWrapper>
-      {isOpen && (
-        <OptionsList>
-          {/* Остальные опции */}
-          {options.map((option, index) => (
-            <OptionItem key={index} onClick={() => handleSelect(option)}>
-              {option.selectData.label}
-            </OptionItem>
-          ))}
-        </OptionsList>
-      )}
-    </SelectContainer>
+    <SelectComponentContainer>
+      {label && <InputLabel>{label}</InputLabel>}
+      <SelectContainer>
+        <SelectWrapper onClick={() => setIsOpen(!isOpen)} hasError={""}>
+          <SelectLabel style={{ color: selectedValue ? "black" : "#6f6f6f" }}>
+            {displayValue}
+          </SelectLabel>
+          <IconWrapper>
+            {isOpen ? (
+              <IoMdArrowDropup size="25px" />
+            ) : (
+              <IoMdArrowDropdown size="25px" />
+            )}
+          </IconWrapper>
+        </SelectWrapper>
+        {isOpen && (
+          <OptionsList>
+            {options.map((option, index) => (
+              <OptionItem key={index} onClick={() => handleSelect(option)}>
+                {option.selectData.label}
+              </OptionItem>
+            ))}
+          </OptionsList>
+        )}
+      </SelectContainer>
+    </SelectComponentContainer>
   );
 }
 
