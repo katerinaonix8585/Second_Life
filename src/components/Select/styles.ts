@@ -1,5 +1,21 @@
 import styled from "@emotion/styled";
 
+export const SelectComponentContainer = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  width: 100%;
+  height: fit-content;
+`;
+
+export const InputLabel = styled.label`
+  font-size: 16px;
+  padding: 0 0 10px 15px;
+  color: #56119c;
+  font-weight: bold;
+  font-family: "LibreFranklin", sans-serif;
+`;
+
 export const SelectContainer = styled.div`
   position: relative;
   width: 100%;
@@ -14,7 +30,6 @@ export const SelectWrapper = styled.div<{ hasError: string }>`
   border: 1px solid ${({ hasError }) => (hasError ? "red" : "white")};
   border-radius: 20px;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-  /* cursor: pointer; */
   width: 100%;
 `;
 
@@ -49,8 +64,8 @@ export const OptionsList = styled.ul`
 export const OptionItem = styled.li`
   padding: 20px 10px 10px 20px;
   font-family: "LibreFranklin", sans-serif;
-
   cursor: pointer;
+
   &:hover {
     background-color: #f0f0f0;
   }

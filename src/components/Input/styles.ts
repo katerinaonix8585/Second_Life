@@ -39,15 +39,20 @@ export const InputComponentContainer = styled.div`
 
 export const InputLabel = styled.label`
   font-size: 16px;
-  color: #6f6f6f;
+  padding-left: 15px;
+  color: #56119c;
+  font-weight: bold;
+  font-family: "LibreFranklin", sans-serif;
 `;
 
 export const InputWrapper = styled.div`
   position: relative;
   width: 100%;
   display: flex;
+  flex-direction: column;
+  gap: 10px;
   justify-content: space-between;
-  align-items: center;
+  align-items: start;
 `;
 
 export const ErrorMessage = styled.p`

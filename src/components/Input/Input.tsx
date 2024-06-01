@@ -19,13 +19,14 @@ function Input({
   return (
     <InputComponentContainer>
       <InputWrapper>
-        <InputLabel>{label}</InputLabel>
+        <InputLabel htmlFor={name}>{label}</InputLabel>
         <PasswordInput
+          id={name}
           name={name}
           type={"text"}
           placeholder={placeholder}
           onChange={onInputChange}
-          value={value}
+          value={String(value)}
           error={error}
           onBlur={onBlur}
         />
