@@ -7,6 +7,7 @@ export const OfferWrapper = styled.div`
   flex-direction: column;
   align-items: center;
   justify-content: left;
+  padding-bottom: 20px;
 `;
 
 export const OfferUpWrapper = styled.div`
@@ -25,7 +26,7 @@ export const OfferUpWrapper = styled.div`
 `;
 
 export const OfferImageWrapper = styled.div`
-  width: 100%;
+  width: 40%;
   height: auto;
   display: flex;
   justify-content: left;
