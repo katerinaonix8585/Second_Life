@@ -8,7 +8,7 @@ export interface InputProps {
   iconDisable?: boolean;
   name: string;
   type?: string;
-  placeholder: string;
+  placeholder?: string;
   label?: string;
   onInputChange: (event: ChangeEvent<HTMLInputElement>) => void;
   value: string | number;

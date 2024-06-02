@@ -127,7 +127,7 @@ function Offer() {
           <Input
             label="Title"
             name={OFFER_DATA.TITLE}
-            placeholder="Title"
+            // placeholder="Title"
             onInputChange={formik.handleChange}
             value={formik.values[OFFER_DATA.TITLE] || ""}
             error={formik.errors[OFFER_DATA.TITLE]}
@@ -135,6 +135,9 @@ function Offer() {
           />
         </OfferInfoWrapper>
         <OfferInfoWrapper>
+          <OfferImageWrapper>
+            <ImageUpload />
+          </OfferImageWrapper>
           <OfferTextAreaWrapper>
             <TextArea
               name={OFFER_DATA.DESCRIPTION}
@@ -145,9 +148,6 @@ function Offer() {
               onBlur={formik.handleBlur}
             />
           </OfferTextAreaWrapper>
-          <OfferImageWrapper>
-            <ImageUpload />
-          </OfferImageWrapper>
         </OfferInfoWrapper>
         <OfferSelectWrapper>
           <Select
@@ -156,7 +156,7 @@ function Offer() {
             options={typeCategoryOptions}
             value={formik.values[OFFER_DATA.CATEGORY].name || ""}
             onChange={handleChange(OFFER_DATA.CATEGORY)}
-            placeholder="Category"
+            // placeholder="Category"
           />
         </OfferSelectWrapper>
         <OfferSelectWrapper>
@@ -166,7 +166,7 @@ function Offer() {
             options={locationOptions}
             value={formik.values[OFFER_DATA.LOCATION].value || ""}
             onChange={handleChange(OFFER_DATA.LOCATION)}
-            placeholder="Location"
+            // placeholder="Location"
           />
         </OfferSelectWrapper>
         <OfferSelectWrapper>
@@ -176,7 +176,7 @@ function Offer() {
             options={typeOfferOptions}
             value={formik.values[OFFER_DATA.TYPE].name || ""}
             onChange={handleChange(OFFER_DATA.TYPE)}
-            placeholder="Type offer"
+            // placeholder="Type offer"
           />
         </OfferSelectWrapper>
         {selectedType && selectedType.name !== "free offer" && (
@@ -185,7 +185,7 @@ function Offer() {
               <Input
                 label="Start price"
                 name={OFFER_DATA.STARTPRICE}
-                placeholder="Start price"
+                // placeholder="Start price"
                 onInputChange={formik.handleChange}
                 value={formik.values[OFFER_DATA.STARTPRICE] || ""}
                 error={formik.errors[OFFER_DATA.STARTPRICE]}
@@ -196,7 +196,7 @@ function Offer() {
               <Input
                 label="Step"
                 name={OFFER_DATA.STEP}
-                placeholder="Step"
+                // placeholder="Step"
                 onInputChange={formik.handleChange}
                 value={formik.values[OFFER_DATA.STEP] || ""}
                 error={formik.errors[OFFER_DATA.STEP]}
@@ -208,7 +208,7 @@ function Offer() {
                 <Input
                   label="Win bid"
                   name={OFFER_DATA.WINBID}
-                  placeholder="Win bid"
+                  // placeholder="Win bid"
                   onInputChange={formik.handleChange}
                   value={formik.values[OFFER_DATA.WINBID] || ""}
                   error={formik.errors[OFFER_DATA.WINBID]}
