@@ -1,6 +1,7 @@
 import { useFormik } from "formik";
 import * as Yup from "yup";
 import { useState } from "react";
+import { useNavigate, useLocation } from "react-router-dom";
 import { MdOutlineEmail } from "react-icons/md";
 
 import Button from "components/Button/Button.tsx";
@@ -17,8 +18,10 @@ import { LoginFormValues, LOGIN_FIELD_NAMES } from "./types.ts";
 
 function LoginForm() {
   const [showPassword, setShowPassword] = useState(false);
+  const navigate = useNavigate();
+  const location = useLocation();
 
-  const shema = Yup.object().shape({
+  const schema = Yup.object().shape({
     [LOGIN_FIELD_NAMES.EMAIL]: Yup.string()
       .required("Field email required")
       .email("Field type email"),
@@ -32,23 +35,51 @@ function LoginForm() {
       [LOGIN_FIELD_NAMES.EMAIL]: "",
       [LOGIN_FIELD_NAMES.PASSWORD]: "",
     } as LoginFormValues,
-    validationSchema: shema,
+    validationSchema: schema,
     validateOnMount: false,
     validateOnChange: false,
     validateOnBlur: false,
-    onSubmit: (values: LoginFormValues) => {
+    onSubmit: async (values: LoginFormValues) => {
       console.log("Form submitted with values: ", values);
+
+      const loginData = {
+        email: values[LOGIN_FIELD_NAMES.EMAIL],
+        password: values[LOGIN_FIELD_NAMES.PASSWORD],
+      };
+
+      try {
+        const response = await fetch(
+          "https://second-life-app-y2el9.ondigitalocean.app/api/v1/auth/user/login",
+          {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify(loginData),
+          },
+        );
+
+        if (response.ok) {
+          const data = await response.json();
+          console.log("Login successful:", data);
+
+          localStorage.setItem("accessToken", data.accessToken);
+          localStorage.setItem("refreshToken", data.refreshToken);
+
+          const from = location.state?.from?.pathname || "/";
+          navigate(from, { replace: true });
+        } else {
+          console.error("Login failed");
+          // Обработка ошибки логина
+        }
+      } catch (error) {
+        console.error("Error during login:", error);
+      }
     },
   });
 
   return (
-    <LoginFormComponent
-      onSubmit={(e) => {
-        e.preventDefault();
-        console.log("Form submit event triggered");
-        formik.handleSubmit(e);
-      }}
-    >
+    <LoginFormComponent onSubmit={formik.handleSubmit}>
       <LoginFormName>Login to Your Account</LoginFormName>
       <InputsContainer>
         <InputWithIcon

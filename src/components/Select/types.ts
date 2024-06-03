@@ -16,7 +16,7 @@ export interface SelectProps<T extends Key> {
   options: SelectDataProps<T>[];
   value: T | undefined;
   onChange: (value: T | undefined) => void;
-  placeholder: string;
+  placeholder?: string;
   icon?: ReactNode;
   iconDisable?: boolean;
   defaultIndex?: number;
