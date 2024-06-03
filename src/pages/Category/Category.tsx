@@ -1,30 +1,42 @@
 import { useEffect, useState } from "react";
-import { v4 } from "uuid";
+import { v4 as uuid } from "uuid";
 
-import { CategoryCardProps } from "components/CategoryCard/types";
+import { CategoryData } from "components/CategoryCard/types";
 import CategoryCard from "components/CategoryCard/CategoryCard";
 
-import { categoriesData } from "../../components/CategoryCard/CategoryCardData.ts";
-import { Container } from "../Layout/styles.ts";
+import { Container } from "../Layout/styles";
 
 import {
   CategoryPageWrapper,
   CategoryText,
   CategoryTextWrapper,
-  CategoryWrapper,
   GridContainer,
 } from "./styles";
 
+const BASE_URL = "https://second-life-app-y2el9.ondigitalocean.app/api/v1";
+const IMAGE_BASE_URL = "src/shared/assets/images/categories/";
+
 function CategoryPage() {
-  const [categoryCards, setCategoryCards] = useState<CategoryCardProps[]>([]);
+  const [categoryCards, setCategoryCards] = useState<CategoryData[]>([]);
 
   useEffect(() => {
-    setCategoryCards(categoriesData);
+    fetchCategories();
   }, []);
 
-  const categoryCardElements = categoryCards.map((categoryData) => (
-    <CategoryCard key={v4()} categoryCardData={categoryData.categoryCardData} />
-  ));
+  const fetchCategories = async () => {
+    try {
+      const response = await fetch(`${BASE_URL}/categories`);
+      const data: CategoryData[] = await response.json();
+      const activeCategories = data.filter((category) => category.active);
+      setCategoryCards(activeCategories);
+    } catch (error) {
+      console.error("Error fetching categories:", error);
+    }
+  };
+
+  const getImageUrl = (categoryName: string) => {
+    return `${IMAGE_BASE_URL}${categoryName.toLowerCase().replace(/ /g, "_")}.png`;
+  };
 
   return (
     <Container>
@@ -32,9 +44,17 @@ function CategoryPage() {
         <CategoryTextWrapper>
           <CategoryText>Category</CategoryText>
         </CategoryTextWrapper>
-        <CategoryWrapper>
-          <GridContainer>{categoryCardElements}</GridContainer>
-        </CategoryWrapper>
+        <GridContainer>
+          {categoryCards.map((categoryData) => (
+            <CategoryCard
+              key={uuid()}
+              categoryCardData={{
+                ...categoryData,
+                image: getImageUrl(categoryData.name),
+              }}
+            />
+          ))}
+        </GridContainer>
       </CategoryPageWrapper>
     </Container>
   );

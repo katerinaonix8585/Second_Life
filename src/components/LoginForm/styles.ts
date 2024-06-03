@@ -31,3 +31,14 @@ export const ButtonWrapper = styled.div`
   align-items: center;
   width: 200px;
 `;
+
+export const ErrorsContainer = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 30px;
+  width: 100%;
+  color: red;
+  font-size: 18px;
+  font-weight: bold;
+`;

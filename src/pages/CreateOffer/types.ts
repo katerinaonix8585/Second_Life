@@ -1,4 +1,4 @@
-import { CategoryCard } from "components/CategoryCard/types";
+import { CategoryData } from "components/CategoryCard/types";
 import { LocationData } from "pages/Layout/types";
 
 export interface TypeOffer {
@@ -11,7 +11,7 @@ export interface OfferFormValues {
   description: string;
   type: TypeOffer;
   durationAuction?: number;
-  category: CategoryCard;
+  category: CategoryData;
   location: LocationData;
   startPrice?: number;
   step?: number;

@@ -18,7 +18,7 @@ export const CategoryWrapper = styled.div`
 export const CategoryTextWrapper = styled.div`
   display: flex;
   justify-content: center;
-  padding: 50px 0 0 50px;
+  padding: 25px 0 0 0;
 `;
 
 export const CategoryText = styled.p`
@@ -103,8 +103,8 @@ export const CardTextContainer = styled.p`
 `;
 
 export const CardImageContainer = styled.div`
-  width: 30px;
-  height: 30px;
+  width: 20px;
+  height: 20px;
 `;
 
 export const CardImage = styled.img`

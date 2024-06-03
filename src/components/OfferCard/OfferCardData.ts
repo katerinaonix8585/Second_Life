@@ -1,7 +1,7 @@
 export const offerCardData = [
   {
     title: "Watches",
-    image: "src/shared/assets/images/categories/watches.png",
+    image: "/src/shared/assets/images/categories/watches.png",
     description: "Silver watch with black strap",
     location: "Berlin",
     data: "31.05.2024",
@@ -14,7 +14,7 @@ export const offerCardData = [
   },
   {
     title: "Bicycle",
-    image: "src/shared/assets/images/categories/bicycles.png",
+    image: "/src/shared/assets/images/categories/bicycles.png",
     description: "Silver Bicycle with 18 speeds",
     location: "Munich",
     data: "31.05.2024",
@@ -27,7 +27,7 @@ export const offerCardData = [
   },
   {
     title: "Toy",
-    image: "src/shared/assets/images/categories/toys.png",
+    image: "/src/shared/assets/images/categories/toys.png",
     description: "Logic development toy for kids",
     location: "Hamburg",
     data: "31.05.2024",

@@ -8,19 +8,18 @@ import {
 } from "./styles";
 import { CategoryCardProps } from "./types";
 
+const defaultCategoryImage =
+  "src/shared/assets/images/default_category_image.png";
+
 function CategoryCard({ categoryCardData }: CategoryCardProps) {
+  const { name, image } = categoryCardData;
   return (
-    <Link
-      to={`/category/${categoryCardData.name}`}
-      style={{ textDecoration: "none" }}
-    >
+    <Link to={`/category/${name}`} style={{ textDecoration: "none" }}>
       <CardWrapper>
         <CardImageContainer>
-          <CardImage src={categoryCardData.image} />
+          <CardImage src={image || defaultCategoryImage} />
         </CardImageContainer>
-        <CardTextContainer>
-          {categoryCardData.name.toUpperCase()}
-        </CardTextContainer>
+        <CardTextContainer>{name.toUpperCase()}</CardTextContainer>
       </CardWrapper>
     </Link>
   );

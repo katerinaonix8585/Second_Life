@@ -1,13 +1,12 @@
-import { useEffect, useState } from "react";
-import { v4 } from "uuid";
-import { shuffle } from "lodash";
+import { useState, useEffect } from "react";
+import { v4 as uuid } from "uuid";
+import { useNavigate } from "react-router-dom";
 
 import Button from "components/Button/Button";
+import { CategoryCardProps, CategoryData } from "components/CategoryCard/types";
 
-import { CategoryCardProps } from "../../components/CategoryCard/types";
 import CategoryCard from "../../components/CategoryCard/CategoryCard";
 import { Container } from "../Layout/styles";
-import { categoriesData } from "../../components/CategoryCard/CategoryCardData.ts";
 
 import {
   HomePageWrapper,
@@ -19,8 +18,6 @@ import {
   WaveContainer,
   GradientBackground,
   IntroductionContainerWrapper,
-  CategoryTextWrapper,
-  CategoryText,
   CardTextContainer,
   CardImageContainer,
   CardImage,
@@ -28,19 +25,56 @@ import {
   IntroductionSectionWrapper,
 } from "./styles";
 
+const BASE_URL = "https://second-life-app-y2el9.ondigitalocean.app/api/v1";
+
+const IMAGE_BASE_URL = "src/shared/assets/images/categories/";
+
 function Home() {
   const [categoryCards, setCategoryCards] = useState<CategoryCardProps[]>([]);
+  const navigate = useNavigate();
 
   useEffect(() => {
-    setCategoryCards(categoriesData);
+    fetchCategories();
   }, []);
 
-  const shuffledCategoryCards = shuffle(categoryCards);
+  const fetchCategories = async () => {
+    try {
+      const response = await fetch(`${BASE_URL}/categories`);
+      const data: CategoryData[] = await response.json();
+      const activeCategories = data.filter((category) => category.active);
+      const categoryCardsData = activeCategories.map((category) => ({
+        categoryCardData: {
+          id: category.id,
+          name: category.name,
+          description: category.description,
+          active: category.active,
+          image: getImageUrl(category.name),
+        },
+      }));
+      setCategoryCards(categoryCardsData);
+    } catch (error) {
+      console.error("Error fetching categories:", error);
+    }
+  };
 
-  const limitedCategoryCards = shuffledCategoryCards.slice(0, 7);
+  const getImageUrl = (categoryName: string) => {
+    return `${IMAGE_BASE_URL}${categoryName.toLowerCase().replace(/ /g, "_")}.png`;
+  };
 
-  const categoryCardElements = limitedCategoryCards.map((categoryData) => (
-    <CategoryCard key={v4()} categoryCardData={categoryData.categoryCardData} />
+  const handleCreateOfferClick = () => {
+    const accessToken = localStorage.getItem("accessToken");
+    if (accessToken) {
+      navigate("/offers");
+    } else {
+      navigate("/auth/user/login");
+    }
+  };
+
+  const categoryCardElements = categoryCards.map((categoryData) => (
+    <CategoryCard
+      key={uuid()}
+      categoryCardData={categoryData.categoryCardData}
+    />
   ));
 
   return (
@@ -61,16 +95,21 @@ function Home() {
                 </IntroductionText>
               </IntroductionContainerWrapper>
               <IntroductionButtonWrapper>
-                <Button name="Create offer" onButtonClick={() => {}}></Button>
+                <IntroductionButtonWrapper>
+                  <Button
+                    name="Create offer"
+                    onButtonClick={handleCreateOfferClick}
+                  ></Button>
+                </IntroductionButtonWrapper>
               </IntroductionButtonWrapper>
             </IntroductionSectionWrapper>
           </Container>
         </GradientBackground>
       </WaveContainer>
 
-      <CategoryTextWrapper>
+      {/* <CategoryTextWrapper>
         <CategoryText>Choose category</CategoryText>
-      </CategoryTextWrapper>
+      </CategoryTextWrapper> */}
 
       <CategoryWrapper>
         <GridContainer>
@@ -91,23 +130,3 @@ function Home() {
 }
 
 export default Home;
-
-//   WOMEN'S CLOTHING
-//   MEN'S CLOTHING
-//   CHILDREN'S CLOTHING
-//   WOMEN'S SHOES
-//   MEN'S SHOES
-//   CHILDREN'S SHOES
-//   CHILDREN'S GOODS
-//   TOYS
-//   WATCHES AND JEWELRY
-//   BEAUTY AND HEALTH
-//   HOBBIES AND LEISURE
-//   BICYCLES
-//   BOOKS AND MAGAZINES
-//   COLLECTIBLES
-//   MUSICAL INSTRUMENTS
-//   FURNITURE
-//   HUNTING AND FISHING
-//   SPORTS AND RECREATION
-//   HOME APPLIANCES

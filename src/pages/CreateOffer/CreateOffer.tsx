@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useFormik } from "formik";
 import * as Yup from "yup";
 
@@ -6,12 +6,11 @@ import ImageUpload from "components/ImageUpload/ImageUpload";
 import Input from "components/Input/Input";
 import Select from "components/Select/Select";
 import { SelectDataProps } from "components/Select/types";
-import { CategoryCard } from "components/CategoryCard/types";
 import TextArea from "components/TextArea/TestArea";
-import { categoriesData } from "components/CategoryCard/CategoryCardData";
 import { LocationData } from "pages/Layout/types";
 import { locationsData } from "pages/Layout/LocationData";
 import Button from "components/Button/Button";
+import { CategoryData } from "components/CategoryCard/types";
 
 import {
   OfferButtonContainer,
@@ -29,8 +28,25 @@ import {
 import { OFFER_DATA, OfferFormValues, TypeOffer } from "./types";
 import { typeOfferData } from "./OffersData";
 
-function Offer() {
+const BASE_URL = "https://second-life-app-y2el9.ondigitalocean.app/api/v1";
+
+function CreateOffer() {
   const [selectedType, setSelectedType] = useState<TypeOffer | null>(null);
+  const [categoriesData, setCategoriesData] = useState<CategoryData[]>([]);
+
+  useEffect(() => {
+    fetchCategories();
+  }, []);
+
+  const fetchCategories = async () => {
+    try {
+      const response = await fetch(`${BASE_URL}/categories`);
+      const data = await response.json();
+      setCategoriesData(data);
+    } catch (error) {
+      console.error("Error fetching categories:", error);
+    }
+  };
 
   const typeOfferOptions: SelectDataProps<string>[] = typeOfferData.map(
     (offer) => ({
@@ -44,8 +60,8 @@ function Offer() {
   const typeCategoryOptions: SelectDataProps<string>[] = categoriesData.map(
     (category) => ({
       selectData: {
-        label: category.categoryCardData.name,
-        value: category.categoryCardData.name,
+        label: category.name,
+        value: category.name,
       },
     }),
   );
@@ -86,7 +102,7 @@ function Offer() {
       [OFFER_DATA.DESCRIPTION]: "",
       [OFFER_DATA.TYPE]: {} as TypeOffer,
       [OFFER_DATA.DURATIONAUCTION]: 0,
-      [OFFER_DATA.CATEGORY]: {} as CategoryCard,
+      [OFFER_DATA.CATEGORY]: {} as CategoryData,
       [OFFER_DATA.LOCATION]: {} as LocationData,
       [OFFER_DATA.STARTPRICE]: 0,
       [OFFER_DATA.STEP]: 0,
@@ -221,7 +237,10 @@ function Offer() {
         <OfferButtonsWrapper>
           <OfferButtonContainer>
             <OfferButtonWrapper>
-              <Button type="button" background="#4d418b" name="Save" />
+              <Button type="button" background="#4d418b" name="Save as draft" />
+            </OfferButtonWrapper>
+            <OfferButtonWrapper>
+              <Button type="button" background="#4d418b" name="Submit" />
             </OfferButtonWrapper>
             <OfferButtonWrapper>
               <Button type="button" background="#EE4266" name="Cancel" />
@@ -233,4 +252,4 @@ function Offer() {
   );
 }
 
-export default Offer;
+export default CreateOffer;

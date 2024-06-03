@@ -1,4 +1,5 @@
 import { Link, useNavigate } from "react-router-dom";
+import { useState, useEffect } from "react";
 import { FaSearch } from "react-icons/fa";
 
 import { LayoutProps } from "./types";
@@ -30,12 +31,63 @@ import {
   SearchWrapper,
   SearchButton,
   FooterWrapper,
+  LogoutButton,
 } from "./styles";
+
+const BASE_URL = "https://second-life-app-y2el9.ondigitalocean.app/api/v1/user";
 
 function Layout({ children }: LayoutProps) {
   const navigate = useNavigate();
+  const [accessToken, setAccessToken] = useState(
+    localStorage.getItem("accessToken"),
+  );
+
+  useEffect(() => {
+    setAccessToken(localStorage.getItem("accessToken"));
+  }, []);
+
+  useEffect(() => {
+    const handleTokenUpdate = () => {
+      setAccessToken(localStorage.getItem("accessToken"));
+      window.location.reload();
+    };
+
+    window.addEventListener("tokenUpdated", handleTokenUpdate);
+
+    return () => {
+      window.removeEventListener("tokenUpdated", handleTokenUpdate);
+    };
+  }, []);
 
   const goToHomePage = () => navigate("/");
+
+  const handleLogout = async () => {
+    try {
+      await sendLogoutRequest();
+      localStorage.removeItem("accessToken");
+      localStorage.removeItem("refreshToken");
+      setAccessToken(null);
+      navigate("/");
+    } catch (error) {
+      console.error("Error logging out:", error);
+    }
+  };
+
+  const sendLogoutRequest = async () => {
+    try {
+      const response = await fetch(`${BASE_URL}/logout`, {
+        method: "GET",
+        headers: {
+          Authorization: `Bearer ${accessToken}`,
+        },
+      });
+      if (!response.ok) {
+        throw new Error("Failed to logout");
+      }
+    } catch (error) {
+      console.error("Error logging out:", error as Error);
+    }
+  };
 
   return (
     <LayoutWrapper>
@@ -57,14 +109,21 @@ function Layout({ children }: LayoutProps) {
 
             <IconsContainer>
               <HeaderUserContainer>
-                {/* TO DO Нужно добавить для этого элемента отображение только для авторизованных пользователей */}
-                <HeaderUser />
+                {accessToken && <HeaderUser />}
               </HeaderUserContainer>
-              <Link to="/signin" style={{ textDecoration: "none" }}>
+              {accessToken ? (
                 <HeaderLoginContainer>
-                  <HeaderLogin />
+                  <LogoutButton onClick={handleLogout}>
+                    <HeaderLogin />
+                  </LogoutButton>
                 </HeaderLoginContainer>
-              </Link>
+              ) : (
+                <Link to="/auth/user/login" style={{ textDecoration: "none" }}>
+                  <HeaderLoginContainer>
+                    <HeaderLogin />
+                  </HeaderLoginContainer>
+                </Link>
+              )}
             </IconsContainer>
           </UpHeaderWrapper>
         </Container>
@@ -93,7 +152,7 @@ function Layout({ children }: LayoutProps) {
                 style={({ isActive }) => ({
                   textDecoration: isActive ? "underline" : "none",
                 })}
-                to="/offers"
+                to="/offers/all"
               >
                 Offers
               </StyledNavLink>
