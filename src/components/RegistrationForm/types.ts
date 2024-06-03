@@ -2,8 +2,8 @@ export interface LoginFormValues {
   email: string;
   password: string;
   repeatpassword: string;
-  name: string;
-  surname: string;
+  firstname: string;
+  lastname: string;
   location: LocationType;
 }
 
@@ -11,8 +11,8 @@ export enum LOGIN_FIELD_NAMES {
   EMAIL = "email",
   PASSWORD = "password",
   REPEATPASSWORD = "repeatpassword",
-  NAME = "name",
-  SURNAME = "surname",
+  FIRSTNAME = "firstname",
+  LASTNAME = "lastname",
   LOCATION = "location",
 }
 

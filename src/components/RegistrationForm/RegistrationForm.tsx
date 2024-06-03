@@ -3,6 +3,7 @@ import * as Yup from "yup";
 import { CiUser } from "react-icons/ci";
 import { RiLockPasswordLine } from "react-icons/ri";
 import { MdOutlineEmail } from "react-icons/md";
+import { useState } from "react";
 
 import Button from "components/Button/Button.tsx";
 import InputPassword from "components/InputPassword/InputPassword.tsx";
@@ -16,8 +17,13 @@ import {
   ButtonWrapper,
 } from "./styles.ts";
 
+const BASE_URL = "https://second-life-app-y2el9.ondigitalocean.app/api/v1";
+
 function RegistrationForm() {
-  // Создаем валидационную схему Yup
+  const [serverErrors, setServerErrors] = useState<{ [key: string]: string }>(
+    {},
+  );
+
   const schema = Yup.object().shape({
     [LOGIN_FIELD_NAMES.EMAIL]: Yup.string()
       .required("Field email required")
@@ -63,42 +69,80 @@ function RegistrationForm() {
     [LOGIN_FIELD_NAMES.REPEATPASSWORD]: Yup.string()
       .required("Field password required")
       .oneOf([Yup.ref(LOGIN_FIELD_NAMES.PASSWORD)], "Passwords must match"),
-    [LOGIN_FIELD_NAMES.NAME]: Yup.string()
-      .required("Field name required")
+    [LOGIN_FIELD_NAMES.FIRSTNAME]: Yup.string()
+      .required("Field First name required")
       .matches(/^[a-zA-Z]*$/, "Name must contain only Latin characters")
       .test(
         "no-spaces",
         "Name must not contain spaces",
         (value) => !/\s/.test(value.trim()),
       ),
-    [LOGIN_FIELD_NAMES.SURNAME]: Yup.string()
-      .required("Field surname required")
-      .matches(/^[a-zA-Z]*$/, "Surname must contain only Latin characters")
+    [LOGIN_FIELD_NAMES.LASTNAME]: Yup.string()
+      .required("Field Last name required")
+      .matches(/^[a-zA-Z]*$/, "Lastname must contain only Latin characters")
       .test(
         "no-spaces",
-        "Surname must not contain spaces",
+        "Lastname must not contain spaces",
         (value) => !/\s/.test(value.trim()),
       ),
-    [LOGIN_FIELD_NAMES.LOCATION]: Yup.string().required(
-      "Field location required",
-    ),
   });
 
-  // Сохранение возвращаемого useFormik значения в переменную formik
   const formik = useFormik({
     initialValues: {
       [LOGIN_FIELD_NAMES.EMAIL]: "",
       [LOGIN_FIELD_NAMES.PASSWORD]: "",
       [LOGIN_FIELD_NAMES.REPEATPASSWORD]: "",
-      [LOGIN_FIELD_NAMES.NAME]: "",
-      [LOGIN_FIELD_NAMES.SURNAME]: "",
+      [LOGIN_FIELD_NAMES.FIRSTNAME]: "",
+      [LOGIN_FIELD_NAMES.LASTNAME]: "",
     } as LoginFormValues,
     validationSchema: schema,
     validateOnMount: false,
     validateOnChange: false,
     validateOnBlur: false,
-    onSubmit: (values: LoginFormValues) => {
-      console.log(values);
+    onSubmit: async (values: LoginFormValues) => {
+      console.log("Form submitted with values: ", values);
+
+      const registrationData = {
+        firstName: values[LOGIN_FIELD_NAMES.FIRSTNAME],
+        lastName: values[LOGIN_FIELD_NAMES.LASTNAME],
+        email: values[LOGIN_FIELD_NAMES.EMAIL],
+        password: values[LOGIN_FIELD_NAMES.PASSWORD],
+      };
+
+      try {
+        const response = await fetch(`${BASE_URL}/users/register`, {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(registrationData),
+        });
+
+        if (response.ok) {
+          const data = await response.json();
+          console.log("Registration successful:", data);
+          // Дополнительная логика после успешной регистрации, например, перенаправление
+        } else {
+          const errorData = await response.json();
+          if (response.status === 409) {
+            setServerErrors({ email: "Email already exists" });
+          } else if (response.status === 400 && errorData.errors) {
+            const newErrors: { [key: string]: string } = {};
+            errorData.errors.forEach(
+              (err: { field: string; message: string }) => {
+                newErrors[err.field] = err.message;
+              },
+            );
+            setServerErrors(newErrors);
+          } else {
+            setServerErrors({ general: "Unknown error occurred" });
+          }
+          console.error("Registration failed: ", errorData);
+        }
+      } catch (error) {
+        setServerErrors({ general: "Error during registration" });
+        console.error("Error during registration:", error);
+      }
     },
   });
 
@@ -110,7 +154,7 @@ function RegistrationForm() {
         formik.handleSubmit(e);
       }}
     >
-      <LoginFormName>Login to Your Account</LoginFormName>
+      <LoginFormName>Register a New Account</LoginFormName>
       <InputsContainer>
         <InputWithIcon
           iconDisable={true}
@@ -119,7 +163,7 @@ function RegistrationForm() {
           icon={<MdOutlineEmail />}
           onInputChange={formik.handleChange}
           value={formik.values[LOGIN_FIELD_NAMES.EMAIL]}
-          error={formik.errors[LOGIN_FIELD_NAMES.EMAIL]}
+          error={formik.errors[LOGIN_FIELD_NAMES.EMAIL] || serverErrors.email}
           onBlur={formik.handleBlur}
         />
         <InputPassword
@@ -130,7 +174,9 @@ function RegistrationForm() {
           icon={<RiLockPasswordLine />}
           onInputChange={formik.handleChange}
           value={formik.values[LOGIN_FIELD_NAMES.PASSWORD]}
-          error={formik.errors[LOGIN_FIELD_NAMES.PASSWORD]}
+          error={
+            formik.errors[LOGIN_FIELD_NAMES.PASSWORD] || serverErrors.password
+          }
           onBlur={formik.handleBlur}
         />
         <InputPassword
@@ -145,25 +191,32 @@ function RegistrationForm() {
         />
         <InputWithIcon
           iconDisable={true}
-          name={LOGIN_FIELD_NAMES.NAME}
-          placeholder="Name"
+          name={LOGIN_FIELD_NAMES.FIRSTNAME}
+          placeholder="First name"
           icon={<CiUser />}
           onInputChange={formik.handleChange}
-          value={formik.values[LOGIN_FIELD_NAMES.NAME]}
-          error={formik.errors[LOGIN_FIELD_NAMES.NAME]}
+          value={formik.values[LOGIN_FIELD_NAMES.FIRSTNAME]}
+          error={
+            formik.errors[LOGIN_FIELD_NAMES.FIRSTNAME] || serverErrors.firstName
+          }
           onBlur={formik.handleBlur}
         />
         <InputWithIcon
           iconDisable={true}
-          name={LOGIN_FIELD_NAMES.SURNAME}
-          placeholder="Surname"
+          name={LOGIN_FIELD_NAMES.LASTNAME}
+          placeholder="Last name"
           icon={<CiUser />}
           onInputChange={formik.handleChange}
-          value={formik.values[LOGIN_FIELD_NAMES.SURNAME]}
-          error={formik.errors[LOGIN_FIELD_NAMES.SURNAME]}
+          value={formik.values[LOGIN_FIELD_NAMES.LASTNAME]}
+          error={
+            formik.errors[LOGIN_FIELD_NAMES.LASTNAME] || serverErrors.lastName
+          }
           onBlur={formik.handleBlur}
         />
       </InputsContainer>
+      {serverErrors.general && (
+        <div style={{ color: "red" }}>{serverErrors.general}</div>
+      )}
       <ButtonWrapper>
         <Button type="submit" name="Sign up" />
       </ButtonWrapper>

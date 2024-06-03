@@ -16,7 +16,7 @@ export const CategoryWrapper = styled.div`
 export const CategoryTextWrapper = styled.div`
   display: flex;
   justify-content: center;
-  padding: 50px 0 0 50px;
+  padding: 20px 0 20px 0;
   width: auto;
 `;
 

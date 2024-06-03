@@ -1,7 +1,7 @@
 import { useFormik } from "formik";
 import * as Yup from "yup";
 import { useState } from "react";
-import { useNavigate, useLocation } from "react-router-dom";
+import { useLocation } from "react-router-dom";
 import { MdOutlineEmail } from "react-icons/md";
 
 import Button from "components/Button/Button.tsx";
@@ -13,12 +13,15 @@ import {
   LoginFormName,
   InputsContainer,
   ButtonWrapper,
+  ErrorsContainer,
 } from "./styles.ts";
 import { LoginFormValues, LOGIN_FIELD_NAMES } from "./types.ts";
 
+const BASE_URL = "https://second-life-app-y2el9.ondigitalocean.app/api/v1";
+
 function LoginForm() {
   const [showPassword, setShowPassword] = useState(false);
-  const navigate = useNavigate();
+  const [errorMessage, setErrorMessage] = useState("");
   const location = useLocation();
 
   const schema = Yup.object().shape({
@@ -47,17 +50,18 @@ function LoginForm() {
         password: values[LOGIN_FIELD_NAMES.PASSWORD],
       };
 
+      const loginPath = location.pathname.includes("/user/login")
+        ? "/auth/user/login"
+        : "/auth/admin/login";
+
       try {
-        const response = await fetch(
-          "https://second-life-app-y2el9.ondigitalocean.app/api/v1/auth/user/login",
-          {
-            method: "POST",
-            headers: {
-              "Content-Type": "application/json",
-            },
-            body: JSON.stringify(loginData),
+        const response = await fetch(`${BASE_URL}${loginPath}`, {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
           },
-        );
+          body: JSON.stringify(loginData),
+        });
 
         if (response.ok) {
           const data = await response.json();
@@ -66,13 +70,28 @@ function LoginForm() {
           localStorage.setItem("accessToken", data.accessToken);
           localStorage.setItem("refreshToken", data.refreshToken);
 
-          const from = location.state?.from?.pathname || "/";
-          navigate(from, { replace: true });
+          const event = new CustomEvent("tokenUpdated");
+          window.dispatchEvent(event);
+          window.history.back();
         } else {
-          console.error("Login failed");
-          // Обработка ошибки логина
+          const errorData = await response.json();
+          if (
+            response.status === 400 &&
+            errorData.message === "User not found"
+          ) {
+            setErrorMessage("User not found");
+          } else if (
+            response.status === 401 &&
+            errorData.message === "Password is incorrect"
+          ) {
+            setErrorMessage("Password is incorrect");
+          } else {
+            setErrorMessage("Unknown error occurred");
+          }
+          console.error("Login failed: ", errorData);
         }
       } catch (error) {
+        setErrorMessage("Error during login");
         console.error("Error during login:", error);
       }
     },
@@ -103,6 +122,7 @@ function LoginForm() {
           onClick={() => setShowPassword(!showPassword)}
         />
       </InputsContainer>
+      {errorMessage && <ErrorsContainer>{errorMessage}</ErrorsContainer>}
       <ButtonWrapper>
         <Button type="submit" name="Sign in" />
       </ButtonWrapper>

@@ -213,3 +213,18 @@ export const MailContainerText = styled.p`
   font-family: "LibreFranklin", sans-serif;
   color: black;
 `;
+
+export const LogoutButton = styled.button`
+  background: none;
+  border: none;
+  width: 40px;
+  height: 40px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  &:hover {
+    opacity: 0.7;
+  }
+`;
