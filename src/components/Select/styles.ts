@@ -24,6 +24,7 @@ export const SelectContainer = styled.div`
 export const SelectWrapper = styled.div<{ hasError: string }>`
   position: relative;
   display: flex;
+  height: 50px;
   align-items: center;
   padding: 12px 50px 12px 20px;
   background-color: white;
