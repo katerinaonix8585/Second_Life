@@ -1,0 +1,14 @@
+export { default as Beauty } from "./beauty.png";
+export { default as Bicycles } from "./bicycles.png";
+export { default as Clothing_and_accessories } from "./Clothing_and_accessories.png";
+export { default as Electronics_and_Gadgets } from "./Electronics_and_Gadgets.png";
+export { default as Furniture_and_Home_Decor } from "./Furniture_and_Home_Decor.png";
+export { default as Garden_and_Outdoor } from "./Garden_and_Outdoor.png";
+export { default as Hobbies_and_Interests } from "./Hobbies_and_Interests.png";
+export { default as Home_Appliances } from "./Home_Appliances.png";
+export { default as Kids_Items } from "./Kids'_Items.png";
+export { default as Pets_and_Supplies } from "./Pets_and_Supplies.png";
+export { default as toys } from "./toys.png";
+export { default as Sports_and_Leisure } from "./Sports_and_Leisure.png";
+export { default as Vehicles } from "./Vehicles.png";
+export { default as watches } from "./watches.png";

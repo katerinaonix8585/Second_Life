@@ -15,7 +15,7 @@ export const Container = styled.div`
   margin: 0 auto;
 `;
 
-// Стиль для headerа (header + nav)Ï
+// Стиль для headerа (header + nav)
 export const Header = styled.header`
   background: linear-gradient(to right, #9796f0, #fde8ed);
 `;
@@ -59,13 +59,34 @@ export const HeaderTitle = styled.h2`
   font-style: italic;
 `;
 
+export const SearchSelectContainer = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 60%;
+  margin: 0 auto;
+  border-radius: 25px;
+  gap: 30px;
+  height: 40px;
+  /* background-color: gainsboro; */
+`;
+
 // Область поиска
 export const SearchWrapper = styled.div`
   display: flex;
   align-items: center;
-  width: 400px;
+  width: 50%;
+  height: 40px;
   margin: 0 auto;
-  /* padding: 10px; */
+  border-radius: 25px;
+  /* background-color: gainsboro; */
+`;
+
+export const SelectWrapper = styled.div`
+  display: flex;
+  align-items: center;
+  width: 50%;
+  margin: 0 auto;
   border-radius: 25px;
   background-color: gainsboro;
 `;
@@ -74,9 +95,10 @@ export const SearchInput = styled.input`
   flex: 1;
   padding: 10px 15px;
   border: none;
-  border-radius: 25px 0 0 25px;
+  border-radius: 20px 0 0 20px;
   font-size: 16px;
   outline: none;
+  height: 40px;
 
   &:focus {
     border: 1px solid #9796f0;
@@ -86,9 +108,10 @@ export const SearchInput = styled.input`
 export const SearchButton = styled.button`
   padding: 10px;
   border: none;
+  height: 40px;
   background-color: #9796f0;
   color: white;
-  border-radius: 0 25px 25px 0;
+  border-radius: 0 20px 20px 0;
   cursor: pointer;
   display: flex;
   align-items: center;
@@ -109,7 +132,6 @@ export const IconsContainer = styled.div`
   display: flex;
   justify-content: end;
   align-items: center;
-  width: 400px;
   cursor: pointer;
   gap: 30px;
 `;
@@ -129,10 +151,10 @@ export const HeaderLogin = styled.img`
 HeaderLogin.defaultProps = { src: Login };
 
 // Иконка user
-export const HeaderUserContainer = styled.div`
+export const HeaderUserContainer = styled.div<{ isActive: boolean }>`
   width: 40px;
   height: 40px;
-  cursor: pointer;
+  cursor: ${({ isActive }) => (isActive ? "pointer" : "default")};
 `;
 
 export const HeaderUser = styled.img`

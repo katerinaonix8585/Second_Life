@@ -33,6 +33,7 @@ const BASE_URL = "https://second-life-app-y2el9.ondigitalocean.app/api/v1";
 function CreateOffer() {
   const [selectedType, setSelectedType] = useState<TypeOffer | null>(null);
   const [categoriesData, setCategoriesData] = useState<CategoryData[]>([]);
+  // const [isSelectOpen, setIsSelectOpen] = useState(false);
 
   useEffect(() => {
     fetchCategories();
@@ -46,6 +47,10 @@ function CreateOffer() {
     } catch (error) {
       console.error("Error fetching categories:", error);
     }
+  };
+
+  const handleSelectBlur = () => {
+    // setIsSelectOpen(false);
   };
 
   const typeOfferOptions: SelectDataProps<string>[] = typeOfferData.map(
@@ -172,6 +177,8 @@ function CreateOffer() {
             options={typeCategoryOptions}
             value={formik.values[OFFER_DATA.CATEGORY].name || ""}
             onChange={handleChange(OFFER_DATA.CATEGORY)}
+            onBlur={() => handleSelectBlur()}
+            isSelectOpen={false}
             // placeholder="Category"
           />
         </OfferSelectWrapper>
@@ -182,6 +189,8 @@ function CreateOffer() {
             options={locationOptions}
             value={formik.values[OFFER_DATA.LOCATION].value || ""}
             onChange={handleChange(OFFER_DATA.LOCATION)}
+            onBlur={() => handleSelectBlur()}
+            isSelectOpen={false}
             // placeholder="Location"
           />
         </OfferSelectWrapper>
@@ -192,7 +201,8 @@ function CreateOffer() {
             options={typeOfferOptions}
             value={formik.values[OFFER_DATA.TYPE].name || ""}
             onChange={handleChange(OFFER_DATA.TYPE)}
-            // placeholder="Type offer"
+            onBlur={() => handleSelectBlur()}
+            isSelectOpen={false} // placeholder="Type offer"
           />
         </OfferSelectWrapper>
         {selectedType && selectedType.name !== "free offer" && (
