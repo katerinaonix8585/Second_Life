@@ -1,6 +1,10 @@
 import { Global, css } from "@emotion/react";
 
+import { fonts } from "../fonts/logoFont/fonts.ts";
+
 const globalStyles = css`
+  ${fonts}
+
   * {
     box-sizing: border-box;
     margin: 0;
@@ -27,48 +31,6 @@ const globalStyles = css`
     display: flex;
     flex-direction: column;
     height: 100%;
-  }
-
-  @font-face {
-    font-family: "LibreFranklin";
-    src: url("src/fonts/logoFont/LibreFranklinBold.ttf") format("truetype");
-    font-weight: bold;
-    font-style: normal;
-  }
-
-  @font-face {
-    font-family: "LibreFranklin";
-    src: url("src/fonts/logoFont/LibreFranklinMedium.ttf") format("truetype");
-    font-weight: 500;
-    font-style: normal;
-  }
-
-  @font-face {
-    font-family: "IndieFlower";
-    src: url("src/fonts/logoFont/IndieFlowerRegular.ttf") format("truetype");
-    font-weight: normal;
-    font-style: normal;
-  }
-
-  @font-face {
-    font-family: "Chivo";
-    src: url("src/fonts/logoFont/ChivoBlack.ttf") format("truetype");
-    font-weight: normal;
-    font-style: normal;
-  }
-
-  @font-face {
-    font-family: "Chivo";
-    src: url("src/fonts/logoFont/ChivoBlackItalic.ttf") format("truetype");
-    font-weight: normal;
-    font-style: italic;
-  }
-
-  @font-face {
-    font-family: "Chivo";
-    src: url("src/fonts/logoFont/ChivoBoldItalic.ttf") format("truetype");
-    font-weight: bold;
-    font-style: italic;
   }
 `;
 function GlobalStyles() {

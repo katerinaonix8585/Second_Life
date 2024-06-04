@@ -52,8 +52,7 @@ export const IntroductionText = styled.p`
   font-size: 20px;
   font-weight: bold;
   padding: 10px;
-  font-family: "Chivo", sans-serif;
-  font-style: italic;
+  font-family: "ChivoBoldItalic", sans-serif;
   color: #4d418b;
 `;
 
