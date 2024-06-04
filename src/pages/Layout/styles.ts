@@ -53,10 +53,9 @@ export const HeaderTitleContainer = styled.div`
 `;
 
 export const HeaderTitle = styled.h2`
-  font-size: 36px;
+  font-size: 33px;
   color: #56119c;
-  font-family: "IndieFlower", sans-serif;
-  font-style: italic;
+  font-family: "IndieFlowerRegular", cursive;
 `;
 
 export const SearchSelectContainer = styled.div`
@@ -180,9 +179,9 @@ export const NavContainer = styled.nav`
 export const StyledNavLink = styled(NavLink)`
   text-decoration: none;
   font-size: 18px;
-  font-weight: bold;
   color: black;
-  font-family: "LibreFranklin", sans-serif;
+  font-weight: bold;
+  font-family: "LibreFranklinBold", sans-serif;
 `;
 
 export const StyledLink = styled(Link)`
@@ -217,10 +216,8 @@ export const InfoContainer = styled.div`
 
 export const InfoContainerText = styled.p`
   font-size: 18px;
-  font-weight: 600;
-  font-style: italic;
   color: #56119c;
-  font-family: "IndieFlower", sans-serif;
+  font-family: "IndieFlowerRegular", cursive;
 `;
 
 export const MailContainer = styled.div`
@@ -232,7 +229,7 @@ export const MailContainer = styled.div`
 export const MailContainerText = styled.p`
   font-size: 16px;
   font-weight: 700;
-  font-family: "LibreFranklin", sans-serif;
+  font-family: "LibreFranklinBold", sans-serif;
   color: black;
 `;
 
