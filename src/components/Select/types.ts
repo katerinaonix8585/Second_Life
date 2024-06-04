@@ -1,4 +1,4 @@
-import { Key, ReactNode } from "react";
+import { ReactNode } from "react";
 
 interface SelectData<T> {
   index?: number;
@@ -10,7 +10,7 @@ export interface SelectDataProps<T> {
   selectData: SelectData<T>;
 }
 
-export interface SelectProps<T extends Key> {
+export interface SelectProps<T extends React.Key> {
   label?: string;
   name: string;
   options: SelectDataProps<T>[];
@@ -20,4 +20,7 @@ export interface SelectProps<T extends Key> {
   icon?: ReactNode;
   iconDisable?: boolean;
   defaultIndex?: number;
+  borderRadius?: string;
+  onBlur?: () => void;
+  height?: string;
 }

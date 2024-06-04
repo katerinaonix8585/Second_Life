@@ -8,8 +8,6 @@ import {
   SelectContainer,
   SelectLabel,
   SelectWrapper,
-  InputLabel,
-  SelectComponentContainer,
 } from "./styles";
 import { SelectDataProps, SelectProps } from "./types";
 
@@ -19,23 +17,19 @@ function Select<T extends Key>({
   value,
   onChange,
   placeholder,
-  defaultIndex,
-}: SelectProps<T>) {
-  const [isOpen, setIsOpen] = useState(false);
-  const [selectedValue, setSelectedValue] = useState<T | undefined>(
-    defaultIndex !== undefined
-      ? options[defaultIndex]?.selectData.value
-      : value,
-  );
+  borderRadius = "20px",
+  height = "50px",
+  isSelectOpen,
+}: SelectProps<T> & { borderRadius?: string; isSelectOpen: boolean }) {
+  const [isOpen, setIsOpen] = useState(isSelectOpen);
 
   const handleSelect = (option: SelectDataProps<T>) => {
-    setSelectedValue(option.selectData.value);
-    onChange(option.selectData.value);
     setIsOpen(false);
+    onChange(option.selectData.value);
   };
 
   const selectedOption = options.find(
-    (option) => option.selectData.value === selectedValue,
+    (option) => option.selectData.value === value,
   );
 
   const displayValue = selectedOption
@@ -43,32 +37,35 @@ function Select<T extends Key>({
     : placeholder;
 
   return (
-    <SelectComponentContainer>
-      {label && <InputLabel>{label}</InputLabel>}
-      <SelectContainer>
-        <SelectWrapper onClick={() => setIsOpen(!isOpen)} hasError={""}>
-          <SelectLabel style={{ color: selectedValue ? "black" : "#6f6f6f" }}>
-            {displayValue}
-          </SelectLabel>
-          <IconWrapper>
-            {isOpen ? (
-              <IoMdArrowDropup size="25px" />
-            ) : (
-              <IoMdArrowDropdown size="25px" />
-            )}
-          </IconWrapper>
-        </SelectWrapper>
-        {isOpen && (
-          <OptionsList>
-            {options.map((option, index) => (
-              <OptionItem key={index} onClick={() => handleSelect(option)}>
-                {option.selectData.label}
-              </OptionItem>
-            ))}
-          </OptionsList>
-        )}
-      </SelectContainer>
-    </SelectComponentContainer>
+    <SelectContainer>
+      {label && <label>{label}</label>}
+      <SelectWrapper
+        onClick={() => setIsOpen(!isOpen)}
+        hasError={""}
+        borderRadius={borderRadius}
+        height={height}
+      >
+        <SelectLabel style={{ color: value ? "black" : "#6f6f6f" }}>
+          {displayValue}
+        </SelectLabel>
+        <IconWrapper>
+          {isOpen ? (
+            <IoMdArrowDropup size="25px" />
+          ) : (
+            <IoMdArrowDropdown size="25px" />
+          )}
+        </IconWrapper>
+      </SelectWrapper>
+      {isOpen && (
+        <OptionsList borderRadius={borderRadius}>
+          {options.map((option, index) => (
+            <OptionItem key={index} onClick={() => handleSelect(option)}>
+              {option.selectData.label}
+            </OptionItem>
+          ))}
+        </OptionsList>
+      )}
+    </SelectContainer>
   );
 }
 

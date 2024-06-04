@@ -2,6 +2,9 @@ import { Link, useNavigate } from "react-router-dom";
 import { useState, useEffect } from "react";
 import { FaSearch } from "react-icons/fa";
 
+import { SelectDataProps } from "components/Select/types";
+import Select from "components/Select/Select";
+
 import { LayoutProps } from "./types";
 import {
   LayoutWrapper,
@@ -32,7 +35,10 @@ import {
   SearchButton,
   FooterWrapper,
   LogoutButton,
+  SearchSelectContainer,
+  SelectWrapper,
 } from "./styles";
+import { locationsData } from "./LocationData";
 
 const BASE_URL = "https://second-life-app-y2el9.ondigitalocean.app/api/v1/user";
 
@@ -89,6 +95,19 @@ function Layout({ children }: LayoutProps) {
     }
   };
 
+  const locationOptions: SelectDataProps<string>[] = locationsData.map(
+    (location) => ({
+      selectData: {
+        label: location.locationData.label,
+        value: location.locationData.value,
+      },
+    }),
+  );
+
+  const handleLocationChange = (selectedValue: string | undefined) => {
+    console.log("Selected location:", selectedValue);
+  };
+
   return (
     <LayoutWrapper>
       <Header>
@@ -100,15 +119,28 @@ function Layout({ children }: LayoutProps) {
               </HeaderLogoContainer>
               <HeaderTitle>SECOND LIFE</HeaderTitle>
             </HeaderTitleContainer>
-            <SearchWrapper>
-              <SearchInput placeholder="Search..." />
-              <SearchButton>
-                <FaSearch />
-              </SearchButton>
-            </SearchWrapper>
+            <SearchSelectContainer>
+              <SearchWrapper>
+                <SearchInput placeholder="Search..." />
+                <SearchButton>
+                  <FaSearch />
+                </SearchButton>
+              </SearchWrapper>
+              <SelectWrapper>
+                <Select
+                  name="location"
+                  options={locationOptions}
+                  onChange={handleLocationChange}
+                  value={undefined}
+                  borderRadius="25px"
+                  height="40px"
+                  isSelectOpen={false}
+                />
+              </SelectWrapper>
+            </SearchSelectContainer>
 
             <IconsContainer>
-              <HeaderUserContainer>
+              <HeaderUserContainer isActive={!!accessToken}>
                 {accessToken && <HeaderUser />}
               </HeaderUserContainer>
               {accessToken ? (
