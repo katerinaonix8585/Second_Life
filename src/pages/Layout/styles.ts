@@ -25,7 +25,7 @@ export const UpHeaderWrapper = styled.div`
   display: flex;
   justify-content: space-between;
   align-items: center;
-  height: 90px;
+  height: 100px;
   gap: 30px;
 `;
 
@@ -78,6 +78,7 @@ export const SearchWrapper = styled.div`
   height: 40px;
   margin: 0 auto;
   border-radius: 25px;
+  margin-top: 10px;
   /* background-color: gainsboro; */
 `;
 
@@ -87,7 +88,6 @@ export const SelectWrapper = styled.div`
   width: 50%;
   margin: 0 auto;
   border-radius: 25px;
-  background-color: gainsboro;
 `;
 
 export const SearchInput = styled.input`

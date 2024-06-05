@@ -1,6 +1,5 @@
-import { Link } from "react-router-dom";
+import { Link, Outlet } from "react-router-dom";
 
-import { LayoutProps } from "./types";
 import {
   LayoutWrapper,
   Container,
@@ -16,7 +15,7 @@ import {
   UpHeaderWrapper,
 } from "./styles";
 
-function AdminLayout({ children }: LayoutProps) {
+const AdminLayout: React.FC = () => {
   return (
     <LayoutWrapper>
       <Header>
@@ -38,9 +37,11 @@ function AdminLayout({ children }: LayoutProps) {
           </UpHeaderWrapper>
         </Container>
       </Header>
-      <Main>{children}</Main>
+      <Main>
+        <Outlet />
+      </Main>
     </LayoutWrapper>
   );
-}
+};
 
 export default AdminLayout;

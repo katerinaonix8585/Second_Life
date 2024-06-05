@@ -3,14 +3,14 @@ import styled from "@emotion/styled";
 export const SelectComponentContainer = styled.div`
   display: flex;
   flex-direction: column;
-  gap: 4px;
+  gap: 1px;
   width: 100%;
   height: 100%;
 `;
 
 export const InputLabel = styled.label`
   font-size: 16px;
-  padding: 0 0 10px 15px;
+  padding: 20px;
   color: #56119c;
   font-weight: bold;
   font-family: "LibreFranklin", sans-serif;
@@ -19,6 +19,11 @@ export const InputLabel = styled.label`
 export const SelectContainer = styled.div`
   position: relative;
   width: 100%;
+`;
+
+export const LabelContainer = styled.div`
+  width: 100%;
+  padding-bottom: 10px;
 `;
 
 export const SelectWrapper = styled.div<{

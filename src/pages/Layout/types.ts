@@ -5,11 +5,7 @@ export interface LayoutProps {
 }
 
 export interface LocationData {
-  label: string;
+  id: number;
   value: string;
-  index: number;
-}
-
-export interface LocationDataProps {
-  locationData: LocationData;
+  selectedData?: { id: number; value: string };
 }

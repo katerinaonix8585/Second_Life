@@ -1,123 +1,89 @@
-import { LocationDataProps } from "./types";
+import { LocationData } from "./types";
 
-export const locationsData: LocationDataProps[] = [
+export const locationsData: LocationData[] = [
   {
-    locationData: {
-      label: "All Germany",
-      value: "all_germany",
-      index: 0,
-    },
+    value: "All Germany",
+    id: 0,
+    selectedData: { id: 0, value: "All Germany" },
   },
   {
-    locationData: {
-      label: "Baden-Württemberg",
-      value: "baden_wurttemberg",
-      index: 1,
-    },
+    value: "Baden-Württemberg",
+    id: 1,
+    selectedData: { id: 1, value: "Baden-Württemberg" },
   },
   {
-    locationData: {
-      label: "Bavaria",
-      value: "bavaria",
-      index: 2,
-    },
+    value: "Bavaria",
+    id: 2,
+    selectedData: { id: 2, value: "Bavaria" },
   },
   {
-    locationData: {
-      label: "Berlin",
-      value: "berlin",
-      index: 3,
-    },
+    value: "Berlin",
+    id: 3,
+    selectedData: { id: 3, value: "Berlin" },
   },
   {
-    locationData: {
-      label: "Brandenburg",
-      value: "brandenburg",
-      index: 4,
-    },
+    value: "Brandenburg",
+    id: 4,
+    selectedData: { id: 4, value: "Brandenburg" },
   },
   {
-    locationData: {
-      label: "Bremen",
-      value: "bremen",
-      index: 5,
-    },
+    value: "Bremen",
+    id: 5,
+    selectedData: { id: 5, value: "Bremen" },
   },
   {
-    locationData: {
-      label: "Hamburg",
-      value: "hamburg",
-      index: 6,
-    },
+    value: "Hamburg",
+    id: 6,
+    selectedData: { id: 6, value: "Hamburg" },
   },
   {
-    locationData: {
-      label: "Hesse",
-      value: "hesse",
-      index: 7,
-    },
+    value: "Hesse",
+    id: 7,
+    selectedData: { id: 7, value: "Hesse" },
   },
   {
-    locationData: {
-      label: "Mecklenburg-Vorpommern",
-      value: "mecklenburg_vorpommern",
-      index: 8,
-    },
+    value: "Mecklenburg-Vorpommern",
+    id: 8,
+    selectedData: { id: 8, value: "Mecklenburg-Vorpommern" },
   },
   {
-    locationData: {
-      label: "Lower Saxony",
-      value: "lower_saxony",
-      index: 9,
-    },
+    value: "Lower Saxony",
+    id: 9,
+    selectedData: { id: 9, value: "Lower Saxony" },
   },
   {
-    locationData: {
-      label: "North Rhine-Westphalia",
-      value: "north_rhine_westphalia",
-      index: 10,
-    },
+    value: "North Rhine-Westphalia",
+    id: 10,
+    selectedData: { id: 10, value: "North Rhine-Westphalia" },
   },
   {
-    locationData: {
-      label: "Rhineland-Palatinate",
-      value: "rhineland_palatinate",
-      index: 11,
-    },
+    value: "Rhineland-Palatinate",
+    id: 11,
+    selectedData: { id: 11, value: "Rhineland-Palatinate" },
   },
   {
-    locationData: {
-      label: "Saarland",
-      value: "saarland",
-      index: 12,
-    },
+    value: "Saarland",
+    id: 12,
+    selectedData: { id: 12, value: "Saarland" },
   },
   {
-    locationData: {
-      label: "Saxony",
-      value: "saxony",
-      index: 13,
-    },
+    value: "Saxony",
+    id: 13,
+    selectedData: { id: 13, value: "Saxony" },
   },
   {
-    locationData: {
-      label: "Saxony-Anhalt",
-      value: "saxony_anhalt",
-      index: 14,
-    },
+    value: "Saxony-Anhalt",
+    id: 14,
+    selectedData: { id: 14, value: "Saxony-Anhalt" },
   },
   {
-    locationData: {
-      label: "Schleswig-Holstein",
-      value: "schleswig_holstein",
-      index: 15,
-    },
+    value: "Schleswig-Holstein",
+    id: 15,
+    selectedData: { id: 15, value: "Schleswig-Holstein" },
   },
   {
-    locationData: {
-      label: "Thuringia",
-      value: "thuringia",
-      index: 16,
-    },
+    value: "Thuringia",
+    id: 16,
+    selectedData: { id: 16, value: "Thuringia" },
   },
 ];

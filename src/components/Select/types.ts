@@ -2,7 +2,7 @@ import { ReactNode } from "react";
 
 interface SelectData<T> {
   index?: number;
-  label: string;
+  // label: string;
   value: T | undefined;
 }
 
