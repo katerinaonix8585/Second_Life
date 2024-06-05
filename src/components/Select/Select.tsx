@@ -3,6 +3,8 @@ import { IoMdArrowDropdown, IoMdArrowDropup } from "react-icons/io";
 
 import {
   IconWrapper,
+  InputLabel,
+  LabelContainer,
   OptionItem,
   OptionsList,
   SelectContainer,
@@ -32,13 +34,17 @@ function Select<T extends Key>({
     (option) => option.selectData.value === value,
   );
 
-  const displayValue = selectedOption
-    ? selectedOption.selectData.label
+  const displayValue: string | number | undefined = selectedOption
+    ? selectedOption.selectData.value !== undefined
+      ? selectedOption.selectData.value.toString()
+      : placeholder
     : placeholder;
 
   return (
     <SelectContainer>
-      {label && <label>{label}</label>}
+      <LabelContainer>
+        {label && <InputLabel htmlFor={label}>{label}</InputLabel>}
+      </LabelContainer>
       <SelectWrapper
         onClick={() => setIsOpen(!isOpen)}
         hasError={""}
@@ -59,8 +65,11 @@ function Select<T extends Key>({
       {isOpen && (
         <OptionsList borderRadius={borderRadius}>
           {options.map((option, index) => (
-            <OptionItem key={index} onClick={() => handleSelect(option)}>
-              {option.selectData.label}
+            <OptionItem
+              key={String(index)}
+              onClick={() => handleSelect(option)}
+            >
+              {String(option.selectData.value)}
             </OptionItem>
           ))}
         </OptionsList>

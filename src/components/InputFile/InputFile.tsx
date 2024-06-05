@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 import Button from "components/Button/Button";
 
@@ -12,7 +12,10 @@ import { CustomFileInputProps } from "./types";
 function InputFile({ name, onChange }: CustomFileInputProps) {
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const [fileName, setFileName] = useState<string | null>(null);
-  console.log(fileName);
+
+  useEffect(() => {
+    console.log(fileName);
+  }, [fileName]);
 
   const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const file = event.target.files?.[0];

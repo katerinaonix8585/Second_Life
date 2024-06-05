@@ -1,11 +1,13 @@
+import React from "react";
+import { Outlet } from "react-router-dom";
+import { FaSearch } from "react-icons/fa";
 import { Link, useNavigate } from "react-router-dom";
 import { useState, useEffect } from "react";
-import { FaSearch } from "react-icons/fa";
 
-import { SelectDataProps } from "components/Select/types";
 import Select from "components/Select/Select";
+import { SelectDataProps } from "components/Select/types";
 
-import { LayoutProps } from "./types";
+import { locationsData } from "./LocationData";
 import {
   LayoutWrapper,
   Container,
@@ -38,19 +40,20 @@ import {
   SearchSelectContainer,
   SelectWrapper,
 } from "./styles";
-import { locationsData } from "./LocationData";
 
 const BASE_URL = "https://second-life-app-y2el9.ondigitalocean.app/api/v1/user";
 
-function Layout({ children }: LayoutProps) {
+const Layout: React.FC = () => {
   const navigate = useNavigate();
   const [accessToken, setAccessToken] = useState(
     localStorage.getItem("accessToken"),
   );
-
-  useEffect(() => {
-    setAccessToken(localStorage.getItem("accessToken"));
-  }, []);
+  const [selectedLocation, setSelectedLocation] = useState<string | undefined>(
+    () => {
+      const savedLocation = localStorage.getItem("selectedLocation");
+      return savedLocation || locationsData[0].value;
+    },
+  );
 
   useEffect(() => {
     const handleTokenUpdate = () => {
@@ -64,6 +67,22 @@ function Layout({ children }: LayoutProps) {
       window.removeEventListener("tokenUpdated", handleTokenUpdate);
     };
   }, []);
+
+  useEffect(() => {
+    if (!selectedLocation) {
+      setSelectedLocation(locationsData[0].value);
+    } else {
+      localStorage.setItem("selectedLocation", selectedLocation);
+    }
+  }, [selectedLocation]);
+
+  const locationOptions: SelectDataProps<string>[] = locationsData.map(
+    (location) => ({
+      selectData: {
+        value: location.value,
+      },
+    }),
+  );
 
   const goToHomePage = () => navigate("/");
 
@@ -95,16 +114,8 @@ function Layout({ children }: LayoutProps) {
     }
   };
 
-  const locationOptions: SelectDataProps<string>[] = locationsData.map(
-    (location) => ({
-      selectData: {
-        label: location.locationData.label,
-        value: location.locationData.value,
-      },
-    }),
-  );
-
   const handleLocationChange = (selectedValue: string | undefined) => {
+    setSelectedLocation(selectedValue);
     console.log("Selected location:", selectedValue);
   };
 
@@ -131,7 +142,7 @@ function Layout({ children }: LayoutProps) {
                   name="location"
                   options={locationOptions}
                   onChange={handleLocationChange}
-                  value={undefined}
+                  value={selectedLocation}
                   borderRadius="25px"
                   height="40px"
                   isSelectOpen={false}
@@ -201,7 +212,9 @@ function Layout({ children }: LayoutProps) {
           </Container>
         </DownWrapper>
       </Header>
-      <Main>{children}</Main>
+      <Main>
+        <Outlet /> {/* Render child routes here */}
+      </Main>
 
       <Footer>
         <Container>
@@ -227,6 +240,6 @@ function Layout({ children }: LayoutProps) {
       </Footer>
     </LayoutWrapper>
   );
-}
+};
 
 export default Layout;

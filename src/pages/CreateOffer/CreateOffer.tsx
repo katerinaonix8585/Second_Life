@@ -1,19 +1,17 @@
-import { useState, useEffect } from "react";
 import { useFormik } from "formik";
 import * as Yup from "yup";
+import { useEffect, useState } from "react";
 
 import ImageUpload from "components/ImageUpload/ImageUpload";
 import Input from "components/Input/Input";
 import Select from "components/Select/Select";
 import { SelectDataProps } from "components/Select/types";
 import TextArea from "components/TextArea/TestArea";
-import { LocationData } from "pages/Layout/types";
 import { locationsData } from "pages/Layout/LocationData";
 import Button from "components/Button/Button";
 import { CategoryData } from "components/CategoryCard/types";
 
 import {
-  OfferButtonContainer,
   OfferButtonWrapper,
   OfferButtonsWrapper,
   OfferImageWrapper,
@@ -25,15 +23,14 @@ import {
   OfferUpWrapper,
   OfferWrapper,
 } from "./styles";
-import { OFFER_DATA, OfferFormValues, TypeOffer } from "./types";
+import { OFFER_DATA, OfferFormValues, TypeOfferData } from "./types";
 import { typeOfferData } from "./OffersData";
 
 const BASE_URL = "https://second-life-app-y2el9.ondigitalocean.app/api/v1";
 
 function CreateOffer() {
-  const [selectedType, setSelectedType] = useState<TypeOffer | null>(null);
+  const [selectedType, setSelectedType] = useState<TypeOfferData | null>(null);
   const [categoriesData, setCategoriesData] = useState<CategoryData[]>([]);
-  // const [isSelectOpen, setIsSelectOpen] = useState(false);
 
   useEffect(() => {
     fetchCategories();
@@ -49,15 +46,11 @@ function CreateOffer() {
     }
   };
 
-  const handleSelectBlur = () => {
-    // setIsSelectOpen(false);
-  };
-
   const typeOfferOptions: SelectDataProps<string>[] = typeOfferData.map(
     (offer) => ({
       selectData: {
-        label: offer.name,
-        value: offer.name,
+        index: offer.id as number,
+        value: offer.value,
       },
     }),
   );
@@ -65,7 +58,7 @@ function CreateOffer() {
   const typeCategoryOptions: SelectDataProps<string>[] = categoriesData.map(
     (category) => ({
       selectData: {
-        label: category.name,
+        index: category.id,
         value: category.name,
       },
     }),
@@ -74,69 +67,115 @@ function CreateOffer() {
   const locationOptions: SelectDataProps<string>[] = locationsData.map(
     (location) => ({
       selectData: {
-        index: location.locationData.index,
-        label: location.locationData.label,
-        value: location.locationData.value,
+        index: location.id,
+        value: location.value,
       },
     }),
   );
+
+  const typeSchema = Yup.object().shape({
+    id: Yup.number().required(),
+    value: Yup.string().required(),
+  });
 
   const schema = Yup.object().shape({
     [OFFER_DATA.TITLE]: Yup.string().required("Field title required"),
     [OFFER_DATA.DESCRIPTION]: Yup.string().required(
       "Field description required",
     ),
-    [OFFER_DATA.TYPE]: Yup.object().required("Field type required").shape({
-      id: Yup.number().required(),
-      name: Yup.string().required(),
-    }),
-    [OFFER_DATA.DURATIONAUCTION]: Yup.number().required(
-      "Field duration required",
+    [OFFER_DATA.TYPE]: typeSchema.required("Field type required"),
+    [OFFER_DATA.DURATIONAUCTION]: Yup.number()
+      .required("Field duration required")
+      .integer("Duration auction must be an integer"),
+    [OFFER_DATA.CATEGORY]: Yup.string().required("Field category required"),
+    [OFFER_DATA.LOCATION]: Yup.string().required("Field location required"),
+    [OFFER_DATA.STARTPRICE]: Yup.number().when(
+      OFFER_DATA.TYPE,
+      (type, fieldSchema) =>
+        (type && type[0]?.id === 1) || (type && type[0]?.id === 2)
+          ? fieldSchema.required("Field start price required")
+          : fieldSchema,
     ),
-    [OFFER_DATA.CATEGORY]: Yup.object().required("Field category required"),
-    [OFFER_DATA.STARTPRICE]: Yup.number().required(
-      "Field start price required",
+    [OFFER_DATA.STEP]: Yup.number().when(
+      OFFER_DATA.TYPE,
+      (type, fieldSchema) =>
+        (type && type[0]?.id === 1) || (type && type[0]?.id === 2)
+          ? fieldSchema.required("Field step required")
+          : fieldSchema,
     ),
-    [OFFER_DATA.STEP]: Yup.number().required("Field step required"),
-    [OFFER_DATA.WINBID]: Yup.number(),
+    [OFFER_DATA.WINBID]: Yup.number().when(
+      OFFER_DATA.TYPE,
+      (type, fieldSchema) =>
+        type && type[0]?.id === 2
+          ? fieldSchema.required("Field win bid required")
+          : fieldSchema,
+    ),
   });
 
   const formik = useFormik<OfferFormValues>({
     initialValues: {
       [OFFER_DATA.TITLE]: "",
       [OFFER_DATA.DESCRIPTION]: "",
-      [OFFER_DATA.TYPE]: {} as TypeOffer,
-      [OFFER_DATA.DURATIONAUCTION]: 0,
-      [OFFER_DATA.CATEGORY]: {} as CategoryData,
-      [OFFER_DATA.LOCATION]: {} as LocationData,
-      [OFFER_DATA.STARTPRICE]: 0,
-      [OFFER_DATA.STEP]: 0,
-      [OFFER_DATA.WINBID]: 0,
+      [OFFER_DATA.TYPE]: { id: null, value: "" },
+      [OFFER_DATA.DURATIONAUCTION]: undefined,
+      [OFFER_DATA.CATEGORY]: null,
+      [OFFER_DATA.LOCATION]: null,
+      [OFFER_DATA.STARTPRICE]: undefined,
+      [OFFER_DATA.STEP]: undefined,
+      [OFFER_DATA.WINBID]: undefined,
     },
     validationSchema: schema,
     validateOnMount: false,
-    validateOnChange: false,
-    validateOnBlur: false,
-    onSubmit: (values: OfferFormValues) => {
-      console.log(values);
+    validateOnChange: true,
+    validateOnBlur: true,
+    onSubmit: async (values: OfferFormValues) => {
+      try {
+        const authToken = localStorage.getItem("accessToken");
+
+        const requestBody = {
+          title: values.title,
+          description: values.description,
+          auctionDurationDays: values.durationAuction,
+          startPrice: values.startPrice,
+          step: values.step,
+          winBid: values.winbid,
+          isFree: selectedType?.value === "free offer",
+          categoryId: values.category?.id,
+        };
+
+        console.log("Request body:", requestBody);
+
+        const response = await fetch(`${BASE_URL}/offers`, {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${authToken}`,
+          },
+          body: JSON.stringify(requestBody),
+        });
+
+        const responseData = await response.json();
+
+        if (!response.ok) {
+          let errorMessage = "An error occurred";
+
+          if (response.status === 400) {
+            errorMessage = responseData.message || "Bad request";
+          } else if (response.status === 404) {
+            errorMessage = responseData.message || "Resource not found";
+          } else if (response.status === 500) {
+            errorMessage = responseData.message || "Internal server error";
+          }
+
+          throw new Error(errorMessage);
+        }
+
+        console.log("Offer created successfully:", responseData);
+      } catch (error: unknown) {
+        console.error("Error creating offer:", (error as Error).message);
+      }
     },
   });
-
-  const handleChange =
-    (name: string) => (selectedValue: string | undefined) => {
-      if (selectedValue === undefined) {
-        formik.setFieldValue(name, "");
-      } else {
-        // eslint-disable-next-line @typescript-eslint/no-shadow
-        const selectedType = typeOfferData.find(
-          (offer) => offer.name === selectedValue,
-        );
-        if (selectedType) {
-          setSelectedType(selectedType);
-          formik.setFieldValue(name, selectedType.name);
-        }
-      }
-    };
 
   return (
     <OfferWrapper>
@@ -144,119 +183,154 @@ function CreateOffer() {
         <OfferTextWrapper>
           <OfferText>Create new offer</OfferText>
         </OfferTextWrapper>
-        <OfferInfoWrapper>
-          <Input
-            label="Title"
-            name={OFFER_DATA.TITLE}
-            // placeholder="Title"
-            onInputChange={formik.handleChange}
-            value={formik.values[OFFER_DATA.TITLE] || ""}
-            error={formik.errors[OFFER_DATA.TITLE]}
-            onBlur={formik.handleBlur}
-          />
-        </OfferInfoWrapper>
-        <OfferInfoWrapper>
-          <OfferImageWrapper>
-            <ImageUpload />
-          </OfferImageWrapper>
-          <OfferTextAreaWrapper>
-            <TextArea
-              name={OFFER_DATA.DESCRIPTION}
-              placeholder="Description"
+        <form onSubmit={formik.handleSubmit}>
+          <OfferInfoWrapper>
+            <Input
+              label="Title"
+              name={OFFER_DATA.TITLE}
               onInputChange={formik.handleChange}
-              value={formik.values[OFFER_DATA.DESCRIPTION] || ""}
-              error={formik.errors[OFFER_DATA.DESCRIPTION]}
+              value={formik.values[OFFER_DATA.TITLE] || ""}
+              error={formik.errors[OFFER_DATA.TITLE]}
               onBlur={formik.handleBlur}
             />
-          </OfferTextAreaWrapper>
-        </OfferInfoWrapper>
-        <OfferSelectWrapper>
-          <Select
-            label="Category"
-            name={OFFER_DATA.CATEGORY}
-            options={typeCategoryOptions}
-            value={formik.values[OFFER_DATA.CATEGORY].name || ""}
-            onChange={handleChange(OFFER_DATA.CATEGORY)}
-            onBlur={() => handleSelectBlur()}
-            isSelectOpen={false}
-            // placeholder="Category"
-          />
-        </OfferSelectWrapper>
-        <OfferSelectWrapper>
-          <Select
-            name={OFFER_DATA.LOCATION}
-            label="Location"
-            options={locationOptions}
-            value={formik.values[OFFER_DATA.LOCATION].value || ""}
-            onChange={handleChange(OFFER_DATA.LOCATION)}
-            onBlur={() => handleSelectBlur()}
-            isSelectOpen={false}
-            // placeholder="Location"
-          />
-        </OfferSelectWrapper>
-        <OfferSelectWrapper>
-          <Select
-            name={OFFER_DATA.TYPE}
-            label="Type offer"
-            options={typeOfferOptions}
-            value={formik.values[OFFER_DATA.TYPE].name || ""}
-            onChange={handleChange(OFFER_DATA.TYPE)}
-            onBlur={() => handleSelectBlur()}
-            isSelectOpen={false} // placeholder="Type offer"
-          />
-        </OfferSelectWrapper>
-        {selectedType && selectedType.name !== "free offer" && (
-          <>
-            <OfferSelectWrapper>
-              <Input
-                label="Start price"
-                name={OFFER_DATA.STARTPRICE}
-                // placeholder="Start price"
+          </OfferInfoWrapper>
+          <OfferInfoWrapper>
+            <OfferImageWrapper>
+              <ImageUpload />
+            </OfferImageWrapper>
+            <OfferTextAreaWrapper>
+              <TextArea
+                name={OFFER_DATA.DESCRIPTION}
+                placeholder="Description"
                 onInputChange={formik.handleChange}
-                value={formik.values[OFFER_DATA.STARTPRICE] || ""}
-                error={formik.errors[OFFER_DATA.STARTPRICE]}
+                value={formik.values[OFFER_DATA.DESCRIPTION] || ""}
+                error={formik.errors[OFFER_DATA.DESCRIPTION]}
                 onBlur={formik.handleBlur}
               />
-            </OfferSelectWrapper>
-            <OfferSelectWrapper>
-              <Input
-                label="Step"
-                name={OFFER_DATA.STEP}
-                // placeholder="Step"
-                onInputChange={formik.handleChange}
-                value={formik.values[OFFER_DATA.STEP] || ""}
-                error={formik.errors[OFFER_DATA.STEP]}
-                onBlur={formik.handleBlur}
-              />
-            </OfferSelectWrapper>
-            {selectedType.name === "offer + auction with win bid" && (
+            </OfferTextAreaWrapper>
+          </OfferInfoWrapper>
+          <OfferSelectWrapper>
+            <Select
+              label="Category"
+              name={OFFER_DATA.CATEGORY}
+              options={typeCategoryOptions}
+              value={formik.values[OFFER_DATA.CATEGORY]?.name || ""}
+              onChange={(selectedValue: string | undefined) => {
+                if (selectedValue) {
+                  const selectedCategory = categoriesData.find(
+                    (category) => category.name === selectedValue,
+                  );
+                  formik.setFieldValue(OFFER_DATA.CATEGORY, selectedCategory);
+                } else {
+                  formik.setFieldValue(OFFER_DATA.CATEGORY, null);
+                }
+              }}
+              onBlur={() => formik.handleBlur(OFFER_DATA.CATEGORY)}
+              isSelectOpen={false}
+            />
+          </OfferSelectWrapper>
+          <OfferSelectWrapper>
+            <Select
+              name={OFFER_DATA.LOCATION}
+              label="Location"
+              options={locationOptions}
+              value={formik.values[OFFER_DATA.LOCATION]?.value || ""}
+              onChange={(selectedValue: string | undefined) => {
+                if (selectedValue) {
+                  const selectedLocation = locationsData.find(
+                    (location) => location.value === selectedValue,
+                  );
+                  formik.setFieldValue(OFFER_DATA.LOCATION, selectedLocation);
+                } else {
+                  formik.setFieldValue(OFFER_DATA.LOCATION, null);
+                }
+              }}
+              onBlur={() => formik.handleBlur(OFFER_DATA.LOCATION)}
+              isSelectOpen={false}
+            />
+          </OfferSelectWrapper>
+          <OfferSelectWrapper>
+            <Input
+              label="Duration auction"
+              name={OFFER_DATA.DURATIONAUCTION}
+              onInputChange={formik.handleChange}
+              value={formik.values[OFFER_DATA.DURATIONAUCTION] || ""}
+              error={formik.errors[OFFER_DATA.DURATIONAUCTION]}
+              onBlur={formik.handleBlur}
+            />
+          </OfferSelectWrapper>
+          <OfferSelectWrapper>
+            <Select
+              label="Type offer"
+              name={OFFER_DATA.TYPE}
+              options={typeOfferOptions}
+              value={formik.values[OFFER_DATA.TYPE]?.value || ""}
+              onChange={(selectedValue: string | undefined) => {
+                if (selectedValue) {
+                  const selectedType1 = typeOfferData.find(
+                    (offer) => offer.value === selectedValue,
+                  );
+                  setSelectedType(selectedType1 || null);
+                  formik.setFieldValue(OFFER_DATA.TYPE, selectedType1);
+                } else {
+                  setSelectedType(null);
+                  formik.setFieldValue(OFFER_DATA.TYPE, null);
+                }
+              }}
+              onBlur={() => formik.handleBlur(OFFER_DATA.TYPE)}
+              isSelectOpen={false}
+            />
+          </OfferSelectWrapper>
+          {(selectedType?.value === "auction" ||
+            selectedType?.value === "regular auction") && (
+            <>
               <OfferSelectWrapper>
                 <Input
-                  label="Win bid"
-                  name={OFFER_DATA.WINBID}
-                  // placeholder="Win bid"
+                  label="Start price"
+                  name={OFFER_DATA.STARTPRICE}
                   onInputChange={formik.handleChange}
-                  value={formik.values[OFFER_DATA.WINBID] || ""}
-                  error={formik.errors[OFFER_DATA.WINBID]}
+                  value={formik.values[OFFER_DATA.STARTPRICE] || ""}
+                  error={formik.errors[OFFER_DATA.STARTPRICE]}
                   onBlur={formik.handleBlur}
                 />
               </OfferSelectWrapper>
-            )}
-          </>
-        )}
-        <OfferButtonsWrapper>
-          <OfferButtonContainer>
+              <OfferSelectWrapper>
+                <Input
+                  label="Step"
+                  name={OFFER_DATA.STEP}
+                  onInputChange={formik.handleChange}
+                  value={formik.values[OFFER_DATA.STEP] || ""}
+                  error={formik.errors[OFFER_DATA.STEP]}
+                  onBlur={formik.handleBlur}
+                />
+              </OfferSelectWrapper>
+            </>
+          )}
+          {selectedType?.value === "regular auction" && (
+            <OfferSelectWrapper>
+              <Input
+                label="Win bid"
+                name={OFFER_DATA.WINBID}
+                onInputChange={formik.handleChange}
+                value={formik.values[OFFER_DATA.WINBID] || ""}
+                error={formik.errors[OFFER_DATA.WINBID]}
+                onBlur={formik.handleBlur}
+              />
+            </OfferSelectWrapper>
+          )}
+          <OfferButtonsWrapper>
             <OfferButtonWrapper>
-              <Button type="button" background="#4d418b" name="Save as draft" />
+              <Button type="submit" name="Create offer" />
             </OfferButtonWrapper>
             <OfferButtonWrapper>
-              <Button type="button" background="#4d418b" name="Submit" />
+              <Button
+                type="button"
+                name="Cancel"
+                onButtonClick={() => console.log("Cancelled")}
+              />
             </OfferButtonWrapper>
-            <OfferButtonWrapper>
-              <Button type="button" background="#EE4266" name="Cancel" />
-            </OfferButtonWrapper>
-          </OfferButtonContainer>
-        </OfferButtonsWrapper>
+          </OfferButtonsWrapper>
+        </form>
       </OfferUpWrapper>
     </OfferWrapper>
   );
