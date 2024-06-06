@@ -50,10 +50,10 @@ export const IntroductionSectionWrapper = styled.div`
 
 export const IntroductionText = styled.p`
   font-size: 20px;
-  font-weight: bold;
   padding: 10px;
-  font-family: "ChivoBoldItalic", sans-serif;
+  font-family: "LXGW WenKai TC", cursive;
   color: #4d418b;
+  font-weight: 700;
 `;
 
 export const IntroductionButtonWrapper = styled.div`

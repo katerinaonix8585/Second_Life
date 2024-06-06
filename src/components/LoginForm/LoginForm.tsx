@@ -1,7 +1,7 @@
 import { useFormik } from "formik";
 import * as Yup from "yup";
 import { useState } from "react";
-import { useLocation } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import { MdOutlineEmail } from "react-icons/md";
 
 import Button from "components/Button/Button.tsx";
@@ -23,6 +23,7 @@ function LoginForm() {
   const [showPassword, setShowPassword] = useState(false);
   const [errorMessage, setErrorMessage] = useState("");
   const location = useLocation();
+  const navigate = useNavigate();
 
   const schema = Yup.object().shape({
     [LOGIN_FIELD_NAMES.EMAIL]: Yup.string()
@@ -72,7 +73,12 @@ function LoginForm() {
 
           const event = new CustomEvent("tokenUpdated");
           window.dispatchEvent(event);
-          window.history.back();
+
+          const homePath = location.pathname === "/user/login" ? "/" : "/admin";
+
+          console.log(location);
+          console.log(homePath);
+          navigate(homePath);
         } else {
           const errorData = await response.json();
           if (

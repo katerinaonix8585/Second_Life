@@ -57,33 +57,6 @@ const Layout: React.FC = () => {
   const [locationsData, setLocationsData] = useState<LocationData[]>([]);
 
   useEffect(() => {
-    const handleTokenUpdate = () => {
-      setAccessToken(localStorage.getItem("accessToken"));
-      window.location.reload();
-    };
-
-    window.addEventListener("tokenUpdated", handleTokenUpdate);
-
-    return () => {
-      window.removeEventListener("tokenUpdated", handleTokenUpdate);
-    };
-  }, []);
-
-  useEffect(() => {
-    fetchLocations();
-  }, []);
-
-  const fetchLocations = async () => {
-    try {
-      const response = await fetch(`${BASE_URL}/v1/locations`);
-      const data = await response.json();
-      setLocationsData(data);
-    } catch (error) {
-      console.error("Error fetching locations:", error);
-    }
-  };
-
-  useEffect(() => {
     if (!selectedLocation) {
       setSelectedLocation(locationsData[0].name);
     } else {

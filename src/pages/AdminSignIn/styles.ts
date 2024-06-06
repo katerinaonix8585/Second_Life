@@ -3,7 +3,8 @@ import styled from "@emotion/styled";
 export const LoginPageWrapper = styled.div`
   display: flex;
   width: 100%;
-  height: 100%;
+  height: 86.8vh;
+  background: linear-gradient(to right, #9796f0, #fde8ed);
 `;
 
 export const SignInFormWrapper = styled.div`
@@ -11,7 +12,6 @@ export const SignInFormWrapper = styled.div`
   display: flex;
   align-items: center;
   justify-content: center;
-  background: linear-gradient(to right, #9796f0, #fde8ed);
 `;
 
 export const SignUpFormWrapper = styled.div`

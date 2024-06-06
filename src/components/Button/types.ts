@@ -7,4 +7,5 @@ export interface ButtonProps {
   background?: string;
   onButtonClick?: () => void;
   onSubmit?: () => void;
+  isAdminButton?: boolean;
 }

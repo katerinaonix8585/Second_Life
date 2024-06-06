@@ -15,7 +15,7 @@ export const LoginFormName = styled.p`
   font-size: 30px;
   font-weight: bold;
   color: #56119c;
-  font-family: "LibreFranklin", sans-serif;
+  font-family: "DM Sans", sans-serif;
 `;
 
 export const InputsContainer = styled.div`
