@@ -1,4 +1,6 @@
-import { Link, Outlet } from "react-router-dom";
+import { Link, Outlet, useNavigate } from "react-router-dom";
+
+import Button from "../../components/Button/Button.tsx";
 
 import {
   LayoutWrapper,
@@ -7,28 +9,39 @@ import {
   HeaderTitleContainer,
   Main,
   HeaderTitle,
-  HeaderLogoContainer,
-  HeaderLogo,
   IconsContainer,
   HeaderLoginContainer,
   HeaderLogin,
   UpHeaderWrapper,
+  ButtonContainer,
 } from "./styles";
 
 const AdminLayout: React.FC = () => {
+  const navigate = useNavigate();
+  const goToHomePage = () => {
+    navigate("/");
+  };
+
   return (
     <LayoutWrapper>
       <Header>
         <Container>
           <UpHeaderWrapper>
             <HeaderTitleContainer>
-              <HeaderLogoContainer>
-                <HeaderLogo />
-              </HeaderLogoContainer>
-              <HeaderTitle>SECOND LIFE</HeaderTitle>
+              <HeaderTitle>Admin</HeaderTitle>
             </HeaderTitleContainer>
             <IconsContainer>
-              <Link to="/signin" style={{ textDecoration: "none" }}>
+              <ButtonContainer>
+                <Button
+                  name="Visit website"
+                  onButtonClick={goToHomePage}
+                  isAdminButton={true}
+                />
+              </ButtonContainer>
+              <Link
+                to="/admin/auth/admin/login"
+                style={{ textDecoration: "none" }}
+              >
                 <HeaderLoginContainer>
                   <HeaderLogin />
                 </HeaderLoginContainer>

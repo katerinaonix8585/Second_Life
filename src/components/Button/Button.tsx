@@ -7,6 +7,7 @@ function Button({
   disabled = false,
   background = "#4d418b",
   onButtonClick,
+  isAdminButton = false,
 }: ButtonProps) {
   return (
     <ButtonComponent
@@ -14,6 +15,7 @@ function Button({
       background={background}
       type={type}
       onClick={onButtonClick}
+      isAdminButton={isAdminButton}
     >
       {name}
     </ButtonComponent>

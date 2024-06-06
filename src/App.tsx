@@ -1,4 +1,3 @@
-import React from "react";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
 
 import SignIn from "pages/SignIn/SignIn";
@@ -13,6 +12,7 @@ import AdminLayout from "./pages/AdminLayout/AdminLayout";
 import Home from "./pages/Home/Home";
 import Offers from "./pages/Offers/Offers.tsx";
 import AboutUs from "./pages/About/AboutUs.tsx";
+import AdminHomePage from "./pages/AdminHomePage/AdminHomePage.tsx";
 
 function App() {
   return (
@@ -31,8 +31,9 @@ function App() {
         </Route>
 
         {/* Routes for Admin Layout */}
-        <Route path="auth/admin/login" element={<AdminLayout />}>
-          <Route index element={<AdminSignIn />} />
+        <Route path="admin/" element={<AdminLayout />}>
+          <Route path="auth/admin/login" element={<AdminSignIn />} />
+          <Route index element={<AdminHomePage />} />
         </Route>
 
         {/* Fallback route */}

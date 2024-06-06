@@ -56,19 +56,6 @@ const Layout: React.FC = () => {
   );
 
   useEffect(() => {
-    const handleTokenUpdate = () => {
-      setAccessToken(localStorage.getItem("accessToken"));
-      window.location.reload();
-    };
-
-    window.addEventListener("tokenUpdated", handleTokenUpdate);
-
-    return () => {
-      window.removeEventListener("tokenUpdated", handleTokenUpdate);
-    };
-  }, []);
-
-  useEffect(() => {
     if (!selectedLocation) {
       setSelectedLocation(locationsData[0].value);
     } else {
