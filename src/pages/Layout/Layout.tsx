@@ -112,7 +112,7 @@ const Layout: React.FC = () => {
     }
   };
 
-  const handleLocationChange = (selectedValue: string | number) => {
+  const handleLocationChange = (selectedValue: string | undefined) => {
     setSelectedLocation(selectedValue as string);
     console.log("Selected location:", selectedValue);
   };
@@ -143,6 +143,7 @@ const Layout: React.FC = () => {
                   value={selectedLocation}
                   borderRadius="25px"
                   height="40px"
+                  isSelectOpen={false}
                 />
               </SelectWrapper>
             </SearchSelectContainer>
