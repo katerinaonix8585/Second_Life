@@ -35,8 +35,7 @@ export const DescriptionContainer = styled.div`
   flex-direction: column;
   font-size: 20px;
   color: #56119c;
-  font-weight: bold;
-  font-family: "LibreFranklin", sans-serif;
+  font-family: "DM Sans", sans-serif;
   width: 700px;
 `;
 

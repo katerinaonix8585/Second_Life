@@ -25,7 +25,7 @@ export const SignUpFormName = styled.p`
   font-size: 30px;
   font-weight: bold;
   color: #ee4266;
-  font-family: "LibreFranklin", sans-serif;
+  font-family: "DM Sans", sans-serif;
 `;
 
 export const SignUpTextWrapper = styled.div`
@@ -39,7 +39,7 @@ export const SignUpText = styled.p`
   font-size: 20px;
   font-weight: bold;
   padding: 10px;
-  font-family: "Chivo", sans-serif;
+  font-family: "DM Sans", sans-serif;
   font-style: italic;
   color: #4d418b;
 `;

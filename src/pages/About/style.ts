@@ -38,14 +38,16 @@ export const TextBlock = styled.div`
 export const Tile = styled.div`
   font-size: 30px;
   color: #56119c;
-  font-family: "IndieFlowerRegular", cursive;
+  font-family: "LXGW WenKai TC", cursive;
   font-weight: bold;
 `;
 
 export const Description = styled.p<DescriptionProps>`
-  font-size: 16px;
+  font-size: 17px;
+  line-height: 25px;
   color: #56119c;
-  font-family: "IndieFlowerRegular", cursive;
+  row-gap: 10px;
+  font-family: "DM Sans", sans-serif;
   width: ${({ size }) => (size ? "800px" : "720px")};
 `;
 

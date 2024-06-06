@@ -45,7 +45,7 @@ export const SelectWrapper = styled.div<{
 
 export const SelectLabel = styled.span`
   flex-grow: 1;
-  font-family: "LibreFranklin", sans-serif;
+  font-family: "DM Sans", sans-serif;
 `;
 
 export const IconWrapper = styled.div`
