@@ -7,5 +7,4 @@ export interface LayoutProps {
 export interface LocationData {
   id: number;
   value: string;
-  selectedData?: { id: number; value: string };
 }

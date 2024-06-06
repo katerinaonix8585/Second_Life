@@ -34,7 +34,7 @@ function SignUp() {
               <SignUpText>To keep connected with us please</SignUpText>
               <SignUpText>log in with your personal info</SignUpText>
             </SignUpTextWrapper>
-            <Link to="/signin" style={{ textDecoration: "none" }}>
+            <Link to="/auth/user/signin" style={{ textDecoration: "none" }}>
               <ButtonWrapper>
                 <Button type="button" background="#EE4266" name="Sign in" />
               </ButtonWrapper>

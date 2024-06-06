@@ -1,19 +1,15 @@
-import { CategoryData } from "components/CategoryCard/types";
-import { LocationData } from "pages/Layout/types";
-
 export interface TypeOfferData {
-  id: number | null;
+  id: number;
   value: string;
-  selectedData?: { id: number; name: string };
 }
 
 export interface OfferFormValues {
   title: string;
   description: string;
-  type: TypeOfferData | null;
+  type: string;
   durationAuction?: number;
-  category: CategoryData | null;
-  location: LocationData | null;
+  category: string;
+  location: string;
   startPrice?: number;
   step?: number;
   winbid?: number;

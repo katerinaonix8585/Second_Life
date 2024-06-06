@@ -27,7 +27,7 @@ import {
 
 const BASE_URL = "https://second-life-app-y2el9.ondigitalocean.app/api/v1";
 
-const IMAGE_BASE_URL = "src/shared/assets/images/categories/";
+const IMAGE_BASE_URL = "../../../src/assets/images/";
 
 function Home() {
   const [categoryCards, setCategoryCards] = useState<CategoryCardProps[]>([]);

@@ -45,15 +45,13 @@ const BASE_URL = "https://second-life-app-y2el9.ondigitalocean.app/api/v1/user";
 
 const Layout: React.FC = () => {
   const navigate = useNavigate();
-  const [accessToken, setAccessToken] = useState(
+  const [accessToken, setAccessToken] = useState<string | null>(
     localStorage.getItem("accessToken"),
   );
-  const [selectedLocation, setSelectedLocation] = useState<string | undefined>(
-    () => {
-      const savedLocation = localStorage.getItem("selectedLocation");
-      return savedLocation || locationsData[0].value;
-    },
-  );
+  const [selectedLocation, setSelectedLocation] = useState<string>(() => {
+    const savedLocation = localStorage.getItem("selectedLocation");
+    return savedLocation || locationsData[0].value;
+  });
 
   useEffect(() => {
     const handleTokenUpdate = () => {
@@ -114,8 +112,8 @@ const Layout: React.FC = () => {
     }
   };
 
-  const handleLocationChange = (selectedValue: string | undefined) => {
-    setSelectedLocation(selectedValue);
+  const handleLocationChange = (selectedValue: string | number) => {
+    setSelectedLocation(selectedValue as string);
     console.log("Selected location:", selectedValue);
   };
 
@@ -145,7 +143,6 @@ const Layout: React.FC = () => {
                   value={selectedLocation}
                   borderRadius="25px"
                   height="40px"
-                  isSelectOpen={false}
                 />
               </SelectWrapper>
             </SearchSelectContainer>

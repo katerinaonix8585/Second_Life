@@ -14,7 +14,7 @@ import {
 } from "./styles";
 
 const BASE_URL = "https://second-life-app-y2el9.ondigitalocean.app/api/v1";
-const IMAGE_BASE_URL = "./src/shared/assets/images/categories/";
+const IMAGE_BASE_URL = "../../../src/assets/images/";
 
 function CategoryPage() {
   const [categoryCards, setCategoryCards] = useState<CategoryData[]>([]);

@@ -1,7 +1,7 @@
 import styled from "@emotion/styled";
 import { NavLink, Link } from "react-router-dom";
 
-import { Login, Logo, User } from "../../shared/assets/images";
+import { Login, Logo, User } from "../../../src/assets/images";
 
 // Стиль для всего слоя
 export const LayoutWrapper = styled.div`

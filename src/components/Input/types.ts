@@ -11,7 +11,7 @@ export interface InputProps {
   placeholder?: string;
   label?: string;
   onInputChange: (event: ChangeEvent<HTMLInputElement>) => void;
-  value: string | number;
+  value: string | number | undefined | null;
   error?: string | undefined;
   onBlur?: (event: FocusEvent<HTMLInputElement>) => void;
   icon?: ReactNode;
