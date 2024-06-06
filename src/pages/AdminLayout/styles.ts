@@ -48,7 +48,7 @@ export const HeaderTitleContainer = styled.div`
 export const HeaderTitle = styled.h2`
   font-size: 36px;
   color: #56119c;
-  font-family: "IndieFlowerRegular", sans-serif;
+  font-family: "DM Sans", sans-serif;
   font-style: italic;
 `;
 

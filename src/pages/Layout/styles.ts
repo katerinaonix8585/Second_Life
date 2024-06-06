@@ -1,5 +1,5 @@
 import styled from "@emotion/styled";
-import { NavLink, Link } from "react-router-dom";
+import { NavLink } from "react-router-dom";
 
 import { Login, Logo, User } from "../../../src/assets/images";
 
@@ -53,9 +53,9 @@ export const HeaderTitleContainer = styled.div`
 `;
 
 export const HeaderTitle = styled.h2`
-  font-size: 33px;
+  font-size: 30px;
   color: #56119c;
-  font-family: "IndieFlowerRegular", cursive;
+  font-family: "LXGW WenKai TC", cursive;
 `;
 
 export const SearchSelectContainer = styled.div`
@@ -181,14 +181,7 @@ export const StyledNavLink = styled(NavLink)`
   font-size: 18px;
   color: black;
   font-weight: bold;
-  font-family: "LibreFranklinBold", sans-serif;
-`;
-
-export const StyledLink = styled(Link)`
-  text-decoration: none;
-  font-size: 16px;
-  color: black;
-  font-family: "LibreFranklin", sans-serif;
+  font-family: "DM Sans", sans-serif;
 `;
 
 // Footer
@@ -217,7 +210,8 @@ export const InfoContainer = styled.div`
 export const InfoContainerText = styled.p`
   font-size: 18px;
   color: #56119c;
-  font-family: "IndieFlowerRegular", cursive;
+  font-weight: bold;
+  font-family: "LXGW WenKai TC", cursive;
 `;
 
 export const MailContainer = styled.div`
@@ -228,8 +222,8 @@ export const MailContainer = styled.div`
 
 export const MailContainerText = styled.p`
   font-size: 16px;
-  font-weight: 700;
-  font-family: "LibreFranklinBold", sans-serif;
+  font-weight: bold;
+  font-family: "DM Sans", sans-serif;
   color: black;
 `;
 

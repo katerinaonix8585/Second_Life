@@ -20,7 +20,7 @@ export const ButtonComponent = styled.button<ButtonComponentProps>`
   font-size: 16px;
   cursor: pointer;
   font-weight: bold;
-  font-family: "LibreFranklin", sans-serif;
+  font-family: "DM Sans", sans-serif;
   align-items: center;
   display: flex;
   justify-content: center;

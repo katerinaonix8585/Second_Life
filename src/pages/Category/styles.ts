@@ -22,9 +22,8 @@ export const CategoryTextWrapper = styled.div`
 
 export const CategoryText = styled.p`
   font-size: 30px;
-  font-weight: bold;
   color: #56119c;
-  font-family: "LibreFranklin", sans-serif;
+  font-family: "DM Sans", sans-serif;
 `;
 
 export const GridContainer = styled.div`

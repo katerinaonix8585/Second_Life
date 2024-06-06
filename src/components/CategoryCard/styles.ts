@@ -13,10 +13,10 @@ export const CardWrapper = styled.div`
 `;
 
 export const CardTextContainer = styled.p`
-  font-size: 15px;
-  color: #56119c;
+  font-size: 13px;
   font-weight: bold;
-  font-family: "LibreFranklin", sans-serif;
+  color: #56119c;
+  font-family: "DM Sans", sans-serif;
 `;
 
 export const CardImageContainer = styled.div``;
