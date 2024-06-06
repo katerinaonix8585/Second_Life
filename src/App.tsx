@@ -13,6 +13,7 @@ import Home from "./pages/Home/Home";
 import Offers from "./pages/Offers/Offers.tsx";
 import AboutUs from "./pages/About/AboutUs.tsx";
 import AdminHomePage from "./pages/AdminHomePage/AdminHomePage.tsx";
+import ListCategories from "./pages/ListCategories/ListCategories.tsx";
 
 function App() {
   return (
@@ -33,6 +34,7 @@ function App() {
         {/* Routes for Admin Layout */}
         <Route path="admin/" element={<AdminLayout />}>
           <Route path="auth/admin/login" element={<AdminSignIn />} />
+          <Route path="admin/categories/all" element={<ListCategories />} />
           <Route index element={<AdminHomePage />} />
         </Route>
 
