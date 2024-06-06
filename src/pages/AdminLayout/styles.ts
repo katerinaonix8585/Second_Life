@@ -95,4 +95,8 @@ export const HeaderUser = styled.img`
   height: 100%;
 `;
 
+export const MainContainer = styled.div`
+  display: flex;
+`;
+
 HeaderUser.defaultProps = { src: User };

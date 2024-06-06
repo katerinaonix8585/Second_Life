@@ -1,6 +1,8 @@
-import { Link, Outlet, useNavigate } from "react-router-dom";
+import { Link, Outlet, useLocation, useNavigate } from "react-router-dom";
 
 import Button from "../../components/Button/Button.tsx";
+import { SideBarContainer } from "../AdminHomePage/style.ts";
+import Sidebar from "../../components/Sidebar/Sidebar.tsx";
 
 import {
   LayoutWrapper,
@@ -14,6 +16,7 @@ import {
   HeaderLogin,
   UpHeaderWrapper,
   ButtonContainer,
+  MainContainer,
 } from "./styles";
 
 const AdminLayout: React.FC = () => {
@@ -21,6 +24,9 @@ const AdminLayout: React.FC = () => {
   const goToHomePage = () => {
     navigate("/");
   };
+  const { pathname } = useLocation();
+
+  const isVisible = pathname !== "/admin/auth/admin/login";
 
   return (
     <LayoutWrapper>
@@ -50,9 +56,16 @@ const AdminLayout: React.FC = () => {
           </UpHeaderWrapper>
         </Container>
       </Header>
-      <Main>
-        <Outlet />
-      </Main>
+      <MainContainer>
+        {isVisible && (
+          <SideBarContainer>
+            <Sidebar />
+          </SideBarContainer>
+        )}
+        <Main>
+          <Outlet />
+        </Main>
+      </MainContainer>
     </LayoutWrapper>
   );
 };

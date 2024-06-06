@@ -1,13 +1,15 @@
+import Table from "components/Table/Table.tsx";
+
 import { HomeContainer, HomeWrapper } from "./style.ts";
 
-function AdminHomePage() {
+function ListCategories() {
   return (
     <HomeWrapper>
       <HomeContainer>
-        <>Title</>
+        <Table />
       </HomeContainer>
     </HomeWrapper>
   );
 }
 
-export default AdminHomePage;
+export default ListCategories;
