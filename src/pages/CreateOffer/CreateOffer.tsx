@@ -1,14 +1,15 @@
 import { useFormik } from "formik";
 import { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
 
 import ImageUpload from "components/ImageUpload/ImageUpload";
 import Input from "components/Input/Input";
 import Select from "components/Select/Select";
 import { SelectDataProps } from "components/Select/types";
 import TextArea from "components/TextArea/TestArea";
-import { locationsData } from "pages/Layout/LocationData";
 import Button from "components/Button/Button";
 import { CategoryData } from "components/CategoryCard/types";
+import { LocationData } from "pages/Layout/types";
 
 import {
   OfferButtonContainer,
@@ -26,27 +27,40 @@ import {
 import { OFFER_DATA, OfferFormValues, TypeOfferData } from "./types";
 import { typeOfferData } from "./OffersData";
 
-const BASE_URL = "https://second-life-app-y2el9.ondigitalocean.app/api/v1";
+const BASE_URL = "https://second-life-app-y2el9.ondigitalocean.app/api";
 
 function CreateOffer() {
+  const navigate = useNavigate();
   const [selectedType, setSelectedType] = useState<TypeOfferData | null>(null);
   const [categoriesData, setCategoriesData] = useState<CategoryData[]>([]);
+  const [locationsData, setLocationsData] = useState<LocationData[]>([]);
+  const [isSelectOpen, setSelectOpenState] = useState(false);
 
   useEffect(() => {
     fetchCategories();
   }, []);
 
+  useEffect(() => {
+    fetchLocations();
+  }, []);
+
   const fetchCategories = async () => {
     try {
-      const response = await fetch(`${BASE_URL}/categories`);
+      const response = await fetch(`${BASE_URL}/v1/categories`);
       const data = await response.json();
       setCategoriesData(data);
-      formik.setValues({
-        ...formik.values,
-        [OFFER_DATA.CATEGORY]: data[3]?.name,
-      });
     } catch (error) {
       console.error("Error fetching categories:", error);
+    }
+  };
+
+  const fetchLocations = async () => {
+    try {
+      const response = await fetch(`${BASE_URL}/v1/locations`);
+      const data = await response.json();
+      setLocationsData(data);
+    } catch (error) {
+      console.error("Error fetching locations:", error);
     }
   };
 
@@ -68,36 +82,35 @@ function CreateOffer() {
     }),
   );
 
-  console.log(categoriesData);
-
-  const locationOptions: SelectDataProps<string>[] = locationsData.map(
-    (location) => ({
+  const locationOptions: SelectDataProps<string>[] = locationsData
+    .map((location) => ({
       selectData: {
         index: location.id,
-        value: location.value,
+        value: location.name,
       },
-    }),
-  );
-
-  // const schema = Yup.object().shape({
-  //   [OFFER_DATA.DURATIONAUCTION]: Yup.number()
-  //     .required("Field duration required")
-  //     .integer("Duration auction must be an integer"),
-  // });
+    }))
+    .sort((a, b) => {
+      if (a.selectData.index < b.selectData.index) {
+        return -1;
+      }
+      if (a.selectData.index > b.selectData.index) {
+        return 1;
+      }
+      return 0;
+    });
 
   const formik = useFormik<OfferFormValues>({
     initialValues: {
       [OFFER_DATA.TITLE]: "",
       [OFFER_DATA.DESCRIPTION]: "",
-      [OFFER_DATA.TYPE]: typeOfferData[0]?.value,
-      [OFFER_DATA.DURATIONAUCTION]: undefined,
-      [OFFER_DATA.CATEGORY]: categoriesData[4]?.name,
-      [OFFER_DATA.LOCATION]: locationsData[0]?.value,
-      [OFFER_DATA.STARTPRICE]: undefined,
-      [OFFER_DATA.STEP]: undefined,
-      [OFFER_DATA.WINBID]: undefined,
+      [OFFER_DATA.TYPE]: {} as TypeOfferData,
+      [OFFER_DATA.DURATIONAUCTION]: null,
+      [OFFER_DATA.CATEGORY]: {} as CategoryData,
+      [OFFER_DATA.LOCATION]: {} as LocationData,
+      [OFFER_DATA.STARTPRICE]: null,
+      [OFFER_DATA.STEP]: null,
+      [OFFER_DATA.WINBID]: null,
     },
-    // validationSchema: schema,
     validateOnMount: false,
     validateOnChange: false,
     validateOnBlur: false,
@@ -107,62 +120,76 @@ function CreateOffer() {
 
         const errors: { field: string; message: string }[] = [];
 
-        const requestBody = {
-          title: values.title,
-          description: values.description,
-          auctionDurationDays: values.durationAuction,
-          startPrice: values.startPrice,
-          step: values.step,
-          winbid: values.winbid,
-          isFree: selectedType?.value === "free offer",
-        };
-
-        if (values.title === undefined || values.title === "") {
+        if (!values.title) {
           errors.push({
             field: OFFER_DATA.TITLE,
             message: "Field Title is required",
           });
+        } else if (values.title.length <= 5) {
+          errors.push({
+            field: OFFER_DATA.TITLE,
+            message: "Title must be longer than 5 characters",
+          });
         }
 
-        if (values.description === undefined || values.description === "") {
+        if (!values.description) {
           errors.push({
             field: OFFER_DATA.DESCRIPTION,
             message: "Field Description is required",
           });
-        }
-
-        if (
-          values.durationAuction === undefined ||
-          values.durationAuction <= 0
-        ) {
+        } else if (values.description.length <= 5) {
           errors.push({
-            field: OFFER_DATA.DURATIONAUCTION,
-            message: "Field Duration auction is required",
+            field: OFFER_DATA.DESCRIPTION,
+            message: "Description must be longer than 5 characters",
           });
         }
 
-        if (values.startPrice === undefined || values.startPrice <= 0) {
+        if (values.type?.value && values.type.value !== "free offer") {
+          if (!values.startPrice || values.startPrice <= 0) {
+            errors.push({
+              field: OFFER_DATA.STARTPRICE,
+              message:
+                "Field Start price is required and must be greater than zero",
+            });
+          }
+
+          if (!values.step || values.step <= 0) {
+            errors.push({
+              field: OFFER_DATA.STEP,
+              message: "Field Step is required and must be greater than zero",
+            });
+          }
+
+          if (
+            values.type.value === "offer + auction with win bid" &&
+            (!values.winbid || values.winbid <= 0)
+          ) {
+            errors.push({
+              field: OFFER_DATA.WINBID,
+              message:
+                "Field Win bid is required and must be greater than zero",
+            });
+          }
+        }
+
+        if (!values.category || !values.category.name) {
           errors.push({
-            field: OFFER_DATA.STARTPRICE,
-            message:
-              "Field Start price is required and must be greater than zero",
+            field: OFFER_DATA.CATEGORY,
+            message: "Field Category is required",
           });
         }
 
-        if (values.step === undefined || values.step <= 0) {
+        if (!values.location || !values.location.name) {
           errors.push({
-            field: OFFER_DATA.STEP,
-            message: "Field Step is required and must be greater than zero",
+            field: OFFER_DATA.LOCATION,
+            message: "Field Location is required",
           });
         }
 
-        if (
-          selectedType?.value === "offer + auction with win bid" &&
-          (values.winbid === undefined || values.winbid <= 0)
-        ) {
+        if (!values.type || !values.type.value) {
           errors.push({
-            field: OFFER_DATA.WINBID,
-            message: "Field Win bid is required and must be greater than zero",
+            field: OFFER_DATA.TYPE,
+            message: "Field Type offer is required",
           });
         }
 
@@ -170,21 +197,30 @@ function CreateOffer() {
           throw errors;
         }
 
-        if (
-          selectedType?.value === "offer + auction" ||
-          selectedType?.value === "offer + auction with win bid"
-        ) {
-          requestBody.startPrice = values.startPrice;
-          requestBody.step = values.step;
-        }
-
-        if (selectedType?.value === "offer + auction with win bid") {
-          requestBody.winbid = values.winbid;
-        }
+        const requestBody = {
+          title: values.title,
+          description: values.description,
+          auctionDurationDays: Number(values.durationAuction),
+          startPrice:
+            values.startPrice === 0 || values.startPrice === null
+              ? null
+              : Number(values.startPrice),
+          step:
+            values.step === 0 || values.step === null
+              ? null
+              : Number(values.step),
+          winBid:
+            values.winbid === 0 || values.winbid === null
+              ? null
+              : Number(values.winbid),
+          isFree: values.type?.value === "free offer",
+          categoryId: values.category.id,
+          locationId: values.location.id === 0 ? "" : values.location.id,
+        };
 
         console.log("Request body:", requestBody);
 
-        const response = await fetch(`${BASE_URL}/offers`, {
+        const response = await fetch(`${BASE_URL}/v1/offers`, {
           method: "POST",
           headers: {
             "Content-Type": "application/json",
@@ -239,26 +275,45 @@ function CreateOffer() {
               (offer) => offer.value === selectedValue,
             );
             setSelectedType(selectedOption || null);
+            formik.setFieldValue(name, selectedOption || "");
+
+            if (selectedValue === "free offer") {
+              formik.setFieldValue(OFFER_DATA.STARTPRICE, null);
+              formik.setFieldValue(OFFER_DATA.STEP, null);
+              formik.setFieldValue(OFFER_DATA.WINBID, null);
+            }
+            if (selectedValue === "offer + auction") {
+              formik.setFieldValue(OFFER_DATA.WINBID, null);
+            }
             break;
           case OFFER_DATA.CATEGORY:
             selectedOption = categoriesData.find(
               (category) => category.name === selectedValue,
             );
+            formik.setFieldValue(name, selectedOption || "");
             break;
           case OFFER_DATA.LOCATION:
             selectedOption = locationsData.find(
-              (location) => location.value === selectedValue,
+              (location) => location.name === selectedValue,
             );
+            formik.setFieldValue(name, selectedOption || "");
             break;
-
           default:
+            formik.setFieldValue(name, selectedValue || "");
             break;
-        }
-        if (selectedOption) {
-          formik.setFieldValue(name, selectedValue || "");
         }
       }
     };
+
+  const handleFocus = (name: string) => {
+    console.log(`Focused on field ${name}`);
+    setSelectOpenState(false);
+  };
+
+  const handleBlur = (name: string) => {
+    console.log(`Blurred on field ${name}`);
+    setSelectOpenState(false);
+  };
 
   return (
     <OfferWrapper onSubmit={formik.handleSubmit}>
@@ -274,6 +329,7 @@ function CreateOffer() {
             value={formik.values[OFFER_DATA.TITLE] || ""}
             error={formik.errors[OFFER_DATA.TITLE]}
             onBlur={formik.handleBlur}
+            onFocus={() => handleFocus(OFFER_DATA.TITLE)}
           />
         </OfferInfoWrapper>
         <OfferInfoWrapper>
@@ -288,6 +344,7 @@ function CreateOffer() {
               value={formik.values[OFFER_DATA.DESCRIPTION] || ""}
               error={formik.errors[OFFER_DATA.DESCRIPTION]}
               onBlur={formik.handleBlur}
+              onFocus={() => handleFocus(OFFER_DATA.DESCRIPTION)}
             />
           </OfferTextAreaWrapper>
         </OfferInfoWrapper>
@@ -296,19 +353,31 @@ function CreateOffer() {
             label="Category"
             name={OFFER_DATA.CATEGORY}
             options={typeCategoryOptions}
-            value={formik.values[OFFER_DATA.CATEGORY] || ""}
+            value={formik.values[OFFER_DATA.CATEGORY]?.name || ""}
             onChange={handleChange(OFFER_DATA.CATEGORY)}
-            isSelectOpen={false}
+            error={
+              formik.errors[OFFER_DATA.CATEGORY]?.name ||
+              (formik.errors[OFFER_DATA.CATEGORY] as string)
+            }
+            isSelectOpen={isSelectOpen}
+            onFocus={() => handleFocus(OFFER_DATA.CATEGORY)}
+            onBlur={() => handleBlur(OFFER_DATA.CATEGORY)}
           />
         </OfferSelectWrapper>
         <OfferSelectWrapper>
           <Select
-            name={OFFER_DATA.LOCATION}
             label="Location"
+            name={OFFER_DATA.LOCATION}
             options={locationOptions}
-            value={formik.values[OFFER_DATA.LOCATION] || ""}
+            value={formik.values[OFFER_DATA.LOCATION]?.name || ""}
             onChange={handleChange(OFFER_DATA.LOCATION)}
-            isSelectOpen={false}
+            error={
+              formik.errors[OFFER_DATA.LOCATION]?.name ||
+              (formik.errors[OFFER_DATA.LOCATION] as string)
+            }
+            isSelectOpen={isSelectOpen}
+            onFocus={() => handleFocus(OFFER_DATA.LOCATION)}
+            onBlur={() => handleBlur(OFFER_DATA.LOCATION)}
           />
         </OfferSelectWrapper>
         <OfferSelectWrapper>
@@ -319,16 +388,23 @@ function CreateOffer() {
             value={formik.values[OFFER_DATA.DURATIONAUCTION] || ""}
             error={formik.errors[OFFER_DATA.DURATIONAUCTION]}
             onBlur={formik.handleBlur}
+            onFocus={() => handleFocus(OFFER_DATA.DURATIONAUCTION)}
           />
         </OfferSelectWrapper>
         <OfferSelectWrapper>
           <Select
-            name={OFFER_DATA.TYPE}
             label="Type offer"
+            name={OFFER_DATA.TYPE}
             options={typeOfferOptions}
-            value={formik.values[OFFER_DATA.TYPE] || ""}
+            value={formik.values[OFFER_DATA.TYPE]?.value || ""}
             onChange={handleChange(OFFER_DATA.TYPE)}
-            isSelectOpen={false}
+            error={
+              formik.errors[OFFER_DATA.TYPE]?.value ||
+              (formik.errors[OFFER_DATA.TYPE] as string)
+            }
+            isSelectOpen={isSelectOpen}
+            onFocus={() => handleFocus(OFFER_DATA.TYPE)}
+            onBlur={() => handleBlur(OFFER_DATA.TYPE)}
           />
         </OfferSelectWrapper>
         {selectedType && selectedType.value !== "free offer" && (
@@ -341,6 +417,7 @@ function CreateOffer() {
                 value={formik.values[OFFER_DATA.STARTPRICE] || ""}
                 error={formik.errors[OFFER_DATA.STARTPRICE]}
                 onBlur={formik.handleBlur}
+                onFocus={() => handleFocus(OFFER_DATA.STARTPRICE)}
               />
             </OfferSelectWrapper>
             <OfferSelectWrapper>
@@ -351,6 +428,7 @@ function CreateOffer() {
                 value={formik.values[OFFER_DATA.STEP] || ""}
                 error={formik.errors[OFFER_DATA.STEP]}
                 onBlur={formik.handleBlur}
+                onFocus={() => handleFocus(OFFER_DATA.STEP)}
               />
             </OfferSelectWrapper>
             {selectedType.value === "offer + auction with win bid" && (
@@ -362,6 +440,7 @@ function CreateOffer() {
                   value={formik.values[OFFER_DATA.WINBID] || ""}
                   error={formik.errors[OFFER_DATA.WINBID]}
                   onBlur={formik.handleBlur}
+                  onFocus={() => handleFocus(OFFER_DATA.WINBID)}
                 />
               </OfferSelectWrapper>
             )}
@@ -376,7 +455,12 @@ function CreateOffer() {
               <Button type="submit" background="#4d418b" name="Submit" />
             </OfferButtonWrapper>
             <OfferButtonWrapper>
-              <Button type="button" background="#EE4266" name="Cancel" />
+              <Button
+                type="button"
+                background="#EE4266"
+                name="Cancel"
+                onButtonClick={() => navigate(-1)}
+              />
             </OfferButtonWrapper>
           </OfferButtonContainer>
         </OfferButtonsWrapper>

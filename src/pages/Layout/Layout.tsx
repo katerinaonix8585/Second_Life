@@ -7,7 +7,6 @@ import { useState, useEffect } from "react";
 import Select from "components/Select/Select";
 import { SelectDataProps } from "components/Select/types";
 
-import { locationsData } from "./LocationData";
 import {
   LayoutWrapper,
   Container,
@@ -40,34 +39,53 @@ import {
   SearchSelectContainer,
   SelectWrapper,
 } from "./styles";
+import { LocationData } from "./types";
 
-const BASE_URL = "https://second-life-app-y2el9.ondigitalocean.app/api/v1/user";
+const BASE_URL = "https://second-life-app-y2el9.ondigitalocean.app/api";
 
 const Layout: React.FC = () => {
   const navigate = useNavigate();
+
   const [accessToken, setAccessToken] = useState<string | null>(
     localStorage.getItem("accessToken"),
   );
   const [selectedLocation, setSelectedLocation] = useState<string>(() => {
     const savedLocation = localStorage.getItem("selectedLocation");
-    return savedLocation || locationsData[0].value;
+    return savedLocation || locationsData[1].name;
   });
+
+  const [locationsData, setLocationsData] = useState<LocationData[]>([]);
 
   useEffect(() => {
     if (!selectedLocation) {
-      setSelectedLocation(locationsData[0].value);
+      setSelectedLocation(locationsData[0].name);
     } else {
       localStorage.setItem("selectedLocation", selectedLocation);
     }
   }, [selectedLocation]);
 
-  const locationOptions: SelectDataProps<string>[] = locationsData.map(
-    (location) => ({
+  const locationOptions: SelectDataProps<string>[] = locationsData
+    .map((location) => ({
       selectData: {
-        value: location.value,
+        index: location.id,
+        value: location.name,
       },
-    }),
-  );
+    }))
+    .concat({
+      selectData: {
+        index: 0,
+        value: "All Germany",
+      },
+    })
+    .sort((a, b) => {
+      if (a.selectData.index < b.selectData.index) {
+        return -1;
+      }
+      if (a.selectData.index > b.selectData.index) {
+        return 1;
+      }
+      return 0;
+    });
 
   const goToHomePage = () => navigate("/");
 
@@ -85,7 +103,7 @@ const Layout: React.FC = () => {
 
   const sendLogoutRequest = async () => {
     try {
-      const response = await fetch(`${BASE_URL}/logout`, {
+      const response = await fetch(`${BASE_URL}/v1/user/logout`, {
         method: "GET",
         headers: {
           Authorization: `Bearer ${accessToken}`,

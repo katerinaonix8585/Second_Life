@@ -6,5 +6,5 @@ export interface LayoutProps {
 
 export interface LocationData {
   id: number;
-  value: string;
+  name: string;
 }

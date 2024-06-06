@@ -2,6 +2,7 @@ import { Key, useState } from "react";
 import { IoMdArrowDropdown, IoMdArrowDropup } from "react-icons/io";
 
 import {
+  ErrorMessage,
   IconWrapper,
   InputLabel,
   LabelContainer,
@@ -19,6 +20,7 @@ function Select<T extends Key>({
   value,
   onChange,
   placeholder,
+  error,
   borderRadius = "20px",
   height = "50px",
   isSelectOpen,
@@ -47,7 +49,7 @@ function Select<T extends Key>({
       </LabelContainer>
       <SelectWrapper
         onClick={() => setIsOpen(!isOpen)}
-        hasError={""}
+        hasError={!!error}
         borderRadius={borderRadius}
         height={height}
       >
@@ -68,12 +70,14 @@ function Select<T extends Key>({
             <OptionItem
               key={String(index)}
               onClick={() => handleSelect(option)}
+              hasError={!!error}
             >
               {String(option.selectData.value)}
             </OptionItem>
           ))}
         </OptionsList>
       )}
+      {error && <ErrorMessage>{error}</ErrorMessage>}
     </SelectContainer>
   );
 }

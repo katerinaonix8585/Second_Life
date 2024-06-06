@@ -18,9 +18,11 @@ export interface SelectProps<T extends React.Key> {
   onChange: (value: T | undefined) => void;
   placeholder?: string;
   icon?: ReactNode;
+  error?: string | undefined;
   iconDisable?: boolean;
   defaultIndex?: number;
   borderRadius?: string;
+  onFocus?: () => void;
   onBlur?: () => void;
   height?: string;
 }

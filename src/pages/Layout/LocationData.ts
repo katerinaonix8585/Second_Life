@@ -2,71 +2,71 @@ import { LocationData } from "./types";
 
 export const locationsData: LocationData[] = [
   {
-    value: "All Germany",
+    name: "All Germany",
     id: 0,
   },
   {
-    value: "Baden-Württemberg",
+    name: "Baden-Württemberg",
     id: 1,
   },
   {
-    value: "Bavaria",
+    name: "Bavaria",
     id: 2,
   },
   {
-    value: "Berlin",
+    name: "Berlin",
     id: 3,
   },
   {
-    value: "Brandenburg",
+    name: "Brandenburg",
     id: 4,
   },
   {
-    value: "Bremen",
+    name: "Bremen",
     id: 5,
   },
   {
-    value: "Hamburg",
+    name: "Hamburg",
     id: 6,
   },
   {
-    value: "Hesse",
+    name: "Hesse",
     id: 7,
   },
   {
-    value: "Mecklenburg-Vorpommern",
+    name: "Mecklenburg-Vorpommern",
     id: 8,
   },
   {
-    value: "Lower Saxony",
+    name: "Lower Saxony",
     id: 9,
   },
   {
-    value: "North Rhine-Westphalia",
+    name: "North Rhine-Westphalia",
     id: 10,
   },
   {
-    value: "Rhineland-Palatinate",
+    name: "Rhineland-Palatinate",
     id: 11,
   },
   {
-    value: "Saarland",
+    name: "Saarland",
     id: 12,
   },
   {
-    value: "Saxony",
+    name: "Saxony",
     id: 13,
   },
   {
-    value: "Saxony-Anhalt",
+    name: "Saxony-Anhalt",
     id: 14,
   },
   {
-    value: "Schleswig-Holstein",
+    name: "Schleswig-Holstein",
     id: 15,
   },
   {
-    value: "Thuringia",
+    name: "Thuringia",
     id: 16,
   },
 ];

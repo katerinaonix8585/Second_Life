@@ -1,3 +1,6 @@
+import { CategoryData } from "components/CategoryCard/types";
+import { LocationData } from "pages/Layout/types";
+
 export interface TypeOfferData {
   id: number;
   value: string;
@@ -6,13 +9,13 @@ export interface TypeOfferData {
 export interface OfferFormValues {
   title: string;
   description: string;
-  type: string;
-  durationAuction?: number;
-  category: string;
-  location: string;
-  startPrice?: number;
-  step?: number;
-  winbid?: number;
+  type: TypeOfferData;
+  durationAuction?: number | null;
+  category: CategoryData;
+  location: LocationData;
+  startPrice?: number | null;
+  step?: number | null;
+  winbid?: number | null;
 }
 
 export enum OFFER_DATA {

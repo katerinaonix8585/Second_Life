@@ -27,7 +27,7 @@ export const LabelContainer = styled.div`
 `;
 
 export const SelectWrapper = styled.div<{
-  hasError: string;
+  hasError: boolean;
   borderRadius: string;
   height: string;
 }>`
@@ -71,7 +71,7 @@ export const OptionsList = styled.ul<{ borderRadius: string }>`
   z-index: 10;
 `;
 
-export const OptionItem = styled.li`
+export const OptionItem = styled.li<{ hasError: boolean }>`
   padding: 10px 20px;
   font-family: "LibreFranklin", sans-serif;
   cursor: pointer;
@@ -79,4 +79,17 @@ export const OptionItem = styled.li`
   &:hover {
     background-color: #f0f0f0;
   }
+
+  ${({ hasError }) =>
+    hasError &&
+    `
+    color: black;
+    font-weight: bold;
+  `}
+`;
+
+export const ErrorMessage = styled.p`
+  color: red;
+  font-size: 16px;
+  height: 18px;
 `;

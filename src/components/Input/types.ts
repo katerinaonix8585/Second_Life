@@ -14,6 +14,7 @@ export interface InputProps {
   value: string | number | undefined | null;
   error?: string | undefined;
   onBlur?: (event: FocusEvent<HTMLInputElement>) => void;
+  onFocus?: () => void;
   icon?: ReactNode;
   onClick?: () => void;
 }
