@@ -1,5 +1,4 @@
 import { useEffect, useState } from "react";
-import { v4 as uuid } from "uuid";
 
 import { CategoryData } from "components/CategoryCard/types";
 import CategoryCard from "components/CategoryCard/CategoryCard";
@@ -47,7 +46,7 @@ function CategoryPage() {
         <GridContainer>
           {categoryCards.map((categoryData) => (
             <CategoryCard
-              key={uuid()}
+              key={categoryData.id}
               categoryCardData={{
                 ...categoryData,
                 image: getImageUrl(categoryData.name),

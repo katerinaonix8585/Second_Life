@@ -15,4 +15,5 @@ export interface InputProps {
   onBlur?: (event: FocusEvent<HTMLTextAreaElement>) => void;
   icon?: ReactNode;
   onClick?: () => void;
+  onFocus?: () => void;
 }
