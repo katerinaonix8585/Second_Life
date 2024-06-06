@@ -1,6 +1,6 @@
 import styled from "@emotion/styled";
 
-export const OfferWrapper = styled.div`
+export const OfferWrapper = styled.form`
   width: 100%;
   height: auto;
   display: flex;
