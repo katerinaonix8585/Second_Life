@@ -91,5 +91,7 @@ export const OptionItem = styled.li<{ hasError: boolean }>`
 export const ErrorMessage = styled.p`
   color: red;
   font-size: 16px;
+  font-weight: bold;
   height: 18px;
+  padding: 5px 15px;
 `;

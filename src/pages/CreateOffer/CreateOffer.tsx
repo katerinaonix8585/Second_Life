@@ -1,5 +1,6 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 import { useFormik } from "formik";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 
 import ImageUpload from "components/ImageUpload/ImageUpload";
@@ -10,6 +11,9 @@ import TextArea from "components/TextArea/TestArea";
 import Button from "components/Button/Button";
 import { CategoryData } from "components/CategoryCard/types";
 import { LocationData } from "pages/Layout/types";
+import { useAppSelector } from "store/hooks";
+import { locationsDataSliceSelectors } from "store/redux/location/locationSlice";
+import { categorysDataSliceSelectors } from "store/redux/category/categorySlice";
 
 import {
   OfferButtonContainer,
@@ -18,11 +22,11 @@ import {
   OfferImageWrapper,
   OfferInfoWrapper,
   OfferSelectWrapper,
-  OfferText,
   OfferTextAreaWrapper,
   OfferTextWrapper,
   OfferUpWrapper,
   OfferWrapper,
+  Tile,
 } from "./styles";
 import { OFFER_DATA, OfferFormValues, TypeOfferData } from "./types";
 import { typeOfferData } from "./OffersData";
@@ -32,37 +36,7 @@ const BASE_URL = "https://second-life-app-y2el9.ondigitalocean.app/api";
 function CreateOffer() {
   const navigate = useNavigate();
   const [selectedType, setSelectedType] = useState<TypeOfferData | null>(null);
-  const [categoriesData, setCategoriesData] = useState<CategoryData[]>([]);
-  const [locationsData, setLocationsData] = useState<LocationData[]>([]);
   const [isSelectOpen, setSelectOpenState] = useState(false);
-
-  useEffect(() => {
-    fetchCategories();
-  }, []);
-
-  useEffect(() => {
-    fetchLocations();
-  }, []);
-
-  const fetchCategories = async () => {
-    try {
-      const response = await fetch(`${BASE_URL}/v1/categories`);
-      const data = await response.json();
-      setCategoriesData(data);
-    } catch (error) {
-      console.error("Error fetching categories:", error);
-    }
-  };
-
-  const fetchLocations = async () => {
-    try {
-      const response = await fetch(`${BASE_URL}/v1/locations`);
-      const data = await response.json();
-      setLocationsData(data);
-    } catch (error) {
-      console.error("Error fetching locations:", error);
-    }
-  };
 
   const typeOfferOptions: SelectDataProps<string>[] = typeOfferData.map(
     (offer) => ({
@@ -72,6 +46,16 @@ function CreateOffer() {
       },
     }),
   );
+
+  const locationsDataSlice = useAppSelector(
+    locationsDataSliceSelectors.location,
+  );
+  const locationsData = locationsDataSlice.data;
+
+  const categoryDataSlice = useAppSelector(
+    categorysDataSliceSelectors.category,
+  );
+  const categoriesData = categoryDataSlice.data;
 
   const typeCategoryOptions: SelectDataProps<string>[] = categoriesData.map(
     (category) => ({
@@ -83,7 +67,7 @@ function CreateOffer() {
   );
 
   const locationOptions: SelectDataProps<string>[] = locationsData
-    .map((location) => ({
+    .map((location: LocationData) => ({
       selectData: {
         index: location.id,
         value: location.name,
@@ -144,7 +128,14 @@ function CreateOffer() {
           });
         }
 
-        if (values.type?.value && values.type.value !== "free offer") {
+        if (!values.durationAuction) {
+          errors.push({
+            field: OFFER_DATA.DURATIONAUCTION,
+            message: "Field Duration auction is required",
+          });
+        }
+
+        if (values.type?.id && values.type.id !== 0) {
           if (!values.startPrice || values.startPrice <= 0) {
             errors.push({
               field: OFFER_DATA.STARTPRICE,
@@ -160,10 +151,7 @@ function CreateOffer() {
             });
           }
 
-          if (
-            values.type.value === "offer + auction with win bid" &&
-            (!values.winbid || values.winbid <= 0)
-          ) {
+          if (values.type.id === 2 && (!values.winbid || values.winbid <= 0)) {
             errors.push({
               field: OFFER_DATA.WINBID,
               message:
@@ -213,7 +201,7 @@ function CreateOffer() {
             values.winbid === 0 || values.winbid === null
               ? null
               : Number(values.winbid),
-          isFree: values.type?.value === "free offer",
+          isFree: values.type?.id === 0,
           categoryId: values.category.id,
           locationId: values.location.id === 0 ? "" : values.location.id,
         };
@@ -249,6 +237,7 @@ function CreateOffer() {
       } catch (errors: unknown) {
         console.error("Errors creating offer:", errors);
         if (Array.isArray(errors)) {
+          // eslint-disable-next-line @typescript-eslint/no-shadow
           errors.forEach((error) => {
             if (error.field && error.message) {
               formik.setFieldError(error.field, error.message);
@@ -277,12 +266,12 @@ function CreateOffer() {
             setSelectedType(selectedOption || null);
             formik.setFieldValue(name, selectedOption || "");
 
-            if (selectedValue === "free offer") {
+            if (selectedOption?.id === 0) {
               formik.setFieldValue(OFFER_DATA.STARTPRICE, null);
               formik.setFieldValue(OFFER_DATA.STEP, null);
               formik.setFieldValue(OFFER_DATA.WINBID, null);
             }
-            if (selectedValue === "offer + auction") {
+            if (selectedOption?.id === 1) {
               formik.setFieldValue(OFFER_DATA.WINBID, null);
             }
             break;
@@ -319,10 +308,11 @@ function CreateOffer() {
     <OfferWrapper onSubmit={formik.handleSubmit}>
       <OfferUpWrapper>
         <OfferTextWrapper>
-          <OfferText>Create new offer</OfferText>
+          <Tile>Create new offer</Tile>
         </OfferTextWrapper>
         <OfferInfoWrapper>
           <Input
+            required={true}
             label="Title"
             name={OFFER_DATA.TITLE}
             onInputChange={formik.handleChange}
@@ -338,7 +328,9 @@ function CreateOffer() {
           </OfferImageWrapper>
           <OfferTextAreaWrapper>
             <TextArea
+              required={true}
               name={OFFER_DATA.DESCRIPTION}
+              label="Description"
               placeholder="Description"
               onInputChange={formik.handleChange}
               value={formik.values[OFFER_DATA.DESCRIPTION] || ""}
@@ -350,6 +342,7 @@ function CreateOffer() {
         </OfferInfoWrapper>
         <OfferSelectWrapper>
           <Select
+            required={true}
             label="Category"
             name={OFFER_DATA.CATEGORY}
             options={typeCategoryOptions}
@@ -366,6 +359,7 @@ function CreateOffer() {
         </OfferSelectWrapper>
         <OfferSelectWrapper>
           <Select
+            required={true}
             label="Location"
             name={OFFER_DATA.LOCATION}
             options={locationOptions}
@@ -382,6 +376,7 @@ function CreateOffer() {
         </OfferSelectWrapper>
         <OfferSelectWrapper>
           <Input
+            required={true}
             label="Duration auction"
             name={OFFER_DATA.DURATIONAUCTION}
             onInputChange={formik.handleChange}
@@ -393,6 +388,7 @@ function CreateOffer() {
         </OfferSelectWrapper>
         <OfferSelectWrapper>
           <Select
+            required={true}
             label="Type offer"
             name={OFFER_DATA.TYPE}
             options={typeOfferOptions}
@@ -407,10 +403,11 @@ function CreateOffer() {
             onBlur={() => handleBlur(OFFER_DATA.TYPE)}
           />
         </OfferSelectWrapper>
-        {selectedType && selectedType.value !== "free offer" && (
+        {selectedType && selectedType.id !== 0 && (
           <>
             <OfferSelectWrapper>
               <Input
+                required={true}
                 label="Start price"
                 name={OFFER_DATA.STARTPRICE}
                 onInputChange={formik.handleChange}
@@ -422,6 +419,7 @@ function CreateOffer() {
             </OfferSelectWrapper>
             <OfferSelectWrapper>
               <Input
+                required={true}
                 label="Step"
                 name={OFFER_DATA.STEP}
                 onInputChange={formik.handleChange}
@@ -431,9 +429,10 @@ function CreateOffer() {
                 onFocus={() => handleFocus(OFFER_DATA.STEP)}
               />
             </OfferSelectWrapper>
-            {selectedType.value === "offer + auction with win bid" && (
+            {selectedType.id === 2 && (
               <OfferSelectWrapper>
                 <Input
+                  required={true}
                   label="Win bid"
                   name={OFFER_DATA.WINBID}
                   onInputChange={formik.handleChange}

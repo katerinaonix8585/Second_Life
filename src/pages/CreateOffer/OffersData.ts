@@ -3,14 +3,14 @@ import { TypeOfferData } from "./types";
 export const typeOfferData: TypeOfferData[] = [
   {
     id: 0,
-    value: "free offer",
+    value: "Free offer",
   },
   {
     id: 1,
-    value: "offer + auction",
+    value: "Offer + auction",
   },
   {
     id: 2,
-    value: "offer + auction with win bid",
+    value: "Offer + auction with win bid",
   },
 ];

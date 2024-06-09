@@ -5,6 +5,7 @@ import {
   ErrorMessage,
   InputLabel,
   TextAreaContent,
+  LabelContainer,
 } from "./styles";
 
 function TextArea({
@@ -15,11 +16,17 @@ function TextArea({
   value,
   error,
   onBlur,
+  required = false,
 }: InputProps) {
   return (
     <InputComponentContainer>
       <InputWrapper>
-        <InputLabel>{label}</InputLabel>
+        <LabelContainer>
+          <InputLabel>
+            {label}
+            {required && <span style={{ color: "red" }}> *</span>}
+          </InputLabel>
+        </LabelContainer>
         <TextAreaContent
           name={name}
           placeholder={placeholder}

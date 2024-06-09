@@ -86,3 +86,10 @@ export const OfferButtonContainer = styled.div`
 export const OfferButtonWrapper = styled.div`
   width: 200px;
 `;
+
+export const Tile = styled.div`
+  font-size: 30px;
+  color: #56119c;
+  font-family: "LXGW WenKai TC", cursive;
+  font-weight: bold;
+`;

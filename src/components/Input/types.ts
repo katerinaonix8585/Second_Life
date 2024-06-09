@@ -17,4 +17,5 @@ export interface InputProps {
   onFocus?: () => void;
   icon?: ReactNode;
   onClick?: () => void;
+  required?: boolean;
 }

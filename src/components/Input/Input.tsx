@@ -15,11 +15,15 @@ function Input({
   value,
   error,
   onBlur,
+  required = false,
 }: InputProps) {
   return (
     <InputComponentContainer>
       <InputWrapper>
-        <InputLabel htmlFor={name}>{label}</InputLabel>
+        <InputLabel htmlFor={name}>
+          {label}
+          {required && <span style={{ color: "red" }}> *</span>}
+        </InputLabel>
         <PasswordInput
           id={name}
           name={name}

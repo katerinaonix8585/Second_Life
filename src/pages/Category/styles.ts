@@ -34,3 +34,10 @@ export const GridContainer = styled.div`
   width: auto;
   box-sizing: border-box;
 `;
+
+export const Tile = styled.div`
+  font-size: 30px;
+  color: #56119c;
+  font-family: "LXGW WenKai TC", cursive;
+  font-weight: bold;
+`;

@@ -24,6 +24,7 @@ function Select<T extends Key>({
   borderRadius = "20px",
   height = "50px",
   isSelectOpen,
+  required = false,
 }: SelectProps<T> & { borderRadius?: string; isSelectOpen: boolean }) {
   const [isOpen, setIsOpen] = useState(isSelectOpen);
 
@@ -45,7 +46,12 @@ function Select<T extends Key>({
   return (
     <SelectContainer>
       <LabelContainer>
-        {label && <InputLabel htmlFor={label}>{label}</InputLabel>}
+        {label && (
+          <InputLabel htmlFor={label}>
+            {label}
+            {required && <span style={{ color: "red" }}> *</span>}
+          </InputLabel>
+        )}
       </LabelContainer>
       <SelectWrapper
         onClick={() => setIsOpen(!isOpen)}

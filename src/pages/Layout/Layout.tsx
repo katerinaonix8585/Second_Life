@@ -1,3 +1,5 @@
+/* eslint-disable @typescript-eslint/no-shadow */
+/* eslint-disable @typescript-eslint/no-unused-vars */
 import React from "react";
 import { Outlet } from "react-router-dom";
 import { FaSearch } from "react-icons/fa";
@@ -6,6 +8,15 @@ import { useState, useEffect } from "react";
 
 import Select from "components/Select/Select";
 import { SelectDataProps } from "components/Select/types";
+import { useAppDispatch, useAppSelector } from "store/hooks";
+import {
+  locationsDataSliceActions,
+  locationsDataSliceSelectors,
+} from "store/redux/location/locationSlice";
+import {
+  categorysDataSliceActions,
+  categorysDataSliceSelectors,
+} from "store/redux/category/categorySlice";
 
 import {
   LayoutWrapper,
@@ -49,23 +60,50 @@ const Layout: React.FC = () => {
   const [accessToken, setAccessToken] = useState<string | null>(
     localStorage.getItem("accessToken"),
   );
+
   const [selectedLocation, setSelectedLocation] = useState<string>(() => {
     const savedLocation = localStorage.getItem("selectedLocation");
-    return savedLocation || locationsData[1].name;
+    return savedLocation || "";
   });
 
-  const [locationsData, setLocationsData] = useState<LocationData[]>([]);
+  const dispatch = useAppDispatch();
+  const {
+    data: locationsData,
+    statusLocation,
+    errorLocation,
+  } = useAppSelector(locationsDataSliceSelectors.location);
+
+  const {
+    data: catigoriesData,
+    status,
+    error,
+  } = useAppSelector(categorysDataSliceSelectors.category);
 
   useEffect(() => {
-    if (!selectedLocation) {
+    dispatch(locationsDataSliceActions.getLocation());
+  }, [dispatch]);
+
+  useEffect(() => {
+    dispatch(categorysDataSliceActions.getCategory());
+  }, [dispatch]);
+
+  useEffect(() => {
+    if (selectedLocation === "" && locationsData.length > 0) {
       setSelectedLocation(locationsData[0].name);
-    } else {
-      localStorage.setItem("selectedLocation", selectedLocation);
     }
-  }, [selectedLocation]);
+  }, [selectedLocation, locationsData]);
+
+  const categoryOptions: SelectDataProps<string>[] = catigoriesData.map(
+    (category: LocationData) => ({
+      selectData: {
+        index: category.id,
+        value: category.name,
+      },
+    }),
+  );
 
   const locationOptions: SelectDataProps<string>[] = locationsData
-    .map((location) => ({
+    .map((location: LocationData) => ({
       selectData: {
         index: location.id,
         value: location.name,
@@ -77,15 +115,20 @@ const Layout: React.FC = () => {
         value: "All Germany",
       },
     })
-    .sort((a, b) => {
-      if (a.selectData.index < b.selectData.index) {
-        return -1;
-      }
-      if (a.selectData.index > b.selectData.index) {
-        return 1;
-      }
-      return 0;
-    });
+    .sort(
+      (
+        a: { selectData: { index: number } },
+        b: { selectData: { index: number } },
+      ) => {
+        if (a.selectData.index < b.selectData.index) {
+          return -1;
+        }
+        if (a.selectData.index > b.selectData.index) {
+          return 1;
+        }
+        return 0;
+      },
+    );
 
   const goToHomePage = () => navigate("/");
 

@@ -58,5 +58,7 @@ export const InputWrapper = styled.div`
 export const ErrorMessage = styled.p`
   color: red;
   font-size: 16px;
+  font-weight: bold;
   height: 18px;
+  padding: 5px 15px;
 `;
