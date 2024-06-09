@@ -74,7 +74,8 @@ function LoginForm() {
           const event = new CustomEvent("tokenUpdated");
           window.dispatchEvent(event);
 
-          const homePath = location.pathname === "/user/login" ? "/" : "/admin";
+          const homePath =
+            location.pathname === "/auth/user/login" ? "/" : "/admin";
 
           console.log(location);
           console.log(homePath);

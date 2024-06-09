@@ -3,7 +3,6 @@ import { NavLink } from "react-router-dom";
 
 import { Login, Logo, User } from "../../../src/assets/images";
 
-// Стиль для всего слоя
 export const LayoutWrapper = styled.div`
   display: flex;
   flex-direction: column;

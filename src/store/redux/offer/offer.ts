@@ -3,6 +3,12 @@ import { createAppSlice } from "store/createAppSlice";
 import { OfferDataSliceState } from "./types";
 
 const offerInitialState: OfferDataSliceState = {
+  isFirstPage: false,
+  isLastPage: false,
+  pageNumber: null,
+  pageSize: null,
+  totalElements: null,
+  totalPages: null,
   data: [],
   statusOffer: "default",
   errorOffer: undefined,
@@ -42,10 +48,24 @@ export const offerSlice = createAppSlice({
           console.log("fulfilled");
           console.log(action);
 
-          const { offers } = action.payload;
+          const {
+            offers,
+            isFirstPage,
+            isLastPage,
+            pageNumber,
+            pageSize,
+            totalElements,
+            totalPages,
+          } = action.payload;
 
           state.statusOffer = "success";
           state.data = offers;
+          state.isFirstPage = isFirstPage;
+          state.isLastPage = isLastPage;
+          state.pageNumber = pageNumber;
+          state.pageSize = pageSize;
+          state.totalElements = totalElements;
+          state.totalPages = totalPages;
         },
         // eslint-disable-next-line @typescript-eslint/no-explicit-any
         rejected: (state: OfferDataSliceState, action: any) => {

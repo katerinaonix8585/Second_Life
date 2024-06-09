@@ -1,10 +1,7 @@
-/* eslint-disable @typescript-eslint/no-shadow */
-/* eslint-disable @typescript-eslint/no-unused-vars */
-import React from "react";
+import React, { useState, useEffect } from "react";
 import { Outlet } from "react-router-dom";
 import { FaSearch } from "react-icons/fa";
 import { Link, useNavigate } from "react-router-dom";
-import { useState, useEffect } from "react";
 
 import Select from "components/Select/Select";
 import { SelectDataProps } from "components/Select/types";
@@ -56,31 +53,24 @@ const BASE_URL = "https://second-life-app-y2el9.ondigitalocean.app/api";
 
 const Layout: React.FC = () => {
   const navigate = useNavigate();
+  const dispatch = useAppDispatch();
 
   const [accessToken, setAccessToken] = useState<string | null>(
     localStorage.getItem("accessToken"),
   );
-
+  const [loading, setLoading] = useState(true);
   const [selectedLocation, setSelectedLocation] = useState<string>(() => {
     const savedLocation = localStorage.getItem("selectedLocation");
     return savedLocation || "";
   });
 
-  const dispatch = useAppDispatch();
-  const {
-    data: locationsData,
-    // statusLocation,
-    // errorLocation,
-  } = useAppSelector(locationsDataSliceSelectors.location);
-
-  const {
-    data: catigoriesData,
-    // status,
-    // error,
-  } = useAppSelector(categorysDataSliceSelectors.category);
-
-  const categoriesDatanull = catigoriesData;
-  console.log(categoriesDatanull);
+  const { data: locationsData } = useAppSelector(
+    locationsDataSliceSelectors.location,
+  );
+  const { data: catigoriesData } = useAppSelector(
+    categorysDataSliceSelectors.category,
+  );
+  console.log(catigoriesData);
 
   useEffect(() => {
     dispatch(locationsDataSliceActions.getLocation());
@@ -96,14 +86,19 @@ const Layout: React.FC = () => {
     }
   }, [selectedLocation, locationsData]);
 
-  // const categoryOptions: SelectDataProps<string>[] = catigoriesData.map(
-  //   (category: LocationData) => ({
-  //     selectData: {
-  //       index: category.id,
-  //       value: category.name,
-  //     },
-  //   }),
-  // );
+  useEffect(() => {
+    const handleTokenUpdate = () => {
+      setAccessToken(localStorage.getItem("accessToken"));
+      setLoading(false);
+    };
+
+    window.addEventListener("tokenUpdated", handleTokenUpdate);
+    handleTokenUpdate();
+
+    return () => {
+      window.removeEventListener("tokenUpdated", handleTokenUpdate);
+    };
+  }, []);
 
   const locationOptions: SelectDataProps<string>[] = locationsData
     .map((location: LocationData) => ({
@@ -118,20 +113,7 @@ const Layout: React.FC = () => {
         value: "All Germany",
       },
     })
-    .sort(
-      (
-        a: { selectData: { index: number } },
-        b: { selectData: { index: number } },
-      ) => {
-        if (a.selectData.index < b.selectData.index) {
-          return -1;
-        }
-        if (a.selectData.index > b.selectData.index) {
-          return 1;
-        }
-        return 0;
-      },
-    );
+    .sort((a, b) => (a.selectData.index < b.selectData.index ? -1 : 1));
 
   const goToHomePage = () => navigate("/");
 
@@ -167,6 +149,10 @@ const Layout: React.FC = () => {
     setSelectedLocation(selectedValue as string);
     console.log("Selected location:", selectedValue);
   };
+
+  if (loading) {
+    return <div>Loading...</div>;
+  }
 
   return (
     <LayoutWrapper>

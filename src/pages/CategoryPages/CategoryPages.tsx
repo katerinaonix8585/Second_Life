@@ -14,6 +14,8 @@ import {
   CategoryTextWrapper,
   OffersWrapper,
   PaginationButton,
+  PaginationCurrentButton,
+  PaginationEllipsis,
   PaginationWrapper,
   Tile,
 } from "./styles";
@@ -26,16 +28,20 @@ function CategoryPage() {
   }
 
   const categoryId = id.replace("id=", "");
-
   const categoryIdNumber = parseInt(categoryId, 10);
+
   const dispatch = useAppDispatch();
-  const { data: offers, statusOffer } = useAppSelector(
-    offersDataSliceSelectors.offer,
-  );
+  const {
+    data: offers,
+    statusOffer,
+    isFirstPage,
+    isLastPage,
+    pageNumber,
+    totalPages,
+  } = useAppSelector(offersDataSliceSelectors.offer);
   const [page, setPage] = useState(0);
   const size = 10;
   const sortBy = "createdAt";
-  console.log(id);
 
   const categoryDataSlice = useAppSelector(
     categorysDataSliceSelectors.category,
@@ -46,18 +52,22 @@ function CategoryPage() {
     dispatch(offersDataSliceActions.getAllOffer({ page, size, sortBy }));
   }, [dispatch, page, size, sortBy]);
 
-  const loadMore = () => {
-    setPage((prevPage) => prevPage + 1);
-  };
-
   const filteredOffers = offers.filter(
-    (offer) => offer.categoryId === Number(categoryIdNumber),
+    (offer) => offer.categoryId === categoryIdNumber,
   );
+
+  const category = categoriesData.find((cat) => cat.id === categoryIdNumber);
+  const name = category ? category.name : "Категория не найдена";
+
+  const handlePageChange = (newPage: number) => {
+    setPage(newPage);
+    window.scrollTo({ top: 0, behavior: "smooth" });
+  };
 
   return (
     <CategoryPageWrapper>
       <CategoryTextWrapper>
-        <Tile>{categoriesData[categoryIdNumber]?.name.toUpperCase()}</Tile>
+        <Tile>{name}</Tile>
       </CategoryTextWrapper>
       <OffersWrapper>
         <OfferCardCopy offers={filteredOffers} />
@@ -65,7 +75,44 @@ function CategoryPage() {
       {statusOffer === "loading" && <div>Loading...</div>}
       {statusOffer === "success" && (
         <PaginationWrapper>
-          <PaginationButton onClick={loadMore}>Load More</PaginationButton>
+          {!isFirstPage && pageNumber !== null && (
+            <PaginationButton onClick={() => handlePageChange(pageNumber - 1)}>
+              {pageNumber}
+            </PaginationButton>
+          )}
+
+          {pageNumber !== null && (
+            <PaginationCurrentButton
+              onClick={() => handlePageChange(pageNumber)}
+            >
+              {pageNumber + 1}
+            </PaginationCurrentButton>
+          )}
+
+          {!isLastPage && pageNumber !== null && totalPages !== null && (
+            <>
+              {pageNumber < totalPages - 2 && (
+                <PaginationButton
+                  onClick={() => handlePageChange(pageNumber + 1)}
+                >
+                  {pageNumber + 2}
+                </PaginationButton>
+              )}
+            </>
+          )}
+
+          {!isLastPage && totalPages !== null && totalPages > 1 && (
+            <>
+              {pageNumber !== null && pageNumber < totalPages - 2 && (
+                <PaginationEllipsis>...</PaginationEllipsis>
+              )}
+              <PaginationButton
+                onClick={() => handlePageChange(totalPages - 1)}
+              >
+                {totalPages}
+              </PaginationButton>
+            </>
+          )}
         </PaginationWrapper>
       )}
     </CategoryPageWrapper>

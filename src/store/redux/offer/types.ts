@@ -17,6 +17,12 @@ export interface OfferData {
 }
 
 export interface OfferDataSliceState {
+  isFirstPage: boolean;
+  isLastPage: boolean;
+  pageNumber: number | null;
+  pageSize: number | null;
+  totalElements: number | null;
+  totalPages: number | null;
   data: OfferData[];
   statusOffer: "default" | "loading" | "success" | "error";
   errorOffer: any;
