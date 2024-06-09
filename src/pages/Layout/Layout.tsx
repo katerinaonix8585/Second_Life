@@ -69,15 +69,18 @@ const Layout: React.FC = () => {
   const dispatch = useAppDispatch();
   const {
     data: locationsData,
-    statusLocation,
-    errorLocation,
+    // statusLocation,
+    // errorLocation,
   } = useAppSelector(locationsDataSliceSelectors.location);
 
   const {
     data: catigoriesData,
-    status,
-    error,
+    // status,
+    // error,
   } = useAppSelector(categorysDataSliceSelectors.category);
+
+  const categoriesDatanull = catigoriesData;
+  console.log(categoriesDatanull);
 
   useEffect(() => {
     dispatch(locationsDataSliceActions.getLocation());
@@ -93,14 +96,14 @@ const Layout: React.FC = () => {
     }
   }, [selectedLocation, locationsData]);
 
-  const categoryOptions: SelectDataProps<string>[] = catigoriesData.map(
-    (category: LocationData) => ({
-      selectData: {
-        index: category.id,
-        value: category.name,
-      },
-    }),
-  );
+  // const categoryOptions: SelectDataProps<string>[] = catigoriesData.map(
+  //   (category: LocationData) => ({
+  //     selectData: {
+  //       index: category.id,
+  //       value: category.name,
+  //     },
+  //   }),
+  // );
 
   const locationOptions: SelectDataProps<string>[] = locationsData
     .map((location: LocationData) => ({
