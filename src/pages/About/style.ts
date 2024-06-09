@@ -1,6 +1,6 @@
 import styled from "@emotion/styled";
 
-import { Tree, Question } from "../../shared/assets/images";
+import { Tree, Question } from "../../../src/assets/images";
 
 interface DescriptionProps {
   size: boolean;

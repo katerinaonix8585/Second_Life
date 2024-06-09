@@ -27,7 +27,7 @@ import {
 
 const BASE_URL = "https://second-life-app-y2el9.ondigitalocean.app/api/v1";
 
-const IMAGE_BASE_URL = "../../../src/assets/images/";
+// const IMAGE_BASE_URL = "../../../src/assets/images/";
 
 function Home() {
   const [categoryCards, setCategoryCards] = useState<CategoryCardProps[]>([]);
@@ -48,7 +48,7 @@ function Home() {
           name: category.name,
           description: category.description,
           active: category.active,
-          image: getImageUrl(category.name),
+          image: category.id,
         },
       }));
       setCategoryCards(categoryCardsData);
@@ -57,9 +57,9 @@ function Home() {
     }
   };
 
-  const getImageUrl = (categoryName: string) => {
-    return `${IMAGE_BASE_URL}${categoryName.toLowerCase().replace(/ /g, "_")}.png`;
-  };
+  // const getImageUrl = (categoryName: string) => {
+  //   return `${IMAGE_BASE_URL}${categoryName.toLowerCase().replace(/ /g, "_")}.png`;
+  // };
 
   const handleCreateOfferClick = () => {
     const accessToken = localStorage.getItem("accessToken");

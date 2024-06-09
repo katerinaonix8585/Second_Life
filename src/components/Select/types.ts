@@ -25,4 +25,5 @@ export interface SelectProps<T extends React.Key> {
   onFocus?: () => void;
   onBlur?: () => void;
   height?: string;
+  required?: boolean;
 }

@@ -25,8 +25,10 @@ function App() {
           <Route path="auth/user/login" element={<SignIn />} />
           <Route path="offers" element={<CreateOffer />} />
           <Route path="signup" element={<SignUp />} />
-          <Route path="category" element={<Category />} />
-          <Route path="category/:name" element={<CategoryPage />} />
+          <Route path="/category">
+            <Route index element={<Category />} />
+            <Route path=":id" element={<CategoryPage />} />
+          </Route>
           <Route path="offers/all" element={<Offers />} />
           <Route path="aboutUs" element={<AboutUs />} />
         </Route>

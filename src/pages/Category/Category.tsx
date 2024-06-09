@@ -7,13 +7,13 @@ import { Container } from "../Layout/styles";
 
 import {
   CategoryPageWrapper,
-  CategoryText,
   CategoryTextWrapper,
   GridContainer,
+  Tile,
 } from "./styles";
 
 const BASE_URL = "https://second-life-app-y2el9.ondigitalocean.app/api/v1";
-const IMAGE_BASE_URL = "../../../src/assets/images/";
+// const IMAGE_BASE_URL = "../../../src/assets/images/";
 
 function CategoryPage() {
   const [categoryCards, setCategoryCards] = useState<CategoryData[]>([]);
@@ -33,15 +33,15 @@ function CategoryPage() {
     }
   };
 
-  const getImageUrl = (categoryName: string) => {
-    return `${IMAGE_BASE_URL}${categoryName.toLowerCase().replace(/ /g, "_")}.png`;
-  };
+  // const getImageUrl = (categoryName: string) => {
+  //   return `${IMAGE_BASE_URL}${categoryName.toLowerCase().replace(/ /g, "_")}.png`;
+  // };
 
   return (
     <Container>
       <CategoryPageWrapper>
         <CategoryTextWrapper>
-          <CategoryText>Category</CategoryText>
+          <Tile>Category</Tile>
         </CategoryTextWrapper>
         <GridContainer>
           {categoryCards.map((categoryData) => (
@@ -49,7 +49,7 @@ function CategoryPage() {
               key={categoryData.id}
               categoryCardData={{
                 ...categoryData,
-                image: getImageUrl(categoryData.name),
+                image: categoryData.id,
               }}
             />
           ))}

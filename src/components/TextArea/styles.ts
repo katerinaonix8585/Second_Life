@@ -33,7 +33,15 @@ export const InputComponentContainer = styled.div`
 
 export const InputLabel = styled.label`
   font-size: 16px;
-  color: #6f6f6f;
+  padding: 20px;
+  color: #56119c;
+  font-weight: bold;
+  font-family: "LibreFranklin", sans-serif;
+`;
+
+export const LabelContainer = styled.div`
+  width: 100%;
+  padding-bottom: 10px;
 `;
 
 export const InputWrapper = styled.div`
@@ -41,6 +49,7 @@ export const InputWrapper = styled.div`
   width: 100%;
   height: 100%;
   display: flex;
+  flex-direction: column;
   justify-content: space-between;
   align-items: center;
 `;
@@ -48,5 +57,7 @@ export const InputWrapper = styled.div`
 export const ErrorMessage = styled.p`
   color: red;
   font-size: 16px;
+  font-weight: bold;
   height: 18px;
+  padding: 5px 15px;
 `;
