@@ -29,28 +29,48 @@ export const OffersWrapper = styled.div`
   flex-wrap: wrap;
 `;
 
+export const Tile = styled.div`
+  font-size: 30px;
+  color: #56119c;
+  font-family: "LXGW WenKai TC", cursive;
+  font-weight: bold;
+`;
+
 export const PaginationWrapper = styled.div`
   display: flex;
   justify-content: center;
   margin: 20px 0;
+  align-items: center;
 `;
 
 export const PaginationButton = styled.button`
   padding: 10px 20px;
-  font-size: 16px;
+  font-size: 20px;
   cursor: pointer;
-  border: 1px solid #56119c;
   background-color: #fff;
   color: #56119c;
+  border: none;
   &:hover {
     background-color: #56119c;
     color: #fff;
   }
 `;
 
-export const Tile = styled.div`
-  font-size: 30px;
-  color: #56119c;
-  font-family: "LXGW WenKai TC", cursive;
+export const PaginationCurrentButton = styled.button`
+  padding: 10px 20px;
+  font-size: 20px;
   font-weight: bold;
+  cursor: pointer;
+  background-color: #fff;
+  color: #56119c;
+  border: none;
+  &:hover {
+    background-color: #56119c;
+    color: #fff;
+  }
+`;
+
+export const PaginationEllipsis = styled.span`
+  margin: 0 5px;
+  font-size: 16px;
 `;

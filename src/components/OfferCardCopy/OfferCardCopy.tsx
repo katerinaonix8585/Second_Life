@@ -1,9 +1,12 @@
 import { useState } from "react";
 import { MdOutlineCalendarMonth, MdOutlineLocationCity } from "react-icons/md";
+import { BiCategory } from "react-icons/bi";
+import { FiType } from "react-icons/fi";
 
 import { OfferData } from "store/redux/offer/types";
 import { useAppSelector } from "store/hooks.ts";
 import { locationsDataSliceSelectors } from "store/redux/location/locationSlice.ts";
+import { categorysDataSliceSelectors } from "store/redux/category/categorySlice.ts";
 
 import { Container } from "../../pages/Layout/styles.ts";
 import Button from "../Button/Button";
@@ -18,7 +21,6 @@ import {
   Location,
   StyledDate,
   DescriptionContainer,
-  Type,
   Image,
 } from "./style";
 
@@ -44,6 +46,16 @@ function OfferCardCopy({ offers }: { offers: OfferData[] }) {
     return location ? location.name : "Unknown Location";
   };
 
+  const categorysDataSlice = useAppSelector(
+    categorysDataSliceSelectors.category,
+  );
+  const categoriesData = categorysDataSlice.data;
+
+  const getCategoryNameById = (id: number) => {
+    const category = categoriesData.find((cat) => cat.id === id);
+    return category ? category.name : "Unknown Location";
+  };
+
   const formatDate = (dateInput: string | Date) => {
     const date =
       typeof dateInput === "string" ? new Date(dateInput) : dateInput;
@@ -64,20 +76,25 @@ function OfferCardCopy({ offers }: { offers: OfferData[] }) {
                 {offer.description}
               </Description>
               <Location style={{ color: "black" }}>
-                <MdOutlineLocationCity />
+                <BiCategory />
                 {getLocationNameById(offer.locationId)}
+              </Location>
+              <Location style={{ color: "black" }}>
+                <MdOutlineLocationCity />
+                {getCategoryNameById(offer.categoryId)}
               </Location>
               <StyledDate style={{ color: "black" }}>
                 <MdOutlineCalendarMonth />
                 {formatDate(offer.endAt)}
               </StyledDate>
-              <Type>
+              <Location>
+                <FiType />
                 {offer.isFree
                   ? "Free Offer"
                   : offer.winBid === null
                     ? "Offer + Auction"
                     : "Offer + Auction with Win Bid"}
-              </Type>
+              </Location>
             </DescriptionContainer>
             <ButtonContainer>
               <Button name="Apply" />
