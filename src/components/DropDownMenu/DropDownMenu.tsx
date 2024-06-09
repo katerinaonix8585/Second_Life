@@ -1,35 +1,64 @@
-import React, { useState } from "react";
+import React, { useRef, useState } from "react";
+import { useLocation } from "react-router-dom";
 
-import { StyledNavLink } from "./styles";
+import { DropDownMenuProps } from "./types";
+import {
+  MenuContainer,
+  MenuButton,
+  MenuList,
+  MenuItem as StyledMenuItem,
+  StyledNavLink,
+  NavLinkWithoutUnderline,
+} from "./styles";
 
-const DropDownMenu: React.FC = () => {
+const DropDownMenu: React.FC<DropDownMenuProps> = ({ items, label, link }) => {
   const [isOpen, setIsOpen] = useState(false);
+  const menuRef = useRef<HTMLDivElement>(null);
+  const location = useLocation();
+
+  const handleMouseEnter = () => {
+    setIsOpen(true);
+  };
+
+  const handleMouseLeave = () => {
+    setIsOpen(false);
+  };
+
+  const isActive = location.pathname === link;
+
+  const handleMenuButtonClick = () => {
+    setIsOpen(!isOpen);
+  };
+
+  const handleMenuItemClick = (to: string) => {
+    window.location.href = to;
+    setIsOpen(false);
+  };
 
   return (
-    <div
-      onMouseEnter={() => setIsOpen(true)}
-      onMouseLeave={() => setIsOpen(false)}
-    >
-      <StyledNavLink
-        style={({ isActive }) => ({
-          textDecoration: isActive ? "underline" : "none",
-        })}
-        to="/category"
+    <MenuContainer onMouseLeave={handleMouseLeave} ref={menuRef} tabIndex={0}>
+      <MenuButton
+        onMouseEnter={handleMouseEnter}
+        onClick={handleMenuButtonClick}
       >
-        Category
-      </StyledNavLink>
+        <StyledNavLink to={link} isActive={isActive}>
+          {label}
+        </StyledNavLink>
+      </MenuButton>
       {isOpen && (
-        <div>
-          {
-            <>
-              <StyledNavLink to="/category1">Категория 1</StyledNavLink>
-              <StyledNavLink to="/category2">Категория 2</StyledNavLink>
-              <StyledNavLink to="/category3">Категория 3</StyledNavLink>
-            </>
-          }
-        </div>
+        <MenuList>
+          {items.map((item, index) => (
+            <NavLinkWithoutUnderline
+              key={index}
+              to={item.to}
+              onClick={() => handleMenuItemClick(item.to)}
+            >
+              <StyledMenuItem>{item.value}</StyledMenuItem>
+            </NavLinkWithoutUnderline>
+          ))}
+        </MenuList>
       )}
-    </div>
+    </MenuContainer>
   );
 };
 

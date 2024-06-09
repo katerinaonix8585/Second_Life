@@ -164,7 +164,7 @@ HeaderUser.defaultProps = { src: User };
 
 // Панель ссылок
 export const DownWrapper = styled.div`
-  background-color: #ededede0;
+  background-color: #e5e4e2;
 `;
 
 export const NavContainer = styled.nav`
@@ -173,6 +173,7 @@ export const NavContainer = styled.nav`
   justify-content: center;
   gap: 50px;
   padding: 10px;
+  align-items: center;
 `;
 
 export const StyledNavLink = styled(NavLink)`

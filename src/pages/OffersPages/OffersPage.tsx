@@ -1,34 +1,34 @@
-import { useParams } from "react-router-dom";
 import { useEffect, useState } from "react";
+import { useParams } from "react-router-dom";
 
-import { useAppDispatch, useAppSelector } from "store/hooks";
+import OfferCardCopy from "components/OfferCard/OfferCard.tsx";
+import { useAppDispatch, useAppSelector } from "store/hooks.ts";
 import {
   offersDataSliceActions,
   offersDataSliceSelectors,
 } from "store/redux/offer/offer";
-import OfferCardCopy from "components/OfferCard/OfferCard";
-import { categorysDataSliceSelectors } from "store/redux/category/categorySlice";
+import { typeOfferData } from "pages/CreateOffer/OffersData.ts";
 
 import {
   CategoryPageWrapper,
-  CategoryTextWrapper,
   OffersWrapper,
-  PaginationButton,
-  PaginationCurrentButton,
-  PaginationEllipsis,
-  PaginationWrapper,
   Tile,
-} from "./styles";
+  PaginationButton,
+  PaginationWrapper,
+  PaginationEllipsis,
+  PaginationCurrentButton,
+  CategoryTextWrapper,
+} from "./style.ts";
 
-function CategoryPage() {
+function OffersPage() {
   const { id } = useParams<{ id: string }>();
 
   if (!id) {
     return <div>Id не найден</div>;
   }
 
-  const categoryId = id.replace("id=", "");
-  const categoryIdNumber = parseInt(categoryId, 10);
+  const offersTypeId = id.replace("id=", "");
+  const offersTypeIdNumber = parseInt(offersTypeId, 10);
 
   const dispatch = useAppDispatch();
   const {
@@ -43,31 +43,46 @@ function CategoryPage() {
   const size = 10;
   const sortBy = "createdAt";
 
-  const categoryDataSlice = useAppSelector(
-    categorysDataSliceSelectors.category,
-  );
-  const categoriesData = categoryDataSlice.data;
-
   useEffect(() => {
     dispatch(offersDataSliceActions.getAllOffer({ page, size, sortBy }));
   }, [dispatch, page, size, sortBy]);
-
-  const filteredOffers = offers.filter(
-    (offer) => offer.categoryId === categoryIdNumber,
-  );
-
-  const category = categoriesData.find((cat) => cat.id === categoryIdNumber);
-  const name = category ? category.name : "Категория не найдена";
 
   const handlePageChange = (newPage: number) => {
     setPage(newPage);
     window.scrollTo({ top: 0, behavior: "smooth" });
   };
 
+  const filteredOffers = offers.filter((offer) => {
+    if (offersTypeIdNumber === 0) {
+      return offer.isFree === true;
+    } else if (offersTypeIdNumber === 1) {
+      return offer.isFree === false && offer.winBid === null;
+    } else if (offersTypeIdNumber === 2) {
+      return offer.isFree === false && (offer.winBid ?? 0) > 0;
+    }
+    return true;
+  });
+
+  const gettypeOfferById = (offerId: number) => {
+    const typeOffer = typeOfferData.find((cat) => cat.id === offerId);
+    return typeOffer ? typeOffer.value : "Unknown Location";
+  };
+
+  const offersTypeName = () => {
+    if (offersTypeIdNumber === 0) {
+      return gettypeOfferById(0);
+    } else if (offersTypeIdNumber === 1) {
+      return gettypeOfferById(1);
+    } else if (offersTypeIdNumber === 2) {
+      return gettypeOfferById(2);
+    }
+    return "All Types";
+  };
+
   return (
     <CategoryPageWrapper>
       <CategoryTextWrapper>
-        <Tile>{name}</Tile>
+        <Tile>{offersTypeName()}</Tile>
       </CategoryTextWrapper>
       <OffersWrapper>
         <OfferCardCopy offers={filteredOffers} />
@@ -119,4 +134,4 @@ function CategoryPage() {
   );
 }
 
-export default CategoryPage;
+export default OffersPage;

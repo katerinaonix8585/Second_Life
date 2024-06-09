@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 
-import OfferCardCopy from "components/OfferCardCopy/OfferCardCopy.tsx";
+import OfferCardCopy from "components/OfferCard/OfferCard.tsx";
 import { useAppDispatch, useAppSelector } from "store/hooks.ts";
 import {
   offersDataSliceActions,
