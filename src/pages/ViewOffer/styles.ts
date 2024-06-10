@@ -254,7 +254,7 @@ export const InputContainer = styled.div`
   width: 100%;
   height: 100%;
   display: flex;
-  gap: 20px;
+  gap: 21px;
   flex-direction: column;
 `;
 
