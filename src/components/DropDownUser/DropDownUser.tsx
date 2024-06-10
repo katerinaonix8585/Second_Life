@@ -1,20 +1,19 @@
 import React, { useRef, useState } from "react";
-import { useLocation, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 
-import { DropDownMenuProps } from "./types";
+import { HeaderUser } from "pages/Layout/styles";
+
 import {
   MenuContainer,
   MenuButton,
   MenuList,
   MenuItem as StyledMenuItem,
-  StyledNavLink,
   NavLinkWithoutUnderline,
 } from "./styles";
 
-const DropDownMenu: React.FC<DropDownMenuProps> = ({ items, label, link }) => {
+const DropDownUser: React.FC = () => {
   const [isOpen, setIsOpen] = useState(false);
   const menuRef = useRef<HTMLDivElement>(null);
-  const location = useLocation();
   const navigate = useNavigate();
 
   const handleMouseEnter = () => {
@@ -25,9 +24,6 @@ const DropDownMenu: React.FC<DropDownMenuProps> = ({ items, label, link }) => {
     setIsOpen(false);
   };
 
-  const isActive = location.pathname === link;
-  console.log(isActive);
-
   const handleMenuButtonClick = () => {
     setIsOpen(!isOpen);
   };
@@ -37,19 +33,24 @@ const DropDownMenu: React.FC<DropDownMenuProps> = ({ items, label, link }) => {
     setIsOpen(false);
   };
 
+  const menuItems = [
+    { to: "/offers", value: "Create new offer" },
+    { to: "/offers", value: "My creator offers" },
+    { to: "/offers", value: "My Participant offers" },
+    { to: "/offers", value: "Personal information" },
+  ];
+
   return (
     <MenuContainer onMouseLeave={handleMouseLeave} ref={menuRef} tabIndex={0}>
       <MenuButton
         onMouseEnter={handleMouseEnter}
         onClick={handleMenuButtonClick}
       >
-        <StyledNavLink to={link} isActive={isActive}>
-          {label}
-        </StyledNavLink>
+        <HeaderUser />
       </MenuButton>
       {isOpen && (
         <MenuList>
-          {items.map((item, index) => (
+          {menuItems.map((item, index) => (
             <div key={index} onClick={() => handleMenuItemClick(item.to)}>
               <NavLinkWithoutUnderline to={item.to}>
                 <StyledMenuItem>{item.value}</StyledMenuItem>
@@ -62,4 +63,4 @@ const DropDownMenu: React.FC<DropDownMenuProps> = ({ items, label, link }) => {
   );
 };
 
-export default DropDownMenu;
+export default DropDownUser;

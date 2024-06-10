@@ -3,11 +3,17 @@ import { combineSlices, configureStore } from "@reduxjs/toolkit";
 
 import { locationSlice } from "./redux/location/locationSlice";
 import { categorySlice } from "./redux/category/categorySlice";
+import { offersSlice } from "./redux/offers/offers";
 import { offerSlice } from "./redux/offer/offer";
 
 // `combineSlices` automatically combines the reducers using
 // their `reducerPath`s, therefore we no longer need to call `combineReducers`.
-const rootReducer = combineSlices(locationSlice, categorySlice, offerSlice);
+const rootReducer = combineSlices(
+  locationSlice,
+  categorySlice,
+  offerSlice,
+  offersSlice,
+);
 // Infer the `RootState` type from the root reducer
 export type RootState = ReturnType<typeof rootReducer>;
 

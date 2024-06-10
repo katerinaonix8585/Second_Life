@@ -234,6 +234,16 @@ function CreateOffer() {
         }
 
         console.log("Offer created successfully:", responseData);
+        const offerId = responseData.id;
+        console.log(offerId);
+
+        if (!offerId) {
+          console.error("Id не найден");
+          return;
+        }
+
+        navigate(`/offers/${offerId}`);
+        // console.log(offerId);
       } catch (errors: unknown) {
         console.error("Errors creating offer:", errors);
         if (Array.isArray(errors)) {

@@ -6,7 +6,7 @@ import { useAppDispatch, useAppSelector } from "store/hooks.ts";
 import {
   offersDataSliceActions,
   offersDataSliceSelectors,
-} from "store/redux/offer/offer";
+} from "store/redux/offers/offers.ts";
 import { typeOfferData } from "pages/CreateOffer/OffersData.ts";
 
 import {
