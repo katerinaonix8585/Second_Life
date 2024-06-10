@@ -1,5 +1,5 @@
 import React, { useRef, useState } from "react";
-import { Link, useLocation } from "react-router-dom";
+import { useLocation } from "react-router-dom";
 
 import { DropDownMenuProps } from "./types";
 import {
@@ -47,13 +47,14 @@ const DropDownMenu: React.FC<DropDownMenuProps> = ({ items, label, link }) => {
       {isOpen && (
         <MenuList>
           {items.map((item, index) => (
-            <Link
+            <StyledNavLink
               key={index}
               to={item.to}
               onClick={() => handleMenuItemClick(item.to)}
+              isActive={isActive}
             >
               <StyledMenuItem>{item.value}</StyledMenuItem>
-            </Link>
+            </StyledNavLink>
           ))}
         </MenuList>
       )}
