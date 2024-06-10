@@ -1,5 +1,5 @@
 import React, { useRef, useState } from "react";
-import { useLocation } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 
 import { DropDownMenuProps } from "./types";
 import {
@@ -8,7 +8,6 @@ import {
   MenuList,
   MenuItem as StyledMenuItem,
   StyledNavLink,
-  NavLinkWithoutUnderline,
 } from "./styles";
 
 const DropDownMenu: React.FC<DropDownMenuProps> = ({ items, label, link }) => {
@@ -48,13 +47,13 @@ const DropDownMenu: React.FC<DropDownMenuProps> = ({ items, label, link }) => {
       {isOpen && (
         <MenuList>
           {items.map((item, index) => (
-            <NavLinkWithoutUnderline
+            <Link
               key={index}
               to={item.to}
               onClick={() => handleMenuItemClick(item.to)}
             >
               <StyledMenuItem>{item.value}</StyledMenuItem>
-            </NavLinkWithoutUnderline>
+            </Link>
           ))}
         </MenuList>
       )}
