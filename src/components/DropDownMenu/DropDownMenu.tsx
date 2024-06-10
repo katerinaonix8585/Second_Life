@@ -1,5 +1,5 @@
 import React, { useRef, useState } from "react";
-import { useLocation } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 
 import { DropDownMenuProps } from "./types";
 import {
@@ -14,6 +14,7 @@ const DropDownMenu: React.FC<DropDownMenuProps> = ({ items, label, link }) => {
   const [isOpen, setIsOpen] = useState(false);
   const menuRef = useRef<HTMLDivElement>(null);
   const location = useLocation();
+  const navigate = useNavigate();
 
   const handleMouseEnter = () => {
     setIsOpen(true);
@@ -30,7 +31,7 @@ const DropDownMenu: React.FC<DropDownMenuProps> = ({ items, label, link }) => {
   };
 
   const handleMenuItemClick = (to: string) => {
-    window.location.href = to;
+    navigate(to);
     setIsOpen(false);
   };
 
@@ -47,14 +48,11 @@ const DropDownMenu: React.FC<DropDownMenuProps> = ({ items, label, link }) => {
       {isOpen && (
         <MenuList>
           {items.map((item, index) => (
-            <StyledNavLink
-              key={index}
-              to={item.to}
-              onClick={() => handleMenuItemClick(item.to)}
-              isActive={isActive}
-            >
-              <StyledMenuItem>{item.value}</StyledMenuItem>
-            </StyledNavLink>
+            <div key={index} onClick={() => handleMenuItemClick(item.to)}>
+              <StyledNavLink to={item.to} isActive={isActive}>
+                <StyledMenuItem>{item.value}</StyledMenuItem>
+              </StyledNavLink>
+            </div>
           ))}
         </MenuList>
       )}
