@@ -8,6 +8,7 @@ import {
   MenuList,
   MenuItem as StyledMenuItem,
   StyledNavLink,
+  NavLinkWithoutUnderline,
 } from "./styles";
 
 const DropDownMenu: React.FC<DropDownMenuProps> = ({ items, label, link }) => {
@@ -49,9 +50,9 @@ const DropDownMenu: React.FC<DropDownMenuProps> = ({ items, label, link }) => {
         <MenuList>
           {items.map((item, index) => (
             <div key={index} onClick={() => handleMenuItemClick(item.to)}>
-              <StyledNavLink to={item.to} isActive={isActive}>
+              <NavLinkWithoutUnderline to={item.to}>
                 <StyledMenuItem>{item.value}</StyledMenuItem>
-              </StyledNavLink>
+              </NavLinkWithoutUnderline>
             </div>
           ))}
         </MenuList>
