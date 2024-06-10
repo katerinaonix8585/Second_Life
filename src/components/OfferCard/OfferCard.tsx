@@ -2,6 +2,7 @@ import { useState } from "react";
 import { MdOutlineCalendarMonth, MdOutlineLocationCity } from "react-icons/md";
 import { BiCategory } from "react-icons/bi";
 import { FiType } from "react-icons/fi";
+import { FaEuroSign } from "react-icons/fa";
 
 import { OfferData } from "store/redux/offer/types";
 import { useAppSelector } from "store/hooks.ts";
@@ -27,6 +28,8 @@ import {
   Type00,
   Type01,
   Type02,
+  PriceContainer,
+  ButtonWrapper,
 } from "./style.ts";
 
 function OfferCardCopy({ offers }: { offers: OfferData[] }) {
@@ -109,14 +112,25 @@ function OfferCardCopy({ offers }: { offers: OfferData[] }) {
               ) : (
                 <Type02>
                   <FiType />
-                  {gettypeOfferById(2)}
+                  {gettypeOfferById(2)}: {offer.winBid}{" "}
+                  <FaEuroSign size={16} color="blue" />
                 </Type02>
               )}
             </DescriptionContainer>
-            <ButtonContainer>
-              <Button name="Apply" />
-              {renderBuyoutButton(offer.winBid)}
-            </ButtonContainer>
+            <ButtonWrapper>
+              {offer.startPrice === 0 ? (
+                <PriceContainer>Free</PriceContainer>
+              ) : (
+                <PriceContainer>
+                  {offer.startPrice}
+                  <FaEuroSign size={24} color="green" />
+                </PriceContainer>
+              )}
+              <ButtonContainer>
+                <Button name="Apply" />
+                {renderBuyoutButton(offer.winBid)}
+              </ButtonContainer>
+            </ButtonWrapper>
           </OfferCardContainer>
         </Container>
       ))}

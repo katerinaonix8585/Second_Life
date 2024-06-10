@@ -14,7 +14,7 @@ export const OfferCardContainer = styled.div`
   border: 1px solid #e0e0e0;
   border-radius: 8px;
   display: flex;
-  height: 100%;
+  height: auto;
   width: 1270px;
   align-items: center;
   padding: 30px;
@@ -50,6 +50,14 @@ export const Title = styled.h3`
   color: #56119c;
   font-family: "LXGW WenKai TC", cursive;
   font-weight: bold;
+  width: 700px;
+  max-height: 100px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  -webkit-box-orient: vertical;
+  line-height: 1.5;
 `;
 
 export const Description = styled.p`
@@ -112,9 +120,33 @@ export const Type02 = styled.p`
   font-size: 16px !important;
 `;
 
+export const ButtonWrapper = styled.div`
+  width: 140px;
+  display: flex;
+  gap: 30px;
+  height: 240px;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: stretch;
+`;
+
 export const ButtonContainer = styled.div`
   width: 140px;
   display: flex;
   gap: 10px;
   flex-direction: column;
+  flex-grow: 1;
+`;
+
+export const PriceContainer = styled.div`
+  width: 100%;
+  height: 60px;
+  display: flex;
+  gap: 10px;
+  justify-content: center;
+  color: green;
+  align-items: center;
+  font-family: "LXGW WenKai TC", cursive;
+  font-weight: bold;
+  font-size: 26px;
 `;

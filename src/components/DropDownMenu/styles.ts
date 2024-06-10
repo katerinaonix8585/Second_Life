@@ -26,7 +26,7 @@ export const MenuList = styled.ul`
   margin: 0;
   list-style: none;
   width: 270px;
-  font-size: 14px;
+  font-size: 15px;
   font-weight: bold;
   font-family: "DM Sans", sans-serif;
 `;
