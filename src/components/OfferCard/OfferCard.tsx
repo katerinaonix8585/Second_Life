@@ -1,27 +1,35 @@
-import { v4 } from "uuid";
 import { useState } from "react";
 import { MdOutlineCalendarMonth, MdOutlineLocationCity } from "react-icons/md";
+import { BiCategory } from "react-icons/bi";
+import { FiType } from "react-icons/fi";
 
-import Button from "../Button/Button.tsx";
+import { OfferData } from "store/redux/offer/types";
+import { useAppSelector } from "store/hooks.ts";
+import { locationsDataSliceSelectors } from "store/redux/location/locationSlice.ts";
+import { categorysDataSliceSelectors } from "store/redux/category/categorySlice.ts";
+import { typeOfferData } from "pages/CreateOffer/OffersData.ts";
+
 import { Container } from "../../pages/Layout/styles.ts";
+import Button from "../Button/Button.tsx";
 
 import {
   ButtonContainer,
   Description,
-  Image,
   ImgContainer,
   OfferCardContainer,
   OfferCardWrapper,
   Title,
   Location,
-  Date,
+  StyledDate,
   DescriptionContainer,
-  Type,
+  Image,
+  Category,
+  Type00,
+  Type01,
+  Type02,
 } from "./style.ts";
-import { offerCardData } from "./OfferCardData.ts";
-import { OfferCardDataProps } from "./types.ts";
 
-function OfferCard() {
+function OfferCardCopy({ offers }: { offers: OfferData[] }) {
   const [isClicked, setIsClicked] = useState(false);
 
   const renderBuyoutButton = (winBid: null | number) =>
@@ -33,32 +41,81 @@ function OfferCard() {
       />
     ) : null;
 
+  const locationsDataSlice = useAppSelector(
+    locationsDataSliceSelectors.location,
+  );
+  const locationsData = locationsDataSlice.data;
+
+  const getLocationNameById = (id: number) => {
+    const location = locationsData.find((loc) => loc.id === id);
+    return location ? location.name : "Unknown Location";
+  };
+
+  const categorysDataSlice = useAppSelector(
+    categorysDataSliceSelectors.category,
+  );
+  const categoriesData = categorysDataSlice.data;
+
+  const getCategoryNameById = (id: number) => {
+    const category = categoriesData.find((cat) => cat.id === id);
+    return category ? category.name : "Unknown Location";
+  };
+
+  const formatDate = (dateInput: string | Date) => {
+    const date =
+      typeof dateInput === "string" ? new Date(dateInput) : dateInput;
+    return date.toLocaleDateString();
+  };
+
+  const gettypeOfferById = (id: number) => {
+    const typeOffer = typeOfferData.find((cat) => cat.id === id);
+    return typeOffer ? typeOffer.value : "Unknown Location";
+  };
+
   return (
     <OfferCardWrapper>
-      {offerCardData.map((offerCardItem: OfferCardDataProps) => (
-        <Container key={v4()}>
+      {offers.map((offer) => (
+        <Container key={offer.id}>
           <OfferCardContainer>
             <ImgContainer>
-              <Image src={offerCardItem.image} />
+              <Image />
             </ImgContainer>
             <DescriptionContainer>
-              <Title>{offerCardItem.title}</Title>
+              <Title>{offer.title}</Title>
               <Description style={{ color: "black" }}>
-                {offerCardItem.description}
+                {offer.description}
               </Description>
+              <Category style={{ color: "black" }}>
+                <BiCategory />
+                {getCategoryNameById(offer.categoryId)}
+              </Category>
               <Location style={{ color: "black" }}>
                 <MdOutlineLocationCity />
-                {offerCardItem.location}
+                {getLocationNameById(offer.locationId)}
               </Location>
-              <Date style={{ color: "black" }}>
+              <StyledDate style={{ color: "black" }}>
                 <MdOutlineCalendarMonth />
-                {offerCardItem.data}
-              </Date>
-              <Type>{offerCardItem.typeOffer}</Type>
+                {formatDate(offer.endAt)}
+              </StyledDate>
+              {offer.isFree ? (
+                <Type00>
+                  <FiType /> {gettypeOfferById(0)}
+                </Type00>
+              ) : offer.winBid === null ? (
+                <Type01>
+                  <FiType />
+                  {gettypeOfferById(1)}
+                </Type01>
+              ) : (
+                <Type02>
+                  <FiType />
+                  {gettypeOfferById(2)}
+                </Type02>
+              )}
             </DescriptionContainer>
             <ButtonContainer>
               <Button name="Apply" />
-              {renderBuyoutButton(offerCardItem.win_bid)}
+              {renderBuyoutButton(offer.winBid)}
             </ButtonContainer>
           </OfferCardContainer>
         </Container>
@@ -67,4 +124,4 @@ function OfferCard() {
   );
 }
 
-export default OfferCard;
+export default OfferCardCopy;

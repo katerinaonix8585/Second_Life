@@ -6,6 +6,7 @@ import CreateOffer from "pages/CreateOffer/CreateOffer.tsx";
 import CategoryPage from "pages/CategoryPages/CategoryPages";
 import Category from "pages/Category/Category";
 import AdminSignIn from "pages/AdminSignIn/AdminSignIn.tsx";
+import OffersPage from "pages/OffersPages/OffersPage.tsx";
 
 import Layout from "./pages/Layout/Layout";
 import AdminLayout from "./pages/AdminLayout/AdminLayout";
@@ -29,7 +30,10 @@ function App() {
             <Route index element={<Category />} />
             <Route path=":id" element={<CategoryPage />} />
           </Route>
-          <Route path="offers/all" element={<Offers />} />
+          <Route path="/offers/all">
+            <Route index element={<Offers />} />
+            <Route path=":id" element={<OffersPage />} />
+          </Route>
           <Route path="aboutUs" element={<AboutUs />} />
         </Route>
 

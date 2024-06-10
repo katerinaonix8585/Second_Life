@@ -14,6 +14,8 @@ import {
   categorysDataSliceActions,
   categorysDataSliceSelectors,
 } from "store/redux/category/categorySlice";
+import DropDownMenu from "components/DropDownMenu/DropDownMenu";
+import { typeOfferData } from "pages/CreateOffer/OffersData";
 
 import {
   LayoutWrapper,
@@ -217,23 +219,42 @@ const Layout: React.FC = () => {
                 Home
               </StyledNavLink>
 
-              <StyledNavLink
+              {/* <StyledNavLink
                 style={({ isActive }) => ({
                   textDecoration: isActive ? "underline" : "none",
                 })}
                 to="/category"
               >
                 Category
-              </StyledNavLink>
+              </StyledNavLink> */}
+              <DropDownMenu
+                items={catigoriesData.map((category) => ({
+                  id: category.id,
+                  value: category.name,
+                  to: `/category/id=${category.id}`,
+                }))}
+                label={"Category"}
+                link={"/category"}
+              />
 
-              <StyledNavLink
+              <DropDownMenu
+                items={typeOfferData.map((typeOffer) => ({
+                  id: typeOffer.id,
+                  value: typeOffer.value,
+                  to: `/offers/all/id=${typeOffer.id}`,
+                }))}
+                label={"Offers"}
+                link={"/offers/all"}
+              />
+
+              {/* <StyledNavLink
                 style={({ isActive }) => ({
                   textDecoration: isActive ? "underline" : "none",
                 })}
                 to="/offers/all"
               >
                 Offers
-              </StyledNavLink>
+              </StyledNavLink> */}
 
               <StyledNavLink
                 style={({ isActive }) => ({

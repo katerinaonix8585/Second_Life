@@ -31,7 +31,7 @@ export const GridContainer = styled.div`
   grid-template-columns: repeat(4, 1fr);
   grid-template-rows: repeat(4, 1fr);
   gap: 16px;
-  width: auto;
+  width: 100%;
   box-sizing: border-box;
 `;
 
