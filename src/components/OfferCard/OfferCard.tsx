@@ -5,7 +5,7 @@ import { FiType } from "react-icons/fi";
 import { FaEuroSign } from "react-icons/fa";
 import { Link } from "react-router-dom";
 
-import { OfferData } from "store/redux/offers/types.ts";
+import { OfferData } from "store/redux/offer/types.ts";
 import { useAppSelector } from "store/hooks.ts";
 import { locationsDataSliceSelectors } from "store/redux/location/locationSlice.ts";
 import { categorysDataSliceSelectors } from "store/redux/category/categorySlice.ts";
