@@ -3,12 +3,6 @@ import { createAppSlice } from "store/createAppSlice";
 import { OfferDataSliceState } from "./types";
 
 const offerInitialState: OfferDataSliceState = {
-  isFirstPage: false,
-  isLastPage: false,
-  pageNumber: null,
-  pageSize: null,
-  totalElements: null,
-  totalPages: null,
   data: [],
   statusOffer: "default",
   errorOffer: undefined,
@@ -20,55 +14,47 @@ export const offerSlice = createAppSlice({
   name: "OFFER",
   initialState: offerInitialState,
   reducers: (create) => ({
-    getAllOffer: create.asyncThunk(
-      async (
-        { page, size, sortBy }: { page: number; size: number; sortBy: string },
-        thunkApi,
-      ) => {
-        const response = await fetch(
-          `${BASE_URL}/v1/offers/all?page=${page}&size=${size}&sortBy=${sortBy}`,
-        );
-        const result = await response.json();
-        console.log(result);
+    getOfferById: create.asyncThunk(
+      async (offerId: string, thunkApi) => {
+        try {
+          console.log(`Fetching offer with ID: ${offerId}`);
+          const response = await fetch(`${BASE_URL}/v1/offers/${offerId}`);
+          const result = await response.json();
 
-        if (!response.ok) {
-          thunkApi.rejectWithValue(result);
-        } else {
-          return result;
+          if (!response.ok) {
+            console.log("Response not OK, rejecting with value:", result);
+            return thunkApi.rejectWithValue(result);
+          } else {
+            console.log("Fetch successful, returning result:", result);
+            return result;
+          }
+        } catch (error) {
+          console.error("Network error:", error);
+          return thunkApi.rejectWithValue({ message: "Network error" });
         }
       },
       {
         pending: (state: OfferDataSliceState) => {
-          console.log("pending");
+          console.log("Fetching offer - pending");
           state.statusOffer = "loading";
           state.errorOffer = undefined;
         },
         // eslint-disable-next-line @typescript-eslint/no-explicit-any
         fulfilled: (state: OfferDataSliceState, action: any) => {
-          console.log("fulfilled");
-          console.log(action);
-
-          const {
-            offers,
-            isFirstPage,
-            isLastPage,
-            pageNumber,
-            pageSize,
-            totalElements,
-            totalPages,
-          } = action.payload;
-
+          console.log(
+            "Fetching offer - fulfilled with payload:",
+            action.payload,
+          );
           state.statusOffer = "success";
-          state.data = offers;
-          state.isFirstPage = isFirstPage;
-          state.isLastPage = isLastPage;
-          state.pageNumber = pageNumber;
-          state.pageSize = pageSize;
-          state.totalElements = totalElements;
-          state.totalPages = totalPages;
+          state.data = action.payload;
+          state.errorOffer = undefined;
         },
         // eslint-disable-next-line @typescript-eslint/no-explicit-any
         rejected: (state: OfferDataSliceState, action: any) => {
+          console.error(
+            "Fetching offer - rejected with payload:",
+            action.payload,
+          );
           state.statusOffer = "error";
           state.errorOffer = action.payload;
         },
@@ -80,5 +66,5 @@ export const offerSlice = createAppSlice({
   },
 });
 
-export const offersDataSliceActions = offerSlice.actions;
-export const offersDataSliceSelectors = offerSlice.selectors;
+export const offerDataSliceActions = offerSlice.actions;
+export const offerDataSliceSelectors = offerSlice.selectors;

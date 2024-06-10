@@ -3,8 +3,9 @@ import { MdOutlineCalendarMonth, MdOutlineLocationCity } from "react-icons/md";
 import { BiCategory } from "react-icons/bi";
 import { FiType } from "react-icons/fi";
 import { FaEuroSign } from "react-icons/fa";
+import { Link } from "react-router-dom";
 
-import { OfferData } from "store/redux/offer/types";
+import { OfferData } from "store/redux/offers/types.ts";
 import { useAppSelector } from "store/hooks.ts";
 import { locationsDataSliceSelectors } from "store/redux/location/locationSlice.ts";
 import { categorysDataSliceSelectors } from "store/redux/category/categorySlice.ts";
@@ -84,7 +85,12 @@ function OfferCardCopy({ offers }: { offers: OfferData[] }) {
               <Image />
             </ImgContainer>
             <DescriptionContainer>
-              <Title>{offer.title}</Title>
+              <Link
+                to={`/offers/${offer.id}`}
+                style={{ textDecoration: "none" }}
+              >
+                <Title>{offer.title}</Title>
+              </Link>
               <Description style={{ color: "black" }}>
                 {offer.description}
               </Description>
@@ -118,7 +124,7 @@ function OfferCardCopy({ offers }: { offers: OfferData[] }) {
               )}
             </DescriptionContainer>
             <ButtonWrapper>
-              {offer.startPrice === 0 ? (
+              {offer.isFree === true ? (
                 <PriceContainer>Free</PriceContainer>
               ) : (
                 <PriceContainer>

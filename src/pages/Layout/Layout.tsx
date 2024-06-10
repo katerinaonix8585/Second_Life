@@ -16,6 +16,7 @@ import {
 } from "store/redux/category/categorySlice";
 import DropDownMenu from "components/DropDownMenu/DropDownMenu";
 import { typeOfferData } from "pages/CreateOffer/OffersData";
+import DropDownUser from "components/DropDownUser/DropDownUser";
 
 import {
   LayoutWrapper,
@@ -30,7 +31,6 @@ import {
   HeaderLogo,
   IconsContainer,
   HeaderUserContainer,
-  HeaderUser,
   HeaderLoginContainer,
   HeaderLogin,
   UpHeaderWrapper,
@@ -189,7 +189,7 @@ const Layout: React.FC = () => {
 
             <IconsContainer>
               <HeaderUserContainer isActive={!!accessToken}>
-                {accessToken && <HeaderUser />}
+                {accessToken && <DropDownUser />}
               </HeaderUserContainer>
               {accessToken ? (
                 <HeaderLoginContainer>
@@ -210,23 +210,10 @@ const Layout: React.FC = () => {
         <DownWrapper>
           <Container>
             <NavContainer>
-              <StyledNavLink
-                style={({ isActive }) => ({
-                  textDecoration: isActive ? "underline" : "none",
-                })}
-                to="/"
-              >
+              <StyledNavLink to="/" isActive={location.pathname === "/"}>
                 Home
               </StyledNavLink>
 
-              {/* <StyledNavLink
-                style={({ isActive }) => ({
-                  textDecoration: isActive ? "underline" : "none",
-                })}
-                to="/category"
-              >
-                Category
-              </StyledNavLink> */}
               <DropDownMenu
                 items={catigoriesData.map((category) => ({
                   id: category.id,
@@ -247,19 +234,8 @@ const Layout: React.FC = () => {
                 link={"/offers/all"}
               />
 
-              {/* <StyledNavLink
-                style={({ isActive }) => ({
-                  textDecoration: isActive ? "underline" : "none",
-                })}
-                to="/offers/all"
-              >
-                Offers
-              </StyledNavLink> */}
-
               <StyledNavLink
-                style={({ isActive }) => ({
-                  textDecoration: isActive ? "underline" : "none",
-                })}
+                isActive={location.pathname === "/aboutUs"}
                 to="/aboutUs"
               >
                 About us

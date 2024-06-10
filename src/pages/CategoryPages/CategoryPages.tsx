@@ -5,7 +5,7 @@ import { useAppDispatch, useAppSelector } from "store/hooks";
 import {
   offersDataSliceActions,
   offersDataSliceSelectors,
-} from "store/redux/offer/offer";
+} from "store/redux/offers/offers";
 import OfferCardCopy from "components/OfferCard/OfferCard";
 import { categorysDataSliceSelectors } from "store/redux/category/categorySlice";
 

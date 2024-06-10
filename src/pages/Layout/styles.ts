@@ -176,12 +176,16 @@ export const NavContainer = styled.nav`
   align-items: center;
 `;
 
-export const StyledNavLink = styled(NavLink)`
-  text-decoration: none;
+export const StyledNavLink = styled(NavLink)<{ isActive: boolean }>`
+  text-decoration: ${({ isActive }) => (isActive ? "underline" : "none")};
   font-size: 18px;
   color: black;
   font-weight: bold;
   font-family: "DM Sans", sans-serif;
+
+  &:hover {
+    text-decoration: underline;
+  }
 `;
 
 // Footer

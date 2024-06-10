@@ -5,7 +5,7 @@ import { useAppDispatch, useAppSelector } from "store/hooks.ts";
 import {
   offersDataSliceActions,
   offersDataSliceSelectors,
-} from "store/redux/offer/offer";
+} from "store/redux/offers/offers.ts";
 
 import {
   CategoryPageWrapper,
@@ -31,6 +31,8 @@ function Offers() {
   const [page, setPage] = useState(0);
   const size = 10;
   const sortBy = "createdAt";
+
+  console.log("Offers data:", offers);
 
   useEffect(() => {
     dispatch(offersDataSliceActions.getAllOffer({ page, size, sortBy }));
