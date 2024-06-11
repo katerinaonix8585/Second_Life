@@ -10,7 +10,9 @@ export interface OfferData {
   typeOffer: string;
   is_active: boolean;
   isFree: boolean;
+  ownerId: null | number;
   startPrice: null | number;
+  auctionDurationDays: null | number;
   step: null | number;
   winBid: null | number;
   endAt: Date;

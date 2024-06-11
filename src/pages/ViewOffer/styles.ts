@@ -21,58 +21,45 @@ export const OfferUpWrapper = styled.div`
   height: auto;
   display: flex;
   flex-direction: column;
-  justify-content: center;
+  align-items: center;
+  justify-content: space-between;
   width: 100%;
   max-width: 1270px;
   gap: 20px;
 `;
 
-export const OfferImageWrapper = styled.div`
-  width: 40%;
-  height: auto;
-  display: flex;
-  justify-content: left;
-  padding: 0 20px 0 10px;
+export const ImgContainer = styled.div`
+  padding: 0 0 0 15px;
 `;
 
-export const OfferTextWrapper = styled.div`
-  display: flex;
-  flex-direction: column;
-  align-items: baseline;
-  justify-content: left;
-  padding: 20px 0 0 20px;
+export const Img = styled.img`
+  width: 300px;
+  height: 300px;
+  object-fit: cover;
 `;
 
-export const OfferText = styled.p`
-  font-size: 30px;
-  font-weight: bold;
-  color: #56119c;
-  font-family: "LibreFranklin", sans-serif;
-`;
+Img.defaultProps = { src: defaultImage };
 
-export const OfferSelectWrapper = styled.div`
-  display: flex;
-  width: 50%;
-  justify-content: left;
-  padding: 10px 10px 0 15px;
-`;
-
-export const OfferButtonsWrapper = styled.div`
-  display: flex;
+export const OfferInfoContainer = styled.div`
   width: 100%;
-  justify-content: right;
-  padding-right: 20px;
 `;
 
-export const OfferButtonContainer = styled.div`
+export const OfferTitleInfoContainer = styled.div`
+  width: 100%;
+`;
+
+export const OfferTitleContainer = styled.div`
+  width: 100%;
   display: flex;
-  justify-content: end;
-  gap: 20px;
-  width: 50%;
+  align-items: center;
+  justify-content: space-between;
+  padding: 20px 10px 0 30px;
 `;
 
-export const OfferButtonWrapper = styled.div`
-  width: 200px;
+export const OfferInfoOfferContainer = styled.div`
+  width: 100%;
+  display: flex;
+  padding: 20px 20px 20px 0;
 `;
 
 export const Tile = styled.div`
@@ -92,24 +79,16 @@ export const PriceContainer = styled.div`
   font-size: 26px;
 `;
 
-export const OfferTitleWrapper = styled.div`
+export const OfferInfoImageContainer = styled.div`
+  width: 40%;
+  height: auto;
   display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 30px 30px 0px 30px;
+  justify-content: left;
 `;
 
-export const ImgContainer = styled.div`
-  padding: 0 0 0 15px;
+export const OfferInfoTextContainer = styled.div`
+  width: 100%;
 `;
-
-export const Img = styled.img`
-  width: 300px;
-  height: 300px;
-  object-fit: cover;
-`;
-
-Img.defaultProps = { src: defaultImage };
 
 export const OfferTextAreaWrapper = styled.div`
   width: 100%;
@@ -119,55 +98,68 @@ export const OfferTextAreaWrapper = styled.div`
   border-radius: 20px;
 `;
 
-export const OfferInfoWrapper = styled.div`
-  display: flex;
-  gap: 30px;
-  width: 100%;
-  height: 100%;
-  justify-content: left;
-  padding: 10px 15px 15px 10px;
-`;
-
 export const TextAreaWrapper = styled.div`
-  display: flex;
   width: 100%;
   height: 100%;
-  justify-content: left;
+  border: none;
   padding: 20px;
   font-size: 20px;
   font-style: italic;
   font-family: "DM Sans", sans-serif;
-  width: 700px;
 `;
 
-export const DescriptionContainer = styled.div`
-  gap: 18px;
+export const TextArea = styled.textarea`
+  width: 100%;
+  height: 100%;
+  border: none;
+  padding: 20px;
+  resize: none;
+  /* pointer-events: none; */
+  background-color: #f9f9f9;
+  font-size: 20px;
+  font-style: italic;
+  font-family: "DM Sans", sans-serif;
+`;
+
+export const OfferInfoWrapper = styled.div`
+  width: 100%;
+  padding: 20px;
+  display: flex;
+`;
+
+export const OfferInfoOfferWrapper = styled.div`
+  width: 100%;
   display: flex;
   flex-direction: column;
-  font-size: 20px;
-  font-family: "DM Sans", sans-serif;
-  width: 700px;
-  padding: 0 0 0 45px;
+  gap: 15px;
 `;
 
-export const Category = styled.h5`
-  gap: 5px;
+export const OfferInfoPriceWrapper = styled.div`
+  width: 100%;
+  padding: 20px;
   display: flex;
-  align-items: center;
+  flex-direction: column;
+  gap: 15px;
 `;
 
-export const Location = styled.h5`
-  gap: 5px;
+export const ContainerInfo = styled.div`
+  gap: 10px;
   display: flex;
   align-items: center;
-  color: #49423d;
+  font-family: "LXGW WenKai TC", cursive;
+  color: #4d418b;
+  font-weight: 700;
+  font-size: 18px;
 `;
 
-export const StyledDate = styled.h5`
-  gap: 5px;
+export const ContainerInfoParticipant = styled.div`
+  gap: 10px;
   display: flex;
   align-items: center;
-  color: #49423d;
+  font-family: "LXGW WenKai TC", cursive;
+  color: #0a5f38;
+  font-weight: 700;
+  font-size: 18px;
 `;
 
 export const Type00 = styled.p`
@@ -175,7 +167,6 @@ export const Type00 = styled.p`
   display: flex;
   align-items: center;
   color: red;
-  font-size: 16px !important;
 `;
 
 export const Type01 = styled.p`
@@ -183,7 +174,6 @@ export const Type01 = styled.p`
   display: flex;
   align-items: center;
   color: green;
-  font-size: 16px !important;
 `;
 
 export const Type02 = styled.p`
@@ -191,43 +181,38 @@ export const Type02 = styled.p`
   display: flex;
   align-items: center;
   color: blue;
-  font-size: 16px !important;
 `;
 
-export const ButtonContainer = styled.div`
-  /* width: 140px; */
-  display: flex;
-  gap: 10px;
-  /* flex-direction: column; */
-  flex-grow: 1;
-`;
-
-export const ButtonWrapper = styled.div`
+export const ContainerInfoCommon = styled.div`
   width: 100%;
+  padding: 20px 0 0 20px;
   display: flex;
   flex-direction: column;
-  align-items: flex-end;
-  justify-content: end;
-  padding: 20px;
-`;
-
-export const NumberInput = styled.input`
-  width: 100%;
-  height: 60px;
-  border-radius: 15px;
-  padding: 10px;
-  font-size: 20px;
-  font-family: "DM Sans", sans-serif;
-`;
-
-export const NumberContainer = styled.div`
-  width: 100%;
-  display: flex;
   gap: 20px;
-  align-items: flex-start;
 `;
 
-export const ContainerButton = styled.div`
+export const ContainerInfoNoFree = styled.div`
+  width: 100%;
+  padding: 0 0 0 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+  font-family: "LXGW WenKai TC", cursive;
+  color: #4d418b;
+  font-weight: 700;
+  font-size: 18px;
+`;
+
+export const OfferButtonWrapper = styled.div`
+  width: 100%;
+  /* border: 2px solid black; */
+  display: flex;
+  gap: 10px;
+  padding: 20px;
+  justify-content: space-between;
+`;
+
+export const ButtonWinBidContainer = styled.div`
   width: 200px;
   display: flex;
   gap: 20px;
@@ -236,37 +221,31 @@ export const ContainerButton = styled.div`
   justify-content: end;
 `;
 
-export const ContainerBidButton = styled.div`
+export const ButtonEditContainer = styled.div`
   width: 400px;
   display: flex;
   gap: 20px;
-  flex-direction: column;
+  align-items: flex-end;
+  justify-content: end;
 `;
 
-export const BidAreaWrapper = styled.div`
-  width: 100%;
+export const ButtonBidContainer = styled.div`
+  width: 600px;
   display: flex;
-  justify-content: space-between;
-  padding: 0 20px 0 0;
+  gap: 20px;
+  align-items: flex-end;
+  justify-content: end;
 `;
 
-export const InputContainer = styled.div`
-  width: 100%;
-  height: 100%;
-  display: flex;
-  gap: 21px;
-  flex-direction: column;
-`;
-
-export const TextContainer = styled.div`
-  width: 100%;
+export const ButtonCommonContainer = styled.div`
+  width: 200px;
   display: flex;
   gap: 20px;
   flex-direction: column;
-  align-items: flex-start;
-  justify-content: space-evenly;
-  font-size: 20px;
-  color: #56119c;
-  font-family: "LXGW WenKai TC", cursive;
-  font-weight: bold;
+  align-items: flex-end;
+  justify-content: end;
+`;
+
+export const NewPriceArea = styled.div`
+  border: 2px solid black;
 `;

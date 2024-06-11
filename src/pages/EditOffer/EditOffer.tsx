@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 import { useFormik } from "formik";
 import { useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 
 import Input from "components/Input/Input";
 import Select from "components/Select/Select";
@@ -10,10 +10,12 @@ import TextArea from "components/TextArea/TestArea";
 import Button from "components/Button/Button";
 import { CategoryData } from "components/CategoryCard/types";
 import { LocationData } from "pages/Layout/types";
-import { useAppSelector } from "store/hooks";
+import { useAppDispatch, useAppSelector } from "store/hooks";
 import { locationsDataSliceSelectors } from "store/redux/location/locationSlice";
 import { categorysDataSliceSelectors } from "store/redux/category/categorySlice";
 import ImageUpload from "components/ImageUpload/ImageUpload";
+import { offerDataSliceActions } from "store/redux/offer/offer";
+import { OfferData } from "store/redux/offers/types";
 
 import {
   OfferButtonContainer,
@@ -45,11 +47,15 @@ import { typeOfferData } from "./OffersData";
 
 const BASE_URL = "https://second-life-app-y2el9.ondigitalocean.app/api";
 
-function CreateOffer() {
+function EditOffer() {
+  const { offersId } = useParams<{ offersId: string }>();
   const navigate = useNavigate();
   const [selectedType, setSelectedType] = useState<TypeOfferData | null>(null);
   const [isSelectOpen, setSelectOpenState] = useState(false);
+  const [offerData, setOfferData] = useState<OfferData | null>(null);
   // const [status, setStatus] = useState<string>("");
+
+  const dispatch = useAppDispatch();
 
   const typeOfferOptions: SelectDataProps<string>[] = typeOfferData.map(
     (offer) => ({
@@ -96,6 +102,64 @@ function CreateOffer() {
       return 0;
     });
 
+  const getLocationById = (id: number): LocationData | null => {
+    const location = locationsData.find((loc) => loc.id === id);
+    return location || null;
+  };
+
+  const getCategoryById = (id: number): CategoryData | null => {
+    const category = categoriesData.find((cat) => cat.id === id);
+    return category || null;
+  };
+
+  const getTypeOfferById = (id: number): TypeOfferData | null => {
+    const type = typeOfferData.find((off) => off.id === id);
+    return type || null;
+  };
+
+  useEffect(() => {
+    console.log("Component mounted with offerId:", offersId);
+    if (offersId) {
+      dispatch(offerDataSliceActions.getOfferById(offersId))
+        .then((response) => {
+          console.log("getOfferById response:", response);
+          setOfferData(response.payload);
+          const initialLocationId = response.payload.locationId ?? 0;
+          const initialLocation = getLocationById(initialLocationId);
+          const initialCategoryId = response.payload.categoryId ?? 0;
+          const initialCategory = getCategoryById(initialCategoryId);
+          let initialTypeOfferId: number;
+          if (offerData) {
+            if (response.payload.isFree) {
+              initialTypeOfferId = 0;
+            } else if (response.payload.winBid === null) {
+              initialTypeOfferId = 1;
+            } else {
+              initialTypeOfferId = 2;
+            }
+          } else {
+            initialTypeOfferId = 0;
+          }
+          const initialTypeOffer = getTypeOfferById(initialTypeOfferId);
+          formik.setValues({
+            [OFFER_DATA.TITLE]: response.payload?.title || "",
+            [OFFER_DATA.DESCRIPTION]: response.payload?.description || "",
+            [OFFER_DATA.TYPE]: initialTypeOffer || ({} as TypeOfferData),
+            [OFFER_DATA.DURATIONAUCTION]:
+              response.payload?.auctionDurationDays || null,
+            [OFFER_DATA.CATEGORY]: initialCategory || ({} as CategoryData),
+            [OFFER_DATA.LOCATION]: initialLocation || ({} as LocationData),
+            [OFFER_DATA.STARTPRICE]: response.payload?.startPrice || null,
+            [OFFER_DATA.STEP]: response.payload?.step || null,
+            [OFFER_DATA.WINBID]: response.payload?.winBid || null,
+          });
+        })
+        .catch((error) => {
+          console.error("getOfferById error:", error);
+        });
+    }
+  }, [dispatch, offersId]);
+
   const formik = useFormik<OfferFormValues>({
     initialValues: {
       [OFFER_DATA.TITLE]: "",
@@ -108,9 +172,6 @@ function CreateOffer() {
       [OFFER_DATA.STEP]: null,
       [OFFER_DATA.WINBID]: null,
     },
-    validateOnMount: false,
-    validateOnChange: false,
-    validateOnBlur: false,
     onSubmit: async (values: OfferFormValues) => {
       try {
         const authToken = localStorage.getItem("accessToken");
@@ -211,6 +272,7 @@ function CreateOffer() {
         }
 
         const requestBody = {
+          id: offersId,
           title: values.title,
           description: values.description,
           auctionDurationDays: Number(values.durationAuction),
@@ -235,7 +297,7 @@ function CreateOffer() {
         console.log("Request body:", requestBody);
 
         const response = await fetch(`${BASE_URL}/v1/offers`, {
-          method: "POST",
+          method: "PUT",
           headers: {
             "Content-Type": "application/json",
             Authorization: `Bearer ${authToken}`,
@@ -260,15 +322,8 @@ function CreateOffer() {
         }
 
         console.log("Offer created successfully:", responseData);
-        const offerId = responseData.id;
-        console.log(offerId);
 
-        if (!offerId) {
-          console.error("Id не найден");
-          return;
-        }
-
-        navigate(`/offers/${offerId}`);
+        navigate(`/offers/${offersId}`);
         // console.log(offerId);
       } catch (errors: unknown) {
         console.error("Errors creating offer:", errors);
@@ -340,25 +395,15 @@ function CreateOffer() {
     setSelectOpenState(false);
   };
 
-  // const handleSubmit = () => {
-  //   setStatus("active");
-  //   formik.handleSubmit();
-  // };
-
-  // const handleSaveAsDraft = () => {
-  //   setStatus("draft");
-  //   formik.handleSubmit();
-  // };
-
   return (
     <OfferWrapper onSubmit={formik.handleSubmit}>
       <OfferUpWrapper>
         <OfferHeadWrapper>
           <OfferTextWrapper>
-            <Tile>Create new offer</Tile>
+            <Tile>Edit offer</Tile>
           </OfferTextWrapper>
           <OfferTextWrapper>
-            <TileStatus>Status: New offer</TileStatus>
+            <TileStatus>Status: ?</TileStatus>
           </OfferTextWrapper>
         </OfferHeadWrapper>
         <OfferContentWrapper>
@@ -461,7 +506,7 @@ function CreateOffer() {
                   <Button
                     type="submit"
                     background="grey"
-                    name="Save as draft"
+                    name="Save"
                     // onButtonClick={handleSaveAsDraft}
                   />
                 </OfferButtonWrapper>
@@ -549,4 +594,4 @@ function CreateOffer() {
   );
 }
 
-export default CreateOffer;
+export default EditOffer;

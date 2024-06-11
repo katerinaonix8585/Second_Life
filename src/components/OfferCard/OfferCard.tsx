@@ -31,6 +31,8 @@ import {
   Type02,
   PriceContainer,
   ButtonWrapper,
+  LabelContainer,
+  TextContainer,
 } from "./style.ts";
 
 function OfferCardCopy({ offers }: { offers: OfferData[] }) {
@@ -127,13 +129,16 @@ function OfferCardCopy({ offers }: { offers: OfferData[] }) {
               {offer.isFree === true ? (
                 <PriceContainer>Free</PriceContainer>
               ) : (
-                <PriceContainer>
-                  {offer.startPrice}
-                  <FaEuroSign size={24} color="green" />
-                </PriceContainer>
+                <LabelContainer>
+                  <TextContainer>Current Price:</TextContainer>
+                  <PriceContainer>
+                    {offer.startPrice}
+                    <FaEuroSign size={24} color="green" />
+                  </PriceContainer>
+                </LabelContainer>
               )}
               <ButtonContainer>
-                <Button name="Apply" />
+                <Button name="Apply" background=" #0A5F38" />
                 {renderBuyoutButton(offer.winBid)}
               </ButtonContainer>
             </ButtonWrapper>
