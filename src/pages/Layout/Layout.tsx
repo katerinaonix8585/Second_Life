@@ -220,7 +220,7 @@ const Layout: React.FC = () => {
                   value: category.name,
                   to: `/category/id=${category.id}`,
                 }))}
-                label={"Category"}
+                label={"Categories"}
                 link={"/category"}
               />
 

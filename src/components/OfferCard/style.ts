@@ -140,7 +140,7 @@ export const ButtonContainer = styled.div`
 
 export const PriceContainer = styled.div`
   width: 100%;
-  height: 60px;
+  height: 30px;
   display: flex;
   gap: 10px;
   justify-content: center;
@@ -149,4 +149,20 @@ export const PriceContainer = styled.div`
   font-family: "LXGW WenKai TC", cursive;
   font-weight: bold;
   font-size: 26px;
+`;
+
+export const LabelContainer = styled.div`
+  display: flex;
+  gap: 10px;
+  flex-direction: column;
+`;
+
+export const TextContainer = styled.div`
+  color: green;
+  align-items: center;
+  font-family: "LXGW WenKai TC", cursive;
+  font-weight: bold;
+  font-size: 16px;
+  justify-content: center;
+  display: flex;
 `;

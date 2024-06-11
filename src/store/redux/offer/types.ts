@@ -12,7 +12,9 @@ export interface OfferData {
   isFree: boolean;
   startPrice: null | number;
   step: null | number;
+  auctionDurationDays: null | number;
   winBid: null | number;
+  ownerId: null | number;
   endAt: Date;
 }
 
