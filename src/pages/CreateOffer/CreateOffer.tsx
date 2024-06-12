@@ -14,7 +14,6 @@ import { useAppSelector } from "store/hooks";
 import { locationsDataSliceSelectors } from "store/redux/location/locationSlice";
 import { categorysDataSliceSelectors } from "store/redux/category/categorySlice";
 import ImageUpload from "components/ImageUpload/ImageUpload";
-import { userDataSliceSelectors } from "store/redux/user/userSlice";
 
 import {
   OfferButtonContainer,
@@ -51,7 +50,6 @@ function CreateOffer() {
   const [selectedType, setSelectedType] = useState<TypeOfferData | null>(null);
   const [isSelectOpen, setSelectOpenState] = useState(false);
   const [toVerification, setToVerification] = useState(false);
-  const [status, setStatus] = useState<string>("");
 
   const typeOfferOptions: SelectDataProps<string>[] = typeOfferData.map(
     (offer) => ({
