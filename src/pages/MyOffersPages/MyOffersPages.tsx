@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { useLocation, useParams } from "react-router-dom";
+import { useParams } from "react-router-dom";
 
 import OfferCardCopy from "components/OfferCard/OfferCard.tsx";
 import { useAppDispatch, useAppSelector } from "store/hooks.ts";
@@ -7,7 +7,6 @@ import {
   offersDataSliceActions,
   offersDataSliceSelectors,
 } from "store/redux/offers/offers";
-import { typeOfferData } from "pages/CreateOffer/OffersData.ts";
 
 import {
   CategoryPageWrapper,
@@ -20,15 +19,14 @@ import {
   CategoryTextWrapper,
 } from "./style.ts";
 
-function OffersPage() {
-  const { id } = useParams<{ id: string }>();
+function MyOffersPages() {
+  const { userId } = useParams<{ userId: string }>();
 
-  if (!id) {
+  if (!userId) {
     return <div>Id не найден</div>;
   }
 
-  const offersTypeId = id.replace("id=", "");
-  const offersTypeIdNumber = parseInt(offersTypeId, 10);
+  const userTypeId = userId.replace("userId=", "");
 
   const dispatch = useAppDispatch();
   const {
@@ -39,56 +37,34 @@ function OffersPage() {
     pageNumber,
     totalPages,
   } = useAppSelector(offersDataSliceSelectors.offer);
+  const user = parseInt(userTypeId, 10);
   const [page, setPage] = useState(0);
   const size = 10;
   const sortBy = "createdAt";
 
-  const location = useLocation();
-  console.log(location);
-
   useEffect(() => {
-    dispatch(offersDataSliceActions.getAllOffer({ page, size, sortBy }));
-  }, [dispatch, page, size, sortBy]);
+    dispatch(
+      offersDataSliceActions.getAllUsersOffer({
+        user,
+        page,
+        size,
+        sortBy,
+      }),
+    );
+  }, [dispatch, user, page, size, sortBy]);
 
   const handlePageChange = (newPage: number) => {
     setPage(newPage);
     window.scrollTo({ top: 0, behavior: "smooth" });
   };
 
-  const filteredOffers = offers.filter((offer) => {
-    if (offersTypeIdNumber === 0) {
-      return offer.isFree === true;
-    } else if (offersTypeIdNumber === 1) {
-      return offer.isFree === false && offer.winBid === null;
-    } else if (offersTypeIdNumber === 2) {
-      return offer.isFree === false && (offer.winBid ?? 0) > 0;
-    }
-    return true;
-  });
-
-  const gettypeOfferById = (offerId: number) => {
-    const typeOffer = typeOfferData.find((cat) => cat.id === offerId);
-    return typeOffer ? typeOffer.value : "Unknown Location";
-  };
-
-  const offersTypeName = () => {
-    if (offersTypeIdNumber === 0) {
-      return gettypeOfferById(0);
-    } else if (offersTypeIdNumber === 1) {
-      return gettypeOfferById(1);
-    } else if (offersTypeIdNumber === 2) {
-      return gettypeOfferById(2);
-    }
-    return "All Types";
-  };
-
   return (
     <CategoryPageWrapper>
       <CategoryTextWrapper>
-        <Tile>{offersTypeName()}</Tile>
+        <Tile>My owner offers</Tile>
       </CategoryTextWrapper>
       <OffersWrapper>
-        <OfferCardCopy offers={filteredOffers} />
+        <OfferCardCopy offers={offers} />
       </OffersWrapper>
       {statusOffer === "loading" && <div>Loading...</div>}
       {statusOffer === "success" && (
@@ -137,4 +113,4 @@ function OffersPage() {
   );
 }
 
-export default OffersPage;
+export default MyOffersPages;

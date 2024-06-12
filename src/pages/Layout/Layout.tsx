@@ -17,6 +17,7 @@ import {
 import DropDownMenu from "components/DropDownMenu/DropDownMenu";
 import { typeOfferData } from "pages/CreateOffer/OffersData";
 import DropDownUser from "components/DropDownUser/DropDownUser";
+import { userDataSliceActions } from "store/redux/user/userSlice";
 
 import {
   LayoutWrapper,
@@ -79,6 +80,12 @@ const Layout: React.FC = () => {
   }, [dispatch]);
 
   useEffect(() => {
+    if (accessToken) {
+      dispatch(userDataSliceActions.getUserData());
+    }
+  }, [setAccessToken]);
+
+  useEffect(() => {
     dispatch(categorysDataSliceActions.getCategory());
   }, [dispatch]);
 
@@ -124,6 +131,7 @@ const Layout: React.FC = () => {
       await sendLogoutRequest();
       localStorage.removeItem("accessToken");
       localStorage.removeItem("refreshToken");
+      localStorage.removeItem("userId");
       setAccessToken(null);
       navigate("/");
     } catch (error) {

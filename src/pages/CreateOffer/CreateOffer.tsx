@@ -14,6 +14,7 @@ import { useAppSelector } from "store/hooks";
 import { locationsDataSliceSelectors } from "store/redux/location/locationSlice";
 import { categorysDataSliceSelectors } from "store/redux/category/categorySlice";
 import ImageUpload from "components/ImageUpload/ImageUpload";
+import { userDataSliceSelectors } from "store/redux/user/userSlice";
 
 import {
   OfferButtonContainer,
@@ -49,7 +50,8 @@ function CreateOffer() {
   const navigate = useNavigate();
   const [selectedType, setSelectedType] = useState<TypeOfferData | null>(null);
   const [isSelectOpen, setSelectOpenState] = useState(false);
-  // const [status, setStatus] = useState<string>("");
+  const [toVerification, setToVerification] = useState(false);
+  const [status, setStatus] = useState<string>("");
 
   const typeOfferOptions: SelectDataProps<string>[] = typeOfferData.map(
     (offer) => ({
@@ -105,7 +107,6 @@ function CreateOffer() {
       [OFFER_DATA.CATEGORY]: {} as CategoryData,
       [OFFER_DATA.LOCATION]: {} as LocationData,
       [OFFER_DATA.STARTPRICE]: null,
-      [OFFER_DATA.STEP]: null,
       [OFFER_DATA.WINBID]: null,
     },
     validateOnMount: false,
@@ -150,11 +151,9 @@ function CreateOffer() {
 
         if (values.type?.id && values.type.id !== 0) {
           const startPrice = Number(values.startPrice);
-          const step = Number(values.step);
           const winbid = Number(values.winbid);
 
           console.log("Validating startPrice:", startPrice);
-          console.log("Validating step:", step);
           console.log("Validating winbid:", winbid);
 
           if (!startPrice || startPrice <= 0 || !Number.isInteger(startPrice)) {
@@ -162,14 +161,6 @@ function CreateOffer() {
               field: OFFER_DATA.STARTPRICE,
               message:
                 "Field Start price is required, must be greater than zero and an integer",
-            });
-          }
-
-          if (!step || step <= 0 || !Number.isInteger(step)) {
-            errors.push({
-              field: OFFER_DATA.STEP,
-              message:
-                "Field Step is required, must be greater than zero and an integer",
             });
           }
 
@@ -218,10 +209,6 @@ function CreateOffer() {
             values.startPrice === 0 || values.startPrice === null
               ? null
               : Number(values.startPrice),
-          step:
-            values.step === 0 || values.step === null
-              ? null
-              : Number(values.step),
           winBid:
             values.winbid === 0 || values.winbid === null
               ? null
@@ -229,7 +216,7 @@ function CreateOffer() {
           isFree: values.type?.id === 0,
           categoryId: values.category.id,
           locationId: values.location.id === 0 ? "" : values.location.id,
-          // status: status,
+          sendToVerification: toVerification ? "VERIFICATION" : "DRAFT",
         };
 
         console.log("Request body:", requestBody);
@@ -304,7 +291,6 @@ function CreateOffer() {
 
             if (selectedOption?.id === 0) {
               formik.setFieldValue(OFFER_DATA.STARTPRICE, null);
-              formik.setFieldValue(OFFER_DATA.STEP, null);
               formik.setFieldValue(OFFER_DATA.WINBID, null);
             }
             if (selectedOption?.id === 1) {
@@ -340,15 +326,15 @@ function CreateOffer() {
     setSelectOpenState(false);
   };
 
-  // const handleSubmit = () => {
-  //   setStatus("active");
-  //   formik.handleSubmit();
-  // };
+  const handleSubmit = () => {
+    setToVerification(true);
+    formik.handleSubmit();
+  };
 
-  // const handleSaveAsDraft = () => {
-  //   setStatus("draft");
-  //   formik.handleSubmit();
-  // };
+  const handleSaveAsDraft = () => {
+    setToVerification(false);
+    formik.handleSubmit();
+  };
 
   return (
     <OfferWrapper onSubmit={formik.handleSubmit}>
@@ -424,18 +410,6 @@ function CreateOffer() {
                           onFocus={() => handleFocus(OFFER_DATA.STARTPRICE)}
                         />
                       </OfferSelectWrapper>
-                      <OfferSelectWrapper>
-                        <Input
-                          required={true}
-                          label="Step"
-                          name={OFFER_DATA.STEP}
-                          onInputChange={formik.handleChange}
-                          value={formik.values[OFFER_DATA.STEP] || ""}
-                          error={formik.errors[OFFER_DATA.STEP]}
-                          onBlur={formik.handleBlur}
-                          onFocus={() => handleFocus(OFFER_DATA.STEP)}
-                        />
-                      </OfferSelectWrapper>
                       {selectedType.id === 2 && (
                         <OfferSelectWrapper>
                           <Input
@@ -462,7 +436,7 @@ function CreateOffer() {
                     type="submit"
                     background="grey"
                     name="Save as draft"
-                    // onButtonClick={handleSaveAsDraft}
+                    onButtonClick={handleSaveAsDraft}
                   />
                 </OfferButtonWrapper>
                 <OfferButtonWrapper>
@@ -470,7 +444,7 @@ function CreateOffer() {
                     type="submit"
                     background="#0A5F38"
                     name="Submit"
-                    // onButtonClick={handleSubmit}
+                    onButtonClick={handleSubmit}
                   />
                 </OfferButtonWrapper>
                 <OfferButtonWrapper>

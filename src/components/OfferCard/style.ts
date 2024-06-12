@@ -166,3 +166,10 @@ export const TextContainer = styled.div`
   justify-content: center;
   display: flex;
 `;
+
+export const Status = styled.h5`
+  gap: 5px;
+  display: flex;
+  align-items: center;
+  color: blue;
+`;

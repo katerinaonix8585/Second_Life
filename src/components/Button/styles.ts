@@ -23,5 +23,7 @@ export const ButtonComponent = styled.button<ButtonComponentProps>`
   font-family: "DM Sans", sans-serif;
   align-items: center;
   display: flex;
+  flex-direction: column;
   justify-content: center;
+  line-height: 1.5;
 `;

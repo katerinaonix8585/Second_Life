@@ -2,20 +2,20 @@
 export interface OfferData {
   id: number;
   title: string;
-  image: string;
   description: string;
-  locationId: number;
-  categoryId: number;
-  data: string;
-  typeOffer: string;
-  is_active: boolean;
-  isFree: boolean;
+  auctionStartAt: Date;
+  auctionEndAt: Date;
   startPrice: null | number;
-  step: null | number;
-  auctionDurationDays: null | number;
   winBid: null | number;
+  isFree: boolean;
   ownerId: null | number;
-  endAt: Date;
+  ownerFullName: string;
+  status: string;
+  winnerBidId: null | number;
+  categoryId: number;
+  locationId: number;
+  auctionDurationDays: null | number;
+  typeOffer: string;
 }
 
 export interface OfferDataSliceState {

@@ -15,6 +15,7 @@ function Input({
   value,
   error,
   onBlur,
+  height,
   required = false,
 }: InputProps) {
   return (
@@ -33,6 +34,7 @@ function Input({
           value={String(value)}
           error={error}
           onBlur={onBlur}
+          height={height}
         />
       </InputWrapper>
       {error && <ErrorMessage>{error}</ErrorMessage>}

@@ -10,8 +10,10 @@ import { locationsDataSliceSelectors } from "store/redux/location/locationSlice"
 import { categorysDataSliceSelectors } from "store/redux/category/categorySlice";
 import { typeOfferData } from "pages/CreateOffer/OffersData";
 import { offerDataSliceActions } from "store/redux/offer/offer";
-import { OfferData } from "store/redux/offers/types";
+import { OfferData } from "store/redux/offer/types";
 import Button from "components/Button/Button";
+import { userDataSliceActions } from "store/redux/user/userSlice";
+import MakeBid from "components/MakeBid/MakeBid";
 
 import {
   OfferUpWrapper,
@@ -40,21 +42,24 @@ import {
   ContainerInfoNoFree,
   ContainerInfoParticipant,
   ButtonEditContainer,
+  ContainerInfoPrice,
+  PriceStatusContainer,
+  StatusContainer,
+  ButtonContainer,
+  ButtonFreeContainer,
   ButtonBidContainer,
   ButtonWinBidContainer,
 } from "./styles";
 
 function ViewOffer() {
   const navigate = useNavigate();
-  const { offersId } = useParams<{ offersId?: string }>();
+  const { offersId = "" } = useParams<{ offersId?: string }>();
   const [offerData, setOfferData] = useState<OfferData | null>(null);
   const [isClickedBurout, setisClickedBurout] = useState(false);
 
-  const dispatch = useAppDispatch();
+  const userId = localStorage.getItem("userId");
 
-  const handleCancel = () => {
-    navigate(-1);
-  };
+  const dispatch = useAppDispatch();
 
   const locationsDataSlice = useAppSelector(
     locationsDataSliceSelectors.location,
@@ -66,14 +71,13 @@ function ViewOffer() {
     return location ? location.name : "Unknown Location";
   };
 
-  const categorysDataSlice = useAppSelector(
+  const { data: categoriesData } = useAppSelector(
     categorysDataSliceSelectors.category,
   );
-  const categoriesData = categorysDataSlice.data;
 
   const getCategoryNameById = (id: number) => {
     const category = categoriesData.find((cat) => cat.id === id);
-    return category ? category.name : "Unknown Location";
+    return category ? category.name : "Unknown Category";
   };
 
   const formatDate = (dateInput?: string | Date) => {
@@ -90,23 +94,28 @@ function ViewOffer() {
 
   const gettypeOfferById = (id: number) => {
     const typeOffer = typeOfferData.find((cat) => cat.id === id);
-    return typeOffer ? typeOffer.value : "Unknown Location";
+    return typeOffer ? typeOffer.value : "Unknown Type";
   };
 
-  const renderBuyoutButton = (
-    winBid: null | number,
-    ownerId: null | number,
-  ) => {
-    const userId = localStorage.getItem("userId");
+  useEffect(() => {
+    dispatch(userDataSliceActions.getUserData());
+  }, [dispatch]);
 
-    if (winBid !== null && userId !== null && ownerId === parseInt(userId)) {
+  const renderBuyoutButton = (
+    isFree: boolean,
+    isOwner: boolean,
+    isBurnOut: boolean,
+  ) => {
+    if (!isFree && !isOwner && isBurnOut) {
       return (
         <ButtonWinBidContainer>
-          <Button
-            name="Buyout"
-            onButtonClick={() => setisClickedBurout(true)}
-            disabled={isClickedBurout}
-          />
+          {offerData !== null && (
+            <Button
+              name={`Buyout ${offerData.winBid} `}
+              onButtonClick={() => setisClickedBurout(true)}
+              disabled={isClickedBurout}
+            />
+          )}
         </ButtonWinBidContainer>
       );
     } else {
@@ -114,61 +123,99 @@ function ViewOffer() {
     }
   };
 
-  const renderEditButton = (ownerId: null | number) => {
-    const userId = localStorage.getItem("userId");
-
-    if (userId !== null && ownerId !== null && ownerId === parseInt(userId)) {
+  const renderWinBidButton = (isFree: boolean, isOwner: boolean) => {
+    if (!isOwner && !isFree) {
       return (
-        <ButtonEditContainer>
-          <Button
-            name="Edit"
-            onButtonClick={() => navigate(`/offers/edit/${offersId}`)}
-            disabled={isClickedBurout}
-          />
-          <Button
-            type="button"
-            background="#EE4266"
-            name="Cancel"
-            onButtonClick={handleCancel}
-          />
-        </ButtonEditContainer>
+        <ButtonBidContainer>
+          <MakeBid countValue={offerData?.startPrice ?? 0} />
+          <ButtonContainer>
+            <Button
+              name="Apply"
+              background="#0A5F38"
+              onButtonClick={() => setisClickedBurout(true)}
+              disabled={isClickedBurout}
+            />
+          </ButtonContainer>
+          <ButtonContainer>
+            <Button
+              type="button"
+              background="grey"
+              name="Back"
+              onButtonClick={handleCancel}
+            />
+          </ButtonContainer>
+        </ButtonBidContainer>
       );
     } else {
       return null;
     }
   };
 
-  const renderWinBidButton = (
-    winBid: null | number,
-    ownerId: null | number,
-  ) => {
-    const userId = localStorage.getItem("userId");
-
-    if (winBid !== null && userId !== null && ownerId === parseInt(userId)) {
+  const renderFreeButton = (isFree: boolean, isOwner: boolean) => {
+    if (isFree && !isOwner) {
       return (
-        <ButtonBidContainer>
-          <Button
-            name="Make a bid"
-            onButtonClick={() => setisClickedBurout(true)}
-            disabled={isClickedBurout}
-          />
-          <Button
-            name="Apply"
-            background="#0A5F38"
-            onButtonClick={() => setisClickedBurout(true)}
-            disabled={isClickedBurout}
-          />
-          <Button
-            type="button"
-            background="#EE4266"
-            name="Cancel"
-            onButtonClick={handleCancel}
-          />
-        </ButtonBidContainer>
+        <ButtonFreeContainer>
+          <ButtonContainer>
+            <Button
+              name="Apply"
+              background="#0A5F38"
+              onButtonClick={() => setisClickedBurout(true)}
+              disabled={isClickedBurout}
+            />
+          </ButtonContainer>
+          <ButtonContainer>
+            <Button
+              type="button"
+              background="grey"
+              name="Back"
+              onButtonClick={handleCancel}
+            />
+          </ButtonContainer>
+        </ButtonFreeContainer>
       );
     } else {
       return null;
     }
+  };
+
+  const renderEditButton = (isOwner: boolean, isVisibleEdit: boolean) => {
+    if (!isOwner) {
+      return null;
+    }
+
+    return (
+      <ButtonEditContainer>
+        {isVisibleEdit && (
+          <>
+            <ButtonContainer>
+              <Button
+                background="#B00000"
+                name="Cancel"
+                onButtonClick={handleCancelled}
+                disabled={isClickedBurout}
+              />
+            </ButtonContainer>
+
+            <ButtonContainer>
+              <Button
+                background="#0A5F38"
+                name="Edit"
+                onButtonClick={() => navigate(`/offers/edit/${offersId}`)}
+                disabled={isClickedBurout}
+              />
+            </ButtonContainer>
+          </>
+        )}
+        <ButtonContainer>
+          <Button
+            type="button"
+            background="grey"
+            name="Back"
+            onButtonClick={handleCancel}
+          />
+        </ButtonContainer>
+      </ButtonEditContainer>
+    );
   };
 
   useEffect(() => {
@@ -200,8 +247,8 @@ function ViewOffer() {
   useEffect(() => {
     let timerInterval: NodeJS.Timeout;
 
-    if (offerData?.endAt) {
-      const targetDate = new Date(offerData.endAt).getTime();
+    if (offerData?.auctionEndAt) {
+      const targetDate = new Date(offerData.auctionEndAt).getTime();
 
       timerInterval = setInterval(() => {
         const now = new Date().getTime();
@@ -230,6 +277,52 @@ function ViewOffer() {
     };
   }, [offerData]);
 
+  const isOwner =
+    userId !== null &&
+    offerData !== null &&
+    offerData.ownerId !== null &&
+    offerData.ownerId === parseInt(userId);
+
+  const isVisibleEdit = offerData !== null && offerData.status === "DRAFT";
+
+  const isBurnOut = offerData !== null && offerData.winBid !== null;
+
+  const isFree = offerData?.isFree !== undefined && offerData?.isFree;
+
+  const isVisibleAuction =
+    offerData !== null &&
+    offerData.status !== "DRAFT" &&
+    offerData.status !== "VERIFICATION" &&
+    offerData.status !== "REJECTED" &&
+    offerData.status !== "CANCELLED" &&
+    offerData.status !== "BLOCKED BY ADMIN";
+
+  const handleCancel = () => {
+    navigate(-1);
+  };
+
+  // const handleRejected = () => {
+  //   dispatch(offerDataSliceActions.rejectedOfferById(offersId))
+  //     .then((response) => {
+  //       console.log("rejectedOfferById response:", response);
+  //     })
+  //     .catch((error) => {
+  //       console.error("rejectedOfferById error:", error);
+  //     });
+  //   navigate(`/offers/${offersId}`);
+  // };
+
+  const handleCancelled = () => {
+    dispatch(offerDataSliceActions.cancelledOfferById(offersId))
+      .then((response) => {
+        console.log("rejectedOfferById response:", response);
+      })
+      .catch((error) => {
+        console.error("rejectedOfferById error:", error);
+      });
+    navigate(`/offers/${offersId}`);
+  };
+
   return (
     <OfferWrapper>
       <OfferUpWrapper>
@@ -238,12 +331,22 @@ function ViewOffer() {
             <OfferTitleContainer>
               <Tile>{offerData?.title || ""}</Tile>
               {offerData?.isFree ? (
-                <PriceContainer>Free</PriceContainer>
+                <PriceStatusContainer>
+                  <PriceContainer>Free</PriceContainer>
+                  <StatusContainer>
+                    Status: {offerData?.status || ""}
+                  </StatusContainer>
+                </PriceStatusContainer>
               ) : (
-                <PriceContainer>
-                  Current price: {offerData?.startPrice}
-                  <FaEuroSign size={24} color="green" />
-                </PriceContainer>
+                <PriceStatusContainer>
+                  <PriceContainer>
+                    Current price: {offerData?.startPrice}
+                    <FaEuroSign size={24} color="green" />
+                  </PriceContainer>
+                  <StatusContainer>
+                    Status: {offerData?.status || ""}
+                  </StatusContainer>
+                </PriceStatusContainer>
               )}
             </OfferTitleContainer>
             <OfferInfoOfferContainer>
@@ -263,7 +366,7 @@ function ViewOffer() {
                     <ContainerInfoCommon>
                       <ContainerInfo>
                         <FaUser />
-                        Information
+                        {offerData?.ownerFullName}
                       </ContainerInfo>
                       <ContainerInfo>
                         <BiCategory />
@@ -298,7 +401,7 @@ function ViewOffer() {
                           ""
                         )}
                       </ContainerInfo>
-                      {offerData && offerData.isFree && (
+                      {offerData && offerData.isFree && isVisibleAuction && (
                         <ContainerInfoParticipant>
                           <FaUsers />? participants
                         </ContainerInfoParticipant>
@@ -307,53 +410,52 @@ function ViewOffer() {
                     {offerData && !offerData.isFree && (
                       <ContainerInfoNoFree>
                         <>
-                          <ContainerInfo>
+                          <ContainerInfoPrice>
                             Start price: {offerData.startPrice}
-                            <FaEuroSign size={18} color="#56119c" />
-                          </ContainerInfo>
-                          <ContainerInfo>
-                            Step: {offerData.step}
-                            <FaEuroSign size={18} color="#56119c" />
-                          </ContainerInfo>
-                          <ContainerInfo>
-                            Last bid price: {offerData.step}
-                            <FaEuroSign size={18} color="#56119c" />
-                          </ContainerInfo>
+                            <FaEuroSign size={18} color="#7b001c" />
+                          </ContainerInfoPrice>
+                          {isVisibleAuction && (
+                            <>
+                              <ContainerInfoPrice>
+                                Last bid price: {offerData.startPrice}
+                                <FaEuroSign size={18} color="#7b001c" />
+                              </ContainerInfoPrice>
+                            </>
+                          )}
                         </>
                       </ContainerInfoNoFree>
                     )}
                   </OfferInfoOfferWrapper>
-                  <OfferInfoPriceWrapper>
-                    <ContainerInfo>
-                      Start: {formatDate(offerData?.endAt)}
-                    </ContainerInfo>
-                    <ContainerInfo>
-                      End:{" "}
-                      {offerData?.endAt
-                        ? formatDate(offerData.endAt)
-                        : "Unknown Date"}
-                    </ContainerInfo>
-                    <ContainerInfo>
-                      Timer: {timeRemaining.days}d {timeRemaining.hours}h{" "}
-                      {timeRemaining.minutes}m {timeRemaining.seconds}s
-                    </ContainerInfo>
-                    <ContainerInfo>Bids:</ContainerInfo>
-                  </OfferInfoPriceWrapper>
+                  {isVisibleAuction && (
+                    <OfferInfoPriceWrapper>
+                      <ContainerInfo>
+                        Start: {formatDate(offerData?.auctionStartAt)}
+                      </ContainerInfo>
+                      <ContainerInfo>
+                        End:{" "}
+                        {offerData?.auctionEndAt
+                          ? formatDate(offerData.auctionEndAt)
+                          : "Unknown Date"}
+                      </ContainerInfo>
+                      <ContainerInfo>
+                        Timer: {timeRemaining.days}d {timeRemaining.hours}h{" "}
+                        {timeRemaining.minutes}m {timeRemaining.seconds}s
+                      </ContainerInfo>
+                      {!offerData.isFree && (
+                        <ContainerInfo>Bids:</ContainerInfo>
+                      )}
+                    </OfferInfoPriceWrapper>
+                  )}
                 </OfferInfoWrapper>
               </OfferInfoTextContainer>
             </OfferInfoOfferContainer>
           </OfferTitleInfoContainer>
         </OfferInfoContainer>
         <OfferButtonWrapper>
-          {renderBuyoutButton(
-            offerData?.winBid ?? null,
-            offerData?.ownerId ?? null,
-          )}
-          {renderWinBidButton(
-            offerData?.winBid ?? null,
-            offerData?.ownerId ?? null,
-          )}
-          {renderEditButton(offerData?.ownerId ?? null)}
+          {renderBuyoutButton(isFree, isOwner, isBurnOut)}
+          {renderWinBidButton(isFree, isOwner)}
+          {renderFreeButton(isFree, isOwner)}
+          {renderEditButton(isOwner, isVisibleEdit)}
         </OfferButtonWrapper>
       </OfferUpWrapper>
     </OfferWrapper>

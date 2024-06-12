@@ -70,6 +70,7 @@ function LoginForm() {
 
           localStorage.setItem("accessToken", data.accessToken);
           localStorage.setItem("refreshToken", data.refreshToken);
+          localStorage.setItem("userId", data.clientId);
 
           const event = new CustomEvent("tokenUpdated");
           window.dispatchEvent(event);

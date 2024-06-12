@@ -33,11 +33,13 @@ const DropDownUser: React.FC = () => {
     setIsOpen(false);
   };
 
+  const userId = localStorage.getItem("userId");
+
   const menuItems = [
     { to: "/offers", value: "Create new offer" },
-    { to: "/offers", value: "My creator offers" },
-    { to: "/offers", value: "My Participant offers" },
-    { to: "/offers", value: "Personal information" },
+    { to: `/offers/users/userId=${userId}`, value: "My creator offers" },
+    { to: `/offers/users/userId=${userId}`, value: "My participant offers" },
+    { to: "/aboutMe", value: "Personal information" },
   ];
 
   return (

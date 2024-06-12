@@ -1,7 +1,7 @@
 type ButtonType = "button" | "submit" | "reset" | undefined;
 
 export interface ButtonProps {
-  name: string;
+  name: React.ReactNode;
   type?: ButtonType;
   disabled?: boolean;
   background?: string;
