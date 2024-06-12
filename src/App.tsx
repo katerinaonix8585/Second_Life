@@ -11,6 +11,7 @@ import ViewOffer from "pages/ViewOffer/ViewOffer.tsx";
 import EditOffer from "pages/EditOffer/EditOffer.tsx";
 import MyOffersPages from "pages/MyOffersPages/MyOffersPages.tsx";
 import PersonalInformation from "pages/PersonalInformation/PersonalInformation.tsx";
+import CreateCategory from "pages/CreateCategory/CreateCategory.tsx";
 
 import Layout from "./pages/Layout/Layout";
 import AdminLayout from "./pages/AdminLayout/AdminLayout";
@@ -52,6 +53,9 @@ function App() {
         <Route path="admin/" element={<AdminLayout />}>
           <Route path="auth/admin/login" element={<AdminSignIn />} />
           <Route path="admin/categories/all" element={<ListCategories />} />
+          <Route path="admin/categories" element={<CreateCategory />} />
+          {/* <Route path="admin/categories/edit/:id" element={<EditCategory />} />
+          <Route path="admin/categories/:id" element={<ViewCategory />} /> */}
           <Route index element={<AdminHomePage />} />
         </Route>
 

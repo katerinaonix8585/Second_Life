@@ -34,7 +34,7 @@ const AdminLayout: React.FC = () => {
         <Container>
           <UpHeaderWrapper>
             <HeaderTitleContainer>
-              <HeaderTitle>Admin</HeaderTitle>
+              <HeaderTitle>Second Life. Administrator panel.</HeaderTitle>
             </HeaderTitleContainer>
             <IconsContainer>
               <ButtonContainer>
