@@ -152,6 +152,16 @@ export const ContainerInfo = styled.div`
   font-size: 18px;
 `;
 
+export const ContainerInfoPrice = styled.div`
+  gap: 10px;
+  display: flex;
+  align-items: center;
+  font-family: "LXGW WenKai TC", cursive;
+  color: #7b001c;
+  font-weight: 700;
+  font-size: 18px;
+`;
+
 export const ContainerInfoParticipant = styled.div`
   gap: 10px;
   display: flex;
@@ -207,9 +217,10 @@ export const OfferButtonWrapper = styled.div`
   width: 100%;
   /* border: 2px solid black; */
   display: flex;
-  gap: 10px;
-  padding: 20px;
-  justify-content: space-between;
+  /* gap: 400px; */
+  padding: 30px 30px 30px 70px;
+  justify-content: flex-end;
+  align-items: center;
 `;
 
 export const ButtonWinBidContainer = styled.div`
@@ -218,11 +229,19 @@ export const ButtonWinBidContainer = styled.div`
   gap: 20px;
   flex-direction: column;
   align-items: flex-end;
-  justify-content: end;
+  justify-content: center;
 `;
 
 export const ButtonEditContainer = styled.div`
-  width: 400px;
+  width: 100%;
+  display: flex;
+  gap: 20px;
+  align-items: flex-end;
+  justify-content: end;
+`;
+
+export const ButtonContainer = styled.div`
+  width: 200px;
   display: flex;
   gap: 20px;
   align-items: flex-end;
@@ -230,7 +249,15 @@ export const ButtonEditContainer = styled.div`
 `;
 
 export const ButtonBidContainer = styled.div`
-  width: 600px;
+  width: 1000px;
+  display: flex;
+  gap: 20px;
+  align-items: center;
+  justify-content: end;
+`;
+
+export const ButtonFreeContainer = styled.div`
+  width: 400px;
   display: flex;
   gap: 20px;
   align-items: flex-end;
@@ -248,4 +275,22 @@ export const ButtonCommonContainer = styled.div`
 
 export const NewPriceArea = styled.div`
   border: 2px solid black;
+`;
+
+export const PriceStatusContainer = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  align-items: end;
+  padding: 0 20px 0 0;
+`;
+
+export const StatusContainer = styled.div`
+  display: flex;
+  justify-content: center;
+  color: blue;
+  align-items: center;
+  font-family: "LXGW WenKai TC", cursive;
+  font-weight: bold;
+  font-size: 20px;
 `;

@@ -14,7 +14,6 @@ export interface OfferFormValues {
   category: CategoryData;
   location: LocationData;
   startPrice?: number | null;
-  step?: number | null;
   winbid?: number | null;
   ownerId?: number | null;
 }
@@ -27,6 +26,5 @@ export enum OFFER_DATA {
   DURATIONAUCTION = "durationAuction",
   CATEGORY = "category",
   STARTPRICE = "startPrice",
-  STEP = "step",
   WINBID = "winbid",
 }

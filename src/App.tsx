@@ -9,6 +9,8 @@ import AdminSignIn from "pages/AdminSignIn/AdminSignIn.tsx";
 import OffersPage from "pages/OffersPages/OffersPage.tsx";
 import ViewOffer from "pages/ViewOffer/ViewOffer.tsx";
 import EditOffer from "pages/EditOffer/EditOffer.tsx";
+import MyOffersPages from "pages/MyOffersPages/MyOffersPages.tsx";
+import PersonalInformation from "pages/PersonalInformation/PersonalInformation.tsx";
 
 import Layout from "./pages/Layout/Layout";
 import AdminLayout from "./pages/AdminLayout/AdminLayout";
@@ -28,6 +30,7 @@ function App() {
           <Route path="auth/user/login" element={<SignIn />} />
           <Route path="offers" element={<CreateOffer />} />
           <Route path="signup" element={<SignUp />} />
+          <Route path="aboutMe" element={<PersonalInformation />} />
           <Route path="/category">
             <Route index element={<Category />} />
             <Route path=":id" element={<CategoryPage />} />
@@ -38,6 +41,7 @@ function App() {
             <Route path="edit/:offersId" element={<EditOffer />} />
             <Route path="all" element={<Offers />} />
             <Route path="all/:id" element={<OffersPage />} />
+            <Route path="users/:userId" element={<MyOffersPages />} />
             <Route path=":id" element={<OffersPage />} />
             <Route path=":ownerId" element={<OffersPage />} />
           </Route>

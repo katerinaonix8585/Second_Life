@@ -3,6 +3,7 @@ import { useFormik } from "formik";
 import { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 
+import { offerDataSliceActions } from "store/redux/offer/offer";
 import Input from "components/Input/Input";
 import Select from "components/Select/Select";
 import { SelectDataProps } from "components/Select/types";
@@ -14,8 +15,7 @@ import { useAppDispatch, useAppSelector } from "store/hooks";
 import { locationsDataSliceSelectors } from "store/redux/location/locationSlice";
 import { categorysDataSliceSelectors } from "store/redux/category/categorySlice";
 import ImageUpload from "components/ImageUpload/ImageUpload";
-import { offerDataSliceActions } from "store/redux/offer/offer";
-import { OfferData } from "store/redux/offers/types";
+import { OfferData } from "store/redux/offer/types";
 
 import {
   OfferButtonContainer,
@@ -48,11 +48,12 @@ import { typeOfferData } from "./OffersData";
 const BASE_URL = "https://second-life-app-y2el9.ondigitalocean.app/api";
 
 function EditOffer() {
-  const { offersId } = useParams<{ offersId: string }>();
+  const { offersId = "" } = useParams<{ offersId?: string }>();
   const navigate = useNavigate();
   const [selectedType, setSelectedType] = useState<TypeOfferData | null>(null);
   const [isSelectOpen, setSelectOpenState] = useState(false);
   const [offerData, setOfferData] = useState<OfferData | null>(null);
+  const [toVerification, setToVerification] = useState(false);
   // const [status, setStatus] = useState<string>("");
 
   const dispatch = useAppDispatch();
@@ -150,7 +151,6 @@ function EditOffer() {
             [OFFER_DATA.CATEGORY]: initialCategory || ({} as CategoryData),
             [OFFER_DATA.LOCATION]: initialLocation || ({} as LocationData),
             [OFFER_DATA.STARTPRICE]: response.payload?.startPrice || null,
-            [OFFER_DATA.STEP]: response.payload?.step || null,
             [OFFER_DATA.WINBID]: response.payload?.winBid || null,
           });
         })
@@ -169,7 +169,6 @@ function EditOffer() {
       [OFFER_DATA.CATEGORY]: {} as CategoryData,
       [OFFER_DATA.LOCATION]: {} as LocationData,
       [OFFER_DATA.STARTPRICE]: null,
-      [OFFER_DATA.STEP]: null,
       [OFFER_DATA.WINBID]: null,
     },
     onSubmit: async (values: OfferFormValues) => {
@@ -211,11 +210,9 @@ function EditOffer() {
 
         if (values.type?.id && values.type.id !== 0) {
           const startPrice = Number(values.startPrice);
-          const step = Number(values.step);
           const winbid = Number(values.winbid);
 
           console.log("Validating startPrice:", startPrice);
-          console.log("Validating step:", step);
           console.log("Validating winbid:", winbid);
 
           if (!startPrice || startPrice <= 0 || !Number.isInteger(startPrice)) {
@@ -223,14 +220,6 @@ function EditOffer() {
               field: OFFER_DATA.STARTPRICE,
               message:
                 "Field Start price is required, must be greater than zero and an integer",
-            });
-          }
-
-          if (!step || step <= 0 || !Number.isInteger(step)) {
-            errors.push({
-              field: OFFER_DATA.STEP,
-              message:
-                "Field Step is required, must be greater than zero and an integer",
             });
           }
 
@@ -280,10 +269,6 @@ function EditOffer() {
             values.startPrice === 0 || values.startPrice === null
               ? null
               : Number(values.startPrice),
-          step:
-            values.step === 0 || values.step === null
-              ? null
-              : Number(values.step),
           winBid:
             values.winbid === 0 || values.winbid === null
               ? null
@@ -291,7 +276,7 @@ function EditOffer() {
           isFree: values.type?.id === 0,
           categoryId: values.category.id,
           locationId: values.location.id === 0 ? "" : values.location.id,
-          // status: status,
+          sendToVerification: toVerification ? "VERIFICATION" : "DRAFT",
         };
 
         console.log("Request body:", requestBody);
@@ -393,6 +378,27 @@ function EditOffer() {
   const handleBlur = (name: string) => {
     console.log(`Blurred on field ${name}`);
     setSelectOpenState(false);
+  };
+
+  const handleSubmit = () => {
+    setToVerification(true);
+    formik.handleSubmit();
+  };
+
+  const handleSave = () => {
+    setToVerification(false);
+    formik.handleSubmit();
+  };
+
+  const handleCancelled = () => {
+    dispatch(offerDataSliceActions.cancelledOfferById(offersId))
+      .then((response) => {
+        console.log("rejectedOfferById response:", response);
+      })
+      .catch((error) => {
+        console.error("rejectedOfferById error:", error);
+      });
+    navigate(`/offers/${offersId}`);
   };
 
   return (
@@ -504,10 +510,18 @@ function EditOffer() {
               <OfferButtonContainer>
                 <OfferButtonWrapper>
                   <Button
+                    background="#B00000"
+                    name="Cancel"
+                    onButtonClick={handleCancelled}
+                    // disabled={isClickedBurout}
+                  />
+                </OfferButtonWrapper>
+                <OfferButtonWrapper>
+                  <Button
                     type="submit"
                     background="grey"
                     name="Save"
-                    // onButtonClick={handleSaveAsDraft}
+                    onButtonClick={handleSave}
                   />
                 </OfferButtonWrapper>
                 <OfferButtonWrapper>
@@ -515,14 +529,14 @@ function EditOffer() {
                     type="submit"
                     background="#0A5F38"
                     name="Submit"
-                    // onButtonClick={handleSubmit}
+                    onButtonClick={handleSubmit}
                   />
                 </OfferButtonWrapper>
                 <OfferButtonWrapper>
                   <Button
                     type="button"
-                    background="#B32821"
-                    name="Cancel"
+                    background="grey"
+                    name="Back"
                     onButtonClick={() => navigate(-1)}
                   />
                 </OfferButtonWrapper>
