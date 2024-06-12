@@ -214,7 +214,7 @@ function CreateOffer() {
           isFree: values.type?.id === 0,
           categoryId: values.category.id,
           locationId: values.location.id === 0 ? "" : values.location.id,
-          sendToVerification: toVerification ? "VERIFICATION" : "DRAFT",
+          sendToVerification: toVerification,
         };
 
         console.log("Request body:", requestBody);
