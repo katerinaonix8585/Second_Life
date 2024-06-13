@@ -29,34 +29,34 @@ function CategoryCard({ categoryCardData }: CategoryCardProps) {
 
   let src;
   switch (image) {
-    case 1:
+    case "1":
       src = img1;
       break;
-    case 2:
+    case "2":
       src = img2;
       break;
-    case 3:
+    case "3":
       src = img3;
       break;
-    case 4:
+    case "4":
       src = img4;
       break;
-    case 5:
+    case "5":
       src = img5;
       break;
-    case 6:
+    case "6":
       src = img6;
       break;
-    case 7:
+    case "7":
       src = img7;
       break;
-    case 8:
+    case "8":
       src = img8;
       break;
-    case 9:
+    case "9":
       src = img9;
       break;
-    case 10:
+    case "10":
       src = img10;
       break;
     default:
