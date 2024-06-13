@@ -9,11 +9,17 @@ import {
   TextBlock,
 } from "./style.ts";
 
+const BASE_URL =
+  "https://second-life-app-y2el9.ondigitalocean.app/api/v1/admin/auth/admin/login";
+
 function AboutUs() {
   return (
     <AboutWrapper>
       <Container>
         <ImgContainer>
+          <div>
+            <a href={BASE_URL}>Login as Admin</a>
+          </div>
           <TreePicture />
         </ImgContainer>
         <TextBlock>

@@ -180,7 +180,7 @@ export const TextAreaWrapper = styled.div`
   font-family: "DM Sans", sans-serif;
 `;
 
-export const CategoryInfoTextWrapper = styled.div`
+export const CategoryITW = styled.div`
   display: flex;
   align-items: center;
   gap: 15px;

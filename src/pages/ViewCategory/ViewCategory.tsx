@@ -12,8 +12,8 @@ import { Img } from "pages/ViewOffer/styles.ts";
 import {
   CategoryButtonWrapper,
   CategoryButtonsWrapper,
+  CategoryITW,
   CategoryImageWrapper,
-  CategoryInfoTextWrapper,
   CategoryInfoWrapper,
   CategoryLeftWrapper,
   CategoryWrapper,
@@ -78,24 +78,24 @@ function ViewCategory() {
               <Img />
             </CategoryImageWrapper>
             <CategoryLeftWrapper>
-              <CategoryInfoTextWrapper>
+              <CategoryITW>
                 <Tile>Name: </Tile>
                 <TileStatus>{categoryData.data.name || ""}</TileStatus>
-              </CategoryInfoTextWrapper>
-              <CategoryInfoTextWrapper>
+              </CategoryITW>
+              <CategoryITW>
                 <Tile>Description: </Tile>
-              </CategoryInfoTextWrapper>
+              </CategoryITW>
               <OfferTextAreaWrapper>
                 <TextAreaWrapper>
                   {categoryData.data.description || ""}
                 </TextAreaWrapper>
               </OfferTextAreaWrapper>
-              <CategoryInfoTextWrapper>
+              <CategoryITW>
                 <Tile>Status: </Tile>
                 <TileStatus>
                   {categoryData.data.active ? "aktive" : "inactive"}
                 </TileStatus>
-              </CategoryInfoTextWrapper>
+              </CategoryITW>
             </CategoryLeftWrapper>
           </CategoryInfoWrapper>
           <CategoryButtonsWrapper>
