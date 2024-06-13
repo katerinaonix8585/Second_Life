@@ -14,6 +14,7 @@ import PersonalInformation from "pages/PersonalInformation/PersonalInformation.t
 import CreateCategory from "pages/CreateCategory/CreateCategory.tsx";
 import ViewCategory from "pages/ViewCategory/ViewCategory.tsx";
 import EditCategory from "pages/EditCategory/EditCategory.tsx";
+import ListOffers from "pages/ListOffers/ListOffers.tsx";
 
 import Layout from "./pages/Layout/Layout";
 import AdminLayout from "./pages/AdminLayout/AdminLayout";
@@ -22,6 +23,7 @@ import Offers from "./pages/Offers/Offers.tsx";
 import AboutUs from "./pages/About/AboutUs.tsx";
 import AdminHomePage from "./pages/AdminHomePage/AdminHomePage.tsx";
 import ListCategories from "./pages/ListCategories/ListCategories.tsx";
+import ViewAdminOffer from "pages/ViewAdminOffer/ViewAdminOffer.tsx";
 
 function App() {
   return (
@@ -59,6 +61,8 @@ function App() {
           <Route path="categories" element={<CreateCategory />} />
           <Route path="categories/edit/:id" element={<EditCategory />} />
           <Route path="categories/:id" element={<ViewCategory />} />
+          <Route path="offers/all" element={<ListOffers />} />
+          <Route path="offers/:id" element={<ViewAdminOffer />} />
         </Route>
 
         {/* Fallback route */}

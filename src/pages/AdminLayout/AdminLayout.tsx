@@ -1,6 +1,16 @@
 import { Link, Outlet, useLocation, useNavigate } from "react-router-dom";
 import { useState, useEffect } from "react";
 
+import {
+  locationsDataSliceActions,
+  locationsDataSliceSelectors,
+} from "store/redux/location/locationSlice.ts";
+import { useAppDispatch, useAppSelector } from "store/hooks.ts";
+import {
+  categorysDataSliceActions,
+  categorysDataSliceSelectors,
+} from "store/redux/category/categorySlice.ts";
+
 import Button from "../../components/Button/Button.tsx";
 import { SideBarContainer } from "../AdminHomePage/style.ts";
 import Sidebar from "../../components/Sidebar/Sidebar.tsx";
@@ -23,6 +33,7 @@ import {
 
 const AdminLayout: React.FC = () => {
   const navigate = useNavigate();
+  const dispatch = useAppDispatch();
   const { pathname } = useLocation();
   const [accessToken, setAccessToken] = useState<string | null>(
     localStorage.getItem("accessAdminToken"),
@@ -32,6 +43,24 @@ const AdminLayout: React.FC = () => {
   const goToHomePage = () => {
     navigate("/");
   };
+
+  const { data: locationsData } = useAppSelector(
+    locationsDataSliceSelectors.location,
+  );
+  const { data: catigoriesData } = useAppSelector(
+    categorysDataSliceSelectors.category,
+  );
+
+  console.log(locationsData);
+  console.log(catigoriesData);
+
+  useEffect(() => {
+    dispatch(locationsDataSliceActions.getLocation());
+  }, [dispatch]);
+
+  useEffect(() => {
+    dispatch(categorysDataSliceActions.getCategory());
+  }, [dispatch]);
 
   const isVisible = pathname !== "/admin/auth/admin/login";
 

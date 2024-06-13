@@ -34,6 +34,15 @@ const items: MenuItem[] = [
     getItem(<Link to="categories/all">List category</Link>, "listCategory"),
     getItem(<Link to="categories">New category</Link>, "newCategory"),
   ]),
+  getItem("Offers", "offers", <FilterOutlined />, [
+    getItem(<Link to="offers/all">Verification</Link>, "verification"),
+    getItem(<Link to="offers/all">Rejected</Link>, "rejected"),
+    getItem(<Link to="offers/all">Auction started</Link>, "auction_started"),
+    getItem(<Link to="offers/all">Qualification</Link>, "qualification"),
+    getItem(<Link to="offers/all">Completed</Link>, "completed"),
+    getItem(<Link to="offers/all">Cancelled</Link>, "cancelled"),
+    getItem(<Link to="offers/all">Blocked</Link>, "blocked_by_admin"),
+  ]),
 ];
 
 const App: React.FC = () => {

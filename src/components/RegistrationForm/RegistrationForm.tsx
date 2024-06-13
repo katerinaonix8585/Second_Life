@@ -1,9 +1,10 @@
+import { useState } from "react";
 import { useFormik } from "formik";
 import * as Yup from "yup";
 import { CiUser } from "react-icons/ci";
 import { RiLockPasswordLine } from "react-icons/ri";
 import { MdOutlineEmail } from "react-icons/md";
-import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 
 import Button from "components/Button/Button.tsx";
 import InputPassword from "components/InputPassword/InputPassword.tsx";
@@ -15,14 +16,17 @@ import {
   LoginFormName,
   InputsContainer,
   ButtonWrapper,
+  TextSuccess,
 } from "./styles.ts";
 
 const BASE_URL = "https://second-life-app-y2el9.ondigitalocean.app/api/v1";
 
 function RegistrationForm() {
+  const navigate = useNavigate();
   const [serverErrors, setServerErrors] = useState<{ [key: string]: string }>(
     {},
   );
+  const [registrationSuccess, setRegistrationSuccess] = useState(false);
 
   const schema = Yup.object().shape({
     [LOGIN_FIELD_NAMES.EMAIL]: Yup.string()
@@ -121,7 +125,7 @@ function RegistrationForm() {
         if (response.ok) {
           const data = await response.json();
           console.log("Registration successful:", data);
-          // Дополнительная логика после успешной регистрации, например, перенаправление
+          setRegistrationSuccess(true);
         } else {
           const errorData = await response.json();
           if (response.status === 409) {
@@ -145,6 +149,11 @@ function RegistrationForm() {
       }
     },
   });
+
+  const handleOkClick = () => {
+    setRegistrationSuccess(false);
+    navigate("/auth/user/login");
+  };
 
   return (
     <LoginFormComponent
@@ -217,9 +226,17 @@ function RegistrationForm() {
       {serverErrors.general && (
         <div style={{ color: "red" }}>{serverErrors.general}</div>
       )}
-      <ButtonWrapper>
-        <Button type="submit" name="Sign up" />
-      </ButtonWrapper>
+      {registrationSuccess && (
+        <div>
+          <TextSuccess>Registration successful</TextSuccess>
+          <Button name="ОК" onButtonClick={handleOkClick} />
+        </div>
+      )}
+      {!registrationSuccess && (
+        <ButtonWrapper>
+          <Button type="submit" name="Sign up" />
+        </ButtonWrapper>
+      )}
     </LoginFormComponent>
   );
 }
