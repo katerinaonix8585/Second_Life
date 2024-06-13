@@ -129,7 +129,7 @@ function RegistrationForm() {
           setRegistrationSuccess(true);
         } else {
           const errorData = await response.json();
-          if (response.status === 409) {
+          if (response.status === 422) {
             setServerErrors({ email: "Email already exists" });
           } else if (response.status === 400 && errorData.errors) {
             const newErrors: { [key: string]: string } = {};
