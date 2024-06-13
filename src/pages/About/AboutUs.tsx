@@ -9,7 +9,7 @@ import {
   TextBlock,
 } from "./style.ts";
 
-const BASE_URL = "/admin/auth/admin/login";
+const BASE_URL = "admin/";
 
 function AboutUs() {
   return (
