@@ -48,7 +48,7 @@ function Home() {
           name: category.name,
           description: category.description,
           active: category.active,
-          image: category.id,
+          image: category.id.toString(),
         },
       }));
       setCategoryCards(categoryCardsData);

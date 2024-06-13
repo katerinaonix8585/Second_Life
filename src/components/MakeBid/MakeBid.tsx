@@ -1,13 +1,10 @@
-import React from "react";
-
 import Button from "components/Button/Button";
 
 import { CounterWrapper, InputBid, ButtonControl } from "./styles";
 import { CounterProps } from "./types";
 
 function Counter({ countValue, onMakeABid }: CounterProps) {
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+  const handleChange = () => {
     // Handle the change event here if necessary
     // Example: Update parent state or perform validation
   };
