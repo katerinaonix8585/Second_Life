@@ -9,8 +9,7 @@ import {
   TextBlock,
 } from "./style.ts";
 
-const BASE_URL =
-  "https://second-life-app-y2el9.ondigitalocean.app/api/v1/admin/auth/admin/login";
+const BASE_URL = "/admin/auth/admin/login";
 
 function AboutUs() {
   return (
