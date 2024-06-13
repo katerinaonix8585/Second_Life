@@ -33,7 +33,7 @@ function CategoryPage() {
               key={categoryData.id}
               categoryCardData={{
                 ...categoryData,
-                image: categoryData.id,
+                image: categoryData.id.toString(),
               }}
             />
           ))}
