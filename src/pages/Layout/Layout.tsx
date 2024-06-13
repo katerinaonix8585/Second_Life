@@ -141,7 +141,7 @@ const Layout: React.FC = () => {
 
   const sendLogoutRequest = async () => {
     try {
-      const response = await fetch(`${BASE_URL}/v1/user/logout`, {
+      const response = await fetch(`${BASE_URL}/v1/auth/user/logout`, {
         method: "GET",
         headers: {
           Authorization: `Bearer ${accessToken}`,

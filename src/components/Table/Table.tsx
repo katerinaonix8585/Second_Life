@@ -3,12 +3,13 @@ import { Space, Table } from "antd";
 import { Link } from "react-router-dom";
 import { SortOrder } from "antd/lib/table/interface";
 
-import { CategoryData } from "store/redux/category/types";
+import { useAppDispatch, useAppSelector } from "store/hooks";
 import {
   categorysDataSliceActions,
   categorysDataSliceSelectors,
 } from "store/redux/category/categorySlice";
-import { useAppDispatch, useAppSelector } from "store/hooks";
+import { CategoryData } from "store/redux/categoryOne/types";
+import { categorysOneDataSliceActions } from "store/redux/categoryOne/categoryOneSlice";
 
 const App: React.FC = () => {
   const dispatch = useAppDispatch();
@@ -20,6 +21,30 @@ const App: React.FC = () => {
   useEffect(() => {
     dispatch(categorysDataSliceActions.getCategory());
   }, [dispatch]);
+
+  const handleEdit = (id: number) => {
+    window.location.href = `/admin/categories/edit/${id}`;
+  };
+
+  const handleHide = (id: string) => {
+    dispatch(categorysOneDataSliceActions.hideCategoryById(id))
+      .then((response) => {
+        console.log("hideCategoryById response:", response);
+      })
+      .catch((error) => {
+        console.error("hideCategoryById error:", error);
+      });
+  };
+
+  const handleActive = (id: string) => {
+    dispatch(categorysOneDataSliceActions.hideCategoryById(id))
+      .then((response) => {
+        console.log("hideCategoryById response:", response);
+      })
+      .catch((error) => {
+        console.error("hideCategoryById error:", error);
+      });
+  };
 
   const columns = [
     {
@@ -35,7 +60,7 @@ const App: React.FC = () => {
       dataIndex: "name",
       key: "name",
       render: (text: string, record: CategoryData) => (
-        <Link to={`/category/${record.id}`}>{text}</Link>
+        <Link to={`/admin/categories/${record.id}`}>{text}</Link>
       ),
     },
     {
@@ -52,10 +77,16 @@ const App: React.FC = () => {
     {
       title: "Action",
       key: "action",
-      render: () => (
+      render: (_text: string, record: CategoryData) => (
         <Space size="middle">
-          <a>Edit</a>
-          <a>Hide</a>
+          <a onClick={() => handleEdit(record.id)}>Edit</a>
+          {record.active ? (
+            <a onClick={() => handleHide(Number(record.id).toString())}>Hide</a>
+          ) : (
+            <a onClick={() => handleActive(Number(record.id).toString())}>
+              Active
+            </a>
+          )}
         </Space>
       ),
     },

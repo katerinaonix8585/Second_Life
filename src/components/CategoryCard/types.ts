@@ -3,7 +3,7 @@ export interface CategoryData {
   name: string;
   description: string;
   active: boolean;
-  image: number;
+  image: string;
 }
 
 export interface CategoryCardProps {

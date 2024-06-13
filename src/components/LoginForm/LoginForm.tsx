@@ -68,9 +68,15 @@ function LoginForm() {
           const data = await response.json();
           console.log("Login successful:", data);
 
-          localStorage.setItem("accessToken", data.accessToken);
-          localStorage.setItem("refreshToken", data.refreshToken);
-          localStorage.setItem("userId", data.clientId);
+          if (location.pathname.includes("/user/login")) {
+            localStorage.setItem("accessToken", data.accessToken);
+            localStorage.setItem("refreshToken", data.refreshToken);
+            localStorage.setItem("userId", data.clientId);
+          } else {
+            localStorage.setItem("adminId", data.clientId);
+            localStorage.setItem("accessAdminToken", data.accessToken);
+            localStorage.setItem("refreshAdminToken", data.refreshToken);
+          }
 
           const event = new CustomEvent("tokenUpdated");
           window.dispatchEvent(event);

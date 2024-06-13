@@ -1,4 +1,5 @@
 import { Link, Outlet, useLocation, useNavigate } from "react-router-dom";
+import { useState, useEffect } from "react";
 
 import Button from "../../components/Button/Button.tsx";
 import { SideBarContainer } from "../AdminHomePage/style.ts";
@@ -17,16 +18,73 @@ import {
   UpHeaderWrapper,
   ButtonContainer,
   MainContainer,
+  LogoutButton,
 } from "./styles";
 
 const AdminLayout: React.FC = () => {
   const navigate = useNavigate();
+  const { pathname } = useLocation();
+  const [accessToken, setAccessToken] = useState<string | null>(
+    localStorage.getItem("accessAdminToken"),
+  );
+  const [loading, setLoading] = useState(true);
+
   const goToHomePage = () => {
     navigate("/");
   };
-  const { pathname } = useLocation();
 
   const isVisible = pathname !== "/admin/auth/admin/login";
+
+  const BASE_URL = "https://second-life-app-y2el9.ondigitalocean.app/api";
+
+  const handleLogout = async () => {
+    console.log("Logout initiated");
+    try {
+      await sendLogoutRequest();
+      localStorage.removeItem("accessAdminToken");
+      localStorage.removeItem("refreshAdminToken");
+      localStorage.removeItem("adminId");
+      setAccessToken(null);
+      navigate("auth/admin/login");
+      console.log("Logout successful");
+    } catch (error) {
+      console.error("Error logging out:", error);
+    }
+  };
+
+  const sendLogoutRequest = async () => {
+    try {
+      const response = await fetch(`${BASE_URL}/v1/auth/admin/logout`, {
+        method: "GET",
+        headers: {
+          Authorization: `Bearer ${accessToken}`,
+        },
+      });
+      if (!response.ok) {
+        throw new Error("Failed to logout");
+      }
+    } catch (error) {
+      console.error("Error logging out:", error as Error);
+    }
+  };
+
+  useEffect(() => {
+    const handleTokenUpdate = () => {
+      setAccessToken(localStorage.getItem("accessAdminToken"));
+    };
+
+    window.addEventListener("tokenUpdated", handleTokenUpdate);
+    handleTokenUpdate();
+    setLoading(false);
+
+    return () => {
+      window.removeEventListener("tokenUpdated", handleTokenUpdate);
+    };
+  }, []);
+
+  if (loading) {
+    return <div>Loading...</div>;
+  }
 
   return (
     <LayoutWrapper>
@@ -44,14 +102,19 @@ const AdminLayout: React.FC = () => {
                   isAdminButton={true}
                 />
               </ButtonContainer>
-              <Link
-                to="/admin/auth/admin/login"
-                style={{ textDecoration: "none" }}
-              >
+              {accessToken ? (
                 <HeaderLoginContainer>
-                  <HeaderLogin />
+                  <LogoutButton onClick={handleLogout}>
+                    <HeaderLogin />
+                  </LogoutButton>
                 </HeaderLoginContainer>
-              </Link>
+              ) : (
+                <Link to="auth/admin/login" style={{ textDecoration: "none" }}>
+                  <HeaderLoginContainer>
+                    <HeaderLogin />
+                  </HeaderLoginContainer>
+                </Link>
+              )}
             </IconsContainer>
           </UpHeaderWrapper>
         </Container>

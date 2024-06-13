@@ -48,8 +48,7 @@ export const HeaderTitleContainer = styled.div`
 export const HeaderTitle = styled.h2`
   font-size: 36px;
   color: #56119c;
-  font-family: "DM Sans", sans-serif;
-  font-style: italic;
+  font-family: "LXGW WenKai TC", cursive;
 `;
 
 export const ButtonContainer = styled.div``;
@@ -100,3 +99,18 @@ export const MainContainer = styled.div`
 `;
 
 HeaderUser.defaultProps = { src: User };
+
+export const LogoutButton = styled.button`
+  background: none;
+  border: none;
+  width: 40px;
+  height: 40px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  &:hover {
+    opacity: 0.7;
+  }
+`;
