@@ -16,21 +16,38 @@ const fetchOfferById = async (
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   thunkApi: any,
   method: string = "GET",
+  accessToken: string,
+  rejectionReasonId?: number,
 ) => {
-  const accessToken = localStorage.getItem("accessToken");
-  if (!accessToken) {
+  const token =
+    accessToken === "accessAdminToken"
+      ? localStorage.getItem("accessAdminToken")
+      : localStorage.getItem("accessToken");
+
+  if (!token) {
     return thunkApi.rejectWithValue({ message: "Access token not found" });
   }
 
   try {
     console.log(`Fetching offer with ID: ${offerId} using ${method} method`);
+    const headers: Record<string, string> = {
+      Authorization: `Bearer ${token}`,
+      "Content-Type": "application/json",
+    };
+
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    const body: Record<string, any> = {};
+
+    if (rejectionReasonId !== undefined) {
+      body.rejectionReasonId = rejectionReasonId;
+    }
+
     const response = await fetch(
       `${BASE_URL}/v1/offers/${offerId}${endpoint}`,
       {
         method,
-        headers: {
-          Authorization: `Bearer ${accessToken}`,
-        },
+        headers,
+        body: method === "PATCH" ? JSON.stringify(body) : undefined, // Преобразуем body в строку JSON для PATCH запроса
       },
     );
     const result = await response.json();
@@ -54,7 +71,44 @@ export const offerSlice = createAppSlice({
   reducers: (create) => ({
     getOfferById: create.asyncThunk(
       async (offerId: string, thunkApi) => {
-        return fetchOfferById(offerId, "", thunkApi);
+        return fetchOfferById(offerId, "", thunkApi, "GET", "accessToken");
+      },
+      {
+        pending: (state: OfferDataSliceState) => {
+          console.log("Fetching offer - pending");
+          state.statusOffer = "loading";
+          state.errorOffer = undefined;
+        },
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        fulfilled: (state: OfferDataSliceState, action: any) => {
+          console.log(
+            "Fetching offer - fulfilled with payload:",
+            action.payload,
+          );
+          state.statusOffer = "success";
+          state.data = action.payload;
+          state.errorOffer = undefined;
+        },
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        rejected: (state: OfferDataSliceState, action: any) => {
+          console.error(
+            "Fetching offer - rejected with payload:",
+            action.payload,
+          );
+          state.statusOffer = "error";
+          state.errorOffer = action.payload;
+        },
+      },
+    ),
+    completedOfferById: create.asyncThunk(
+      async (offerId: string, thunkApi) => {
+        return fetchOfferById(
+          offerId,
+          "/complete",
+          thunkApi,
+          "PATCH",
+          "accessToken",
+        );
       },
       {
         pending: (state: OfferDataSliceState) => {
@@ -84,8 +138,95 @@ export const offerSlice = createAppSlice({
       },
     ),
     rejectedOfferById: create.asyncThunk(
+      async (
+        {
+          offerId,
+          rejectionReasonId,
+        }: { offerId: string; rejectionReasonId: number },
+        thunkApi,
+      ) => {
+        return fetchOfferById(
+          offerId,
+          "/reject",
+          thunkApi,
+          "PATCH",
+          "accessAdminToken",
+          rejectionReasonId,
+        );
+      },
+      {
+        pending: (state: OfferDataSliceState) => {
+          console.log("Fetching offer - pending");
+          state.statusOffer = "loading";
+          state.errorOffer = undefined;
+        },
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        fulfilled: (state: OfferDataSliceState, action: any) => {
+          console.log(
+            "Fetching offer - fulfilled with payload:",
+            action.payload,
+          );
+          state.statusOffer = "success";
+          state.data = action.payload;
+          state.errorOffer = undefined;
+        },
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        rejected: (state: OfferDataSliceState, action: any) => {
+          console.error(
+            "Fetching offer - rejected with payload:",
+            action.payload,
+          );
+          state.statusOffer = "error";
+          state.errorOffer = action.payload;
+        },
+      },
+    ),
+    blockedOfferById: create.asyncThunk(
       async (offerId: string, thunkApi) => {
-        return fetchOfferById(offerId, "/rejected", thunkApi, "DELETE");
+        return fetchOfferById(
+          offerId,
+          "/block-by-admin",
+          thunkApi,
+          "DELETE",
+          "accessAdminToken",
+        );
+      },
+      {
+        pending: (state: OfferDataSliceState) => {
+          console.log("Fetching offer - pending");
+          state.statusOffer = "loading";
+          state.errorOffer = undefined;
+        },
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        fulfilled: (state: OfferDataSliceState, action: any) => {
+          console.log(
+            "Fetching offer - fulfilled with payload:",
+            action.payload,
+          );
+          state.statusOffer = "success";
+          state.data = action.payload;
+          state.errorOffer = undefined;
+        },
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        rejected: (state: OfferDataSliceState, action: any) => {
+          console.error(
+            "Fetching offer - rejected with payload:",
+            action.payload,
+          );
+          state.statusOffer = "error";
+          state.errorOffer = action.payload;
+        },
+      },
+    ),
+    verifyOfferById: create.asyncThunk(
+      async (offerId: string, thunkApi) => {
+        return fetchOfferById(
+          offerId,
+          "/start-auction",
+          thunkApi,
+          "PATCH",
+          "accessAdminToken",
+        );
       },
       {
         pending: (state: OfferDataSliceState) => {
@@ -116,7 +257,13 @@ export const offerSlice = createAppSlice({
     ),
     cancelledOfferById: create.asyncThunk(
       async (offerId: string, thunkApi) => {
-        return fetchOfferById(offerId, "/cancel", thunkApi, "DELETE");
+        return fetchOfferById(
+          offerId,
+          "/cancel",
+          thunkApi,
+          "DELETE",
+          "accessAdminToken",
+        );
       },
       {
         pending: (state: OfferDataSliceState) => {
@@ -147,7 +294,13 @@ export const offerSlice = createAppSlice({
     ),
     burnoutOfferById: create.asyncThunk(
       async (offerId: string, thunkApi) => {
-        return fetchOfferById(offerId, "/complete", thunkApi, "PATCH");
+        return fetchOfferById(
+          offerId,
+          "/complete",
+          thunkApi,
+          "PATCH",
+          "accessAdminToken",
+        );
       },
       {
         pending: (state: OfferDataSliceState) => {

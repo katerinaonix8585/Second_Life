@@ -31,3 +31,11 @@ export const ButtonWrapper = styled.div`
   align-items: center;
   width: 200px;
 `;
+
+export const TextSuccess = styled.p`
+  font-size: 16px;
+  font-weight: bold;
+  color: red;
+  font-family: "LibreFranklin", sans-serif;
+  padding: 10px;
+`;

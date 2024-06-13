@@ -111,8 +111,8 @@ function ViewOffer() {
         <ButtonWinBidContainer>
           {offerData !== null && (
             <Button
-              name={`Buyout ${offerData.winBid} `}
-              onButtonClick={() => setisClickedBurout(true)}
+              name={`Buyout ${offerData.winBid} €`}
+              onButtonClick={handleBurnout}
               disabled={isClickedBurout}
             />
           )}
@@ -128,14 +128,14 @@ function ViewOffer() {
       return (
         <ButtonBidContainer>
           <MakeBid countValue={offerData?.startPrice ?? 0} />
-          <ButtonContainer>
+          {/* <ButtonContainer>
             <Button
               name="Apply"
               background="#0A5F38"
               onButtonClick={() => setisClickedBurout(true)}
               disabled={isClickedBurout}
             />
-          </ButtonContainer>
+          </ButtonContainer> */}
           <ButtonContainer>
             <Button
               type="button"
@@ -301,17 +301,6 @@ function ViewOffer() {
     navigate(-1);
   };
 
-  // const handleRejected = () => {
-  //   dispatch(offerDataSliceActions.rejectedOfferById(offersId))
-  //     .then((response) => {
-  //       console.log("rejectedOfferById response:", response);
-  //     })
-  //     .catch((error) => {
-  //       console.error("rejectedOfferById error:", error);
-  //     });
-  //   navigate(`/offers/${offersId}`);
-  // };
-
   const handleCancelled = () => {
     dispatch(offerDataSliceActions.cancelledOfferById(offersId))
       .then((response) => {
@@ -319,6 +308,17 @@ function ViewOffer() {
       })
       .catch((error) => {
         console.error("rejectedOfferById error:", error);
+      });
+    navigate(`/offers/${offersId}`);
+  };
+
+  const handleBurnout = () => {
+    dispatch(offerDataSliceActions.completedOfferById(offersId))
+      .then((response) => {
+        console.log("completedOfferById response:", response);
+      })
+      .catch((error) => {
+        console.error("completedOfferById error:", error);
       });
     navigate(`/offers/${offersId}`);
   };
