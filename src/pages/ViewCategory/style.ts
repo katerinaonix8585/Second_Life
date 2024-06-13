@@ -39,13 +39,13 @@ export const CategoryImageWrapper = styled.div`
   padding: 20px 20px 0 10px;
 `;
 
-export const CategoryInfoWrapper = styled.div`
-  display: flex;
-  width: 100%;
-  height: auto;
-  justify-content: left;
-  padding: 10px 15px 15px 20px;
-`;
+// export const CategoryInfoWrapper = styled.div`
+//   display: flex;
+//   width: 100%;
+//   height: auto;
+//   justify-content: left;
+//   padding: 10px 15px 15px 20px;
+// `;
 
 export const CategoryTextAreaWrapper = styled.div`
   width: 100%;
@@ -152,7 +152,7 @@ export const CategoryButtonLeftWrapper = styled.div`
   padding: 35px 25px 10px 10px;
 `;
 
-export const CatogoryInfoWrapper = styled.div`
+export const CategoryInfoWrapper = styled.div`
   display: flex;
   flex-direction: row;
 `;

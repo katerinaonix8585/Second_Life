@@ -103,6 +103,7 @@ export const CategoryLeftWrapper = styled.div`
   justify-content: space-between;
   align-items: start;
   padding: 20px;
+  gap: 20px;
 `;
 
 export const CategoryRightWrapper = styled.div`
@@ -196,4 +197,25 @@ export const Tile = styled.div`
 export const TileStatus = styled.div`
   font-size: 20px;
   font-family: "LXGW WenKai TC", cursive;
+`;
+
+export const Type00 = styled.p`
+  gap: 5px;
+  display: flex;
+  align-items: center;
+  color: red;
+`;
+
+export const Type01 = styled.p`
+  gap: 5px;
+  display: flex;
+  align-items: center;
+  color: green;
+`;
+
+export const Type02 = styled.p`
+  gap: 5px;
+  display: flex;
+  align-items: center;
+  color: blue;
 `;

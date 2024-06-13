@@ -14,9 +14,9 @@ import {
   CategoryButtonsWrapper,
   CategoryImageWrapper,
   CategoryInfoTextWrapper,
+  CategoryInfoWrapper,
   CategoryLeftWrapper,
   CategoryWrapper,
-  CatogoryInfoWrapper,
   HomeContainer,
   HomeWrapper,
   OfferTextAreaWrapper,
@@ -73,7 +73,7 @@ function ViewCategory() {
     <HomeWrapper>
       <HomeContainer>
         <CategoryWrapper>
-          <CatogoryInfoWrapper>
+          <CategoryInfoWrapper>
             <CategoryImageWrapper>
               <Img />
             </CategoryImageWrapper>
@@ -97,7 +97,7 @@ function ViewCategory() {
                 </TileStatus>
               </CategoryInfoTextWrapper>
             </CategoryLeftWrapper>
-          </CatogoryInfoWrapper>
+          </CategoryInfoWrapper>
           <CategoryButtonsWrapper>
             {categoryData.data.active ? (
               <CategoryButtonWrapper>

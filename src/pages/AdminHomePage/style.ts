@@ -13,7 +13,7 @@ export const HomeContainer = styled.div`
 
 export const SideBarContainer = styled.div``;
 
-export const TextWrapper = styled.div`
+export const Textwrapper = styled.div`
   font-size: 16px;
   padding: 10px;
   font-family: "LXGW WenKai TC", cursive;
