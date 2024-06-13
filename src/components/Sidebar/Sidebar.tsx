@@ -31,11 +31,8 @@ const items: MenuItem[] = [
     </Link>,
   ),
   getItem("Categories", "categories", <FilterOutlined />, [
-    getItem(
-      <Link to="admin/categories/all">List category</Link>,
-      "listCategory",
-    ),
-    getItem(<Link to="admin/categories">New category</Link>, "newCategory"),
+    getItem(<Link to="categories/all">List category</Link>, "listCategory"),
+    getItem(<Link to="categories">New category</Link>, "newCategory"),
   ]),
 ];
 

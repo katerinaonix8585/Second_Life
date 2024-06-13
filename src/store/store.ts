@@ -6,12 +6,14 @@ import { categorySlice } from "./redux/category/categorySlice";
 import { offersSlice } from "./redux/offers/offers";
 import { offerSlice } from "./redux/offer/offer";
 import { userSlice } from "./redux/user/userSlice";
+import { categoryOneSlice } from "./redux/categoryOne/categoryOneSlice";
 
 // `combineSlices` automatically combines the reducers using
 // their `reducerPath`s, therefore we no longer need to call `combineReducers`.
 const rootReducer = combineSlices(
   locationSlice,
   categorySlice,
+  categoryOneSlice,
   offerSlice,
   offersSlice,
   userSlice,

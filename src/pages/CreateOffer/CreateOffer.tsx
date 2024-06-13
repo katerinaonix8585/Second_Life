@@ -326,12 +326,10 @@ function CreateOffer() {
 
   const handleSubmit = () => {
     setToVerification(true);
-    formik.handleSubmit();
   };
 
   const handleSaveAsDraft = () => {
     setToVerification(false);
-    formik.handleSubmit();
   };
 
   return (

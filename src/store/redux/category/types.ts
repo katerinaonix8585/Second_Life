@@ -1,10 +1,4 @@
-export interface CategoryData {
-  id: number;
-  name: string;
-  description: string;
-  active: boolean;
-  image: number;
-}
+import { CategoryData } from "../categoryOne/types";
 
 export interface CategoryDataSliceState {
   data: CategoryData[];
