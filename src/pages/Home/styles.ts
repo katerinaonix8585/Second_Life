@@ -63,14 +63,12 @@ export const IntroductionButtonWrapper = styled.div`
   width: 200px;
 `;
 
-// Контейнер с плавными границами внизу
 export const WaveContainer = styled.div`
   width: 100%;
 `;
 
-// Градиентный фон с плавными границами
 export const GradientBackground = styled.div`
-  background: linear-gradient(to right, #9796f0, #fde8ed); /* Градиентный фон */
+  background: linear-gradient(to right, #9796f0, #fde8ed);
 `;
 
 // последняя карточка в Grid - ссылка на пункт меню Категории

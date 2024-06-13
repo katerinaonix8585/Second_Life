@@ -9,6 +9,7 @@ import { useNavigate } from "react-router-dom";
 import Button from "components/Button/Button.tsx";
 import InputPassword from "components/InputPassword/InputPassword.tsx";
 import InputWithIcon from "components/InputWithIcon/InputWithIcon.tsx";
+import ModalWindowRegistration from "components/ModalWindowRegistration/ModalWindowRegistration.tsx";
 
 import { LoginFormValues, LOGIN_FIELD_NAMES } from "./types.ts";
 import {
@@ -16,7 +17,7 @@ import {
   LoginFormName,
   InputsContainer,
   ButtonWrapper,
-  TextSuccess,
+  WindowWrapper,
 } from "./styles.ts";
 
 const BASE_URL = "https://second-life-app-y2el9.ondigitalocean.app/api/v1";
@@ -227,10 +228,11 @@ function RegistrationForm() {
         <div style={{ color: "red" }}>{serverErrors.general}</div>
       )}
       {registrationSuccess && (
-        <div>
-          <TextSuccess>Registration successful</TextSuccess>
-          <Button name="ОК" onButtonClick={handleOkClick} />
-        </div>
+        <ModalWindowRegistration title="Message" onOk={handleOkClick}>
+          <WindowWrapper>
+            Registration successful. Please sign in.
+          </WindowWrapper>
+        </ModalWindowRegistration>
       )}
       {!registrationSuccess && (
         <ButtonWrapper>

@@ -39,3 +39,14 @@ export const TextSuccess = styled.p`
   font-family: "LibreFranklin", sans-serif;
   padding: 10px;
 `;
+
+export const WindowWrapper = styled.div`
+  width: 100%;
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  font-size: 24px;
+  font-weight: bold;
+  font-family: "LXGW WenKai TC", cursive;
+  color: #4d418b;
+`;
