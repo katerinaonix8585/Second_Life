@@ -31,11 +31,12 @@ function Offers() {
   const [page, setPage] = useState(0);
   const size = 10;
   const sortBy = "createdAt";
+  const isAsc = false;
 
   console.log("Offers data:", offers);
 
   useEffect(() => {
-    dispatch(offersDataSliceActions.getAllOffer({ page, size, sortBy }));
+    dispatch(offersDataSliceActions.getAllOffer({ page, size, sortBy, isAsc }));
   }, [dispatch, page, size, sortBy]);
 
   const handlePageChange = (newPage: number) => {
