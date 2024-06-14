@@ -35,9 +35,9 @@ export const offersSlice = createAppSlice({
           size: number;
           sortBy: string;
           isAsc: boolean;
-          category_id?: number; // Make optional
-          status?: string; // Make optional
-          free?: boolean; // Make optional
+          category_id?: number;
+          status?: string;
+          free?: boolean;
         },
         thunkApi,
       ) => {

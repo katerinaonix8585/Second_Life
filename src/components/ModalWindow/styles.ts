@@ -21,7 +21,7 @@ export const ModalContent = styled.div`
   padding: 20px;
   border-radius: 8px;
   max-width: 500px;
-  height: 200px;
+  height: 250px;
   width: 100%;
   box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
 `;
@@ -37,7 +37,10 @@ export const ModalHeader = styled.div`
 
 export const ModalTitle = styled.h2`
   margin: 0;
-  font-size: 1.5rem;
+  font-size: 24px;
+  font-weight: bold;
+  font-family: "LXGW WenKai TC", cursive;
+  color: #4d418b;
 `;
 
 export const ModalBody = styled.div`
@@ -66,4 +69,15 @@ export const Button = styled.button`
 
 export const ButtonWrapper = styled.div`
   width: 200px;
+`;
+
+export const WindowWrapper = styled.div`
+  width: 100%;
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  font-size: 24px;
+  font-weight: bold;
+  font-family: "LXGW WenKai TC", cursive;
+  color: #4d418b;
 `;

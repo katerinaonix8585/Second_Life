@@ -1,4 +1,4 @@
-import { BrowserRouter, Route, Routes } from "react-router-dom";
+import { HashRouter, Route, Routes } from "react-router-dom";
 
 import SignIn from "pages/SignIn/SignIn";
 import SignUp from "pages/SignUp/SignUp";
@@ -27,7 +27,7 @@ import ListCategories from "./pages/ListCategories/ListCategories.tsx";
 
 function App() {
   return (
-    <BrowserRouter>
+    <HashRouter>
       <Routes>
         <Route path="/" element={<Layout />}>
           <Route index element={<Home />} />
@@ -70,7 +70,7 @@ function App() {
 
         <Route path="*" element={<div>Page Not Found</div>} />
       </Routes>
-    </BrowserRouter>
+    </HashRouter>
   );
 }
 

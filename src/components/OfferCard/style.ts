@@ -173,3 +173,12 @@ export const Status = styled.h5`
   align-items: center;
   color: blue;
 `;
+
+export const WindowWrapper = styled.div`
+  width: 100%;
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  font-size: 16px;
+  font-family: "LXGW WenKai TC", cursive;
+`;
