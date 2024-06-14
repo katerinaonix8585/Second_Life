@@ -14,10 +14,10 @@ export const HomeContainer = styled.div`
 export const SideBarContainer = styled.div``;
 
 export const TW = styled.div`
-  font-size: 16px;
-  padding: 10px;
   font-family: "LXGW WenKai TC", cursive;
   color: #4d418b;
+  font-size: 16px;
+  padding: 10px;
 `;
 
 export const Title = styled.div`

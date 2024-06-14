@@ -42,13 +42,24 @@ function OffersPage() {
   const [page, setPage] = useState(0);
   const size = 10;
   const sortBy = "createdAt";
+  const isAsc = true;
+  const free = offersTypeIdNumber === 0;
+
+  useEffect(() => {
+    setPage(0);
+    dispatch(
+      offersDataSliceActions.getAllOffer({
+        page,
+        size,
+        sortBy,
+        isAsc,
+        free,
+      }),
+    );
+  }, [dispatch, page, size, sortBy, isAsc, free, id]);
 
   const location = useLocation();
   console.log(location);
-
-  useEffect(() => {
-    dispatch(offersDataSliceActions.getAllOffer({ page, size, sortBy }));
-  }, [dispatch, page, size, sortBy]);
 
   const handlePageChange = (newPage: number) => {
     setPage(newPage);

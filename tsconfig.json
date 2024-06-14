@@ -22,6 +22,6 @@
     "noFallthroughCasesInSwitch": true,
     "allowSyntheticDefaultImports": true
   },
-  "include": ["src", "src/admin"],
+  "include": ["src"],
   "references": [{ "path": "./tsconfig.node.json" }]
 }

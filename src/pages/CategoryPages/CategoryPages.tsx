@@ -42,6 +42,8 @@ function CategoryPage() {
   const [page, setPage] = useState(0);
   const size = 10;
   const sortBy = "createdAt";
+  const isAsc = true;
+  const category_id = categoryIdNumber;
 
   const categoryDataSlice = useAppSelector(
     categorysDataSliceSelectors.category,
@@ -49,8 +51,17 @@ function CategoryPage() {
   const categoriesData = categoryDataSlice.data;
 
   useEffect(() => {
-    dispatch(offersDataSliceActions.getAllOffer({ page, size, sortBy }));
-  }, [dispatch, page, size, sortBy]);
+    setPage(0);
+    dispatch(
+      offersDataSliceActions.getAllOffer({
+        page,
+        size,
+        sortBy,
+        isAsc,
+        category_id,
+      }),
+    );
+  }, [dispatch, page, size, sortBy, category_id, id]);
 
   const filteredOffers = offers.filter(
     (offer) => offer.categoryId === categoryIdNumber,

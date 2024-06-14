@@ -4,48 +4,21 @@ export const HomeWrapper = styled.div``;
 
 export const HomeContainer = styled.div``;
 
-export const SideBarContainer = styled.div``;
-
 export const CategoryWrapper = styled.form`
   width: auto;
   height: auto;
   display: flex;
   flex-direction: column;
-  /* align-items: center; */
   justify-content: flex-start;
   padding: 0 0 0 30px;
 `;
 
-export const CategoryUpWrapper = styled.div`
-  margin-top: 20px;
-  padding-bottom: 20px;
-  background-color: #dcdcdc30;
-  border-radius: 20px;
-  border: 1px solid #0000000d;
-  height: auto;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  width: 100%;
-  max-width: 1270px;
-  gap: 20px;
-`;
-
 export const CategoryImageWrapper = styled.div`
-  /* width: 40%; */
   height: auto;
   display: flex;
   justify-content: center;
   padding: 20px 20px 0 10px;
 `;
-
-// export const CategoryInfoWrapper = styled.div`
-//   display: flex;
-//   width: 100%;
-//   height: auto;
-//   justify-content: left;
-//   padding: 10px 15px 15px 20px;
-// `;
 
 export const CategoryTextAreaWrapper = styled.div`
   width: 100%;
@@ -84,7 +57,6 @@ export const CategorySelectLeftWrapper = styled.div`
 
 export const CategoryButtonsWrapper = styled.div`
   display: flex;
-  /* justify-content: end; */
   align-items: end;
   width: 85%;
   gap: 20px;
@@ -105,61 +77,9 @@ export const CategoryLeftWrapper = styled.div`
   padding: 20px;
 `;
 
-export const CategoryRightWrapper = styled.div`
-  width: 38%;
-`;
-
-export const CategoryCenterWrapper = styled.div`
-  width: 2px;
-  height: auto;
-  background-color: gray;
-  display: flex;
-  justify-content: stretch;
-`;
-
-export const CategorySelectTypeWrapper = styled.div`
-  display: flex;
-  width: 100%;
-  justify-content: left;
-  align-items: center;
-  padding: 10px 10px 0 15px;
-`;
-
-export const CategoryContentWrapper = styled.div`
-  width: 100%;
-  height: 100%;
-  display: flex;
-`;
-
-export const CategoryTypeWrapper = styled.div`
-  width: 40%;
-`;
-
-export const CategoryTypeContainer = styled.div`
-  width: 60%;
-  display: flex;
-`;
-
-export const CategoryHeadWrapper = styled.div`
-  display: flex;
-  justify-content: space-between;
-  width: 100%;
-  padding-right: 30px;
-`;
-
-export const CategoryButtonLeftWrapper = styled.div`
-  width: 100%;
-  padding: 35px 25px 10px 10px;
-`;
-
 export const CategoryInfoWrapper = styled.div`
   display: flex;
   flex-direction: row;
-`;
-
-export const Button = styled.div`
-  width: 200px;
-  padding-top: 50px;
 `;
 
 export const OfferTextAreaWrapper = styled.div`

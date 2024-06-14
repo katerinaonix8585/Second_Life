@@ -22,16 +22,51 @@ export const offersSlice = createAppSlice({
   reducers: (create) => ({
     getAllOffer: create.asyncThunk(
       async (
-        { page, size, sortBy }: { page: number; size: number; sortBy: string },
+        {
+          page,
+          size,
+          sortBy,
+          isAsc,
+          category_id,
+          status,
+          free,
+        }: {
+          page: number;
+          size: number;
+          sortBy: string;
+          isAsc: boolean;
+          category_id?: number; // Make optional
+          status?: string; // Make optional
+          free?: boolean; // Make optional
+        },
         thunkApi,
       ) => {
+        const queryParams = [
+          `page=${page}`,
+          `size=${size}`,
+          `sortBy=${sortBy}`,
+          `isAsc=${isAsc}`,
+        ];
+
+        if (category_id !== undefined) {
+          queryParams.push(`category_id=${category_id}`);
+        }
+        if (status !== undefined) {
+          queryParams.push(`status=${status}`);
+        }
+        if (free !== undefined) {
+          queryParams.push(`free=${free}`);
+        }
+
+        const queryString = queryParams.join("&");
+
         const response = await fetch(
-          `${BASE_URL}/v1/offers/all?page=${page}&size=${size}&sortBy=${sortBy}`,
+          `${BASE_URL}/v1/offers/all?${queryString}`,
         );
         const result = await response.json();
 
         if (!response.ok) {
-          thunkApi.rejectWithValue(result);
+          return thunkApi.rejectWithValue(result);
         } else {
           return result;
         }
@@ -99,7 +134,7 @@ export const offersSlice = createAppSlice({
           const result = await response.json();
 
           if (!response.ok) {
-            thunkApi.rejectWithValue(result);
+            return thunkApi.rejectWithValue(result);
           } else {
             return result;
           }

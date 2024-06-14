@@ -29,43 +29,45 @@ function App() {
   return (
     <BrowserRouter>
       <Routes>
-        {/* Routes for regular Layout */}
         <Route path="/" element={<Layout />}>
           <Route index element={<Home />} />
           <Route path="auth/user/login" element={<SignIn />} />
-          <Route path="offers" element={<CreateOffer />} />
           <Route path="signup" element={<SignUp />} />
           <Route path="aboutMe" element={<PersonalInformation />} />
-          <Route path="/category">
-            <Route index element={<Category />} />
-            <Route path=":id" element={<CategoryPage />} />
-          </Route>
-          <Route path="/offers">
+          <Route path="aboutUs" element={<AboutUs />} />
+
+          <Route path="offers">
             <Route index element={<CreateOffer />} />
             <Route path=":offersId" element={<ViewOffer />} />
             <Route path="edit/:offersId" element={<EditOffer />} />
             <Route path="all" element={<Offers />} />
             <Route path="all/:id" element={<OffersPage />} />
             <Route path="users/:userId" element={<MyOffersPages />} />
-            <Route path=":id" element={<OffersPage />} />
-            <Route path=":ownerId" element={<OffersPage />} />
           </Route>
-          <Route path="aboutUs" element={<AboutUs />} />
+
+          <Route path="category">
+            <Route index element={<Category />} />
+            <Route path=":id" element={<CategoryPage />} />
+          </Route>
         </Route>
 
-        {/* Routes for Admin Layout */}
-        <Route path="admin/" element={<AdminLayout />}>
+        <Route path="admin" element={<AdminLayout />}>
           <Route index element={<AdminHomePage />} />
           <Route path="auth/admin/login" element={<AdminSignIn />} />
-          <Route path="categories/all" element={<ListCategories />} />
-          <Route path="categories" element={<CreateCategory />} />
-          <Route path="categories/edit/:id" element={<EditCategory />} />
-          <Route path="categories/:id" element={<ViewCategory />} />
-          <Route path="offers/all" element={<ListOffers />} />
-          <Route path="offers/:offerId" element={<ViewAdminOffer />} />
+
+          <Route path="categories">
+            <Route path="all" element={<ListCategories />} />
+            <Route index element={<CreateCategory />} />
+            <Route path="edit/:id" element={<EditCategory />} />
+            <Route path=":id" element={<ViewCategory />} />
+          </Route>
+
+          <Route path="offers">
+            <Route path="all" element={<ListOffers />} />
+            <Route path=":offerId" element={<ViewAdminOffer />} />
+          </Route>
         </Route>
 
-        {/* Fallback route */}
         <Route path="*" element={<div>Page Not Found</div>} />
       </Routes>
     </BrowserRouter>
