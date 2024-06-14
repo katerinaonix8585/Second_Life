@@ -7,12 +7,10 @@ import {
   offersDataSliceActions,
   offersDataSliceSelectors,
 } from "store/redux/offers/offers";
-import { typeOfferData } from "pages/CreateOffer/OffersData.ts";
 
 import {
   CategoryPageWrapper,
   OffersWrapper,
-  Tile,
   PaginationButton,
   PaginationWrapper,
   PaginationEllipsis,
@@ -42,11 +40,10 @@ function OffersPage() {
   const [page, setPage] = useState(0);
   const size = 10;
   const sortBy = "createdAt";
-  const isAsc = true;
+  const isAsc = false;
   const free = offersTypeIdNumber === 0;
 
   useEffect(() => {
-    setPage(0);
     dispatch(
       offersDataSliceActions.getAllOffer({
         page,
@@ -56,7 +53,9 @@ function OffersPage() {
         free,
       }),
     );
-  }, [dispatch, page, size, sortBy, isAsc, free, id]);
+  }, [dispatch, page, size, free]);
+
+  console.log(offers);
 
   const location = useLocation();
   console.log(location);
@@ -66,40 +65,38 @@ function OffersPage() {
     window.scrollTo({ top: 0, behavior: "smooth" });
   };
 
-  const filteredOffers = offers.filter((offer) => {
-    if (offersTypeIdNumber === 0) {
-      return offer.isFree === true;
-    } else if (offersTypeIdNumber === 1) {
-      return offer.isFree === false && offer.winBid === null;
-    } else if (offersTypeIdNumber === 2) {
-      return offer.isFree === false && (offer.winBid ?? 0) > 0;
-    }
-    return true;
-  });
+  // const filteredOffers = offers.filter((offer) => {
+  //   if (offersTypeIdNumber === 0) {
+  //     return offer.isFree === true;
+  //   } else if (offersTypeIdNumber === 1 || offersTypeIdNumber === 2) {
+  //     return offer.isFree === false;
+  //   }
+  //   return true;
+  // });
 
-  const gettypeOfferById = (offerId: number) => {
-    const typeOffer = typeOfferData.find((cat) => cat.id === offerId);
-    return typeOffer ? typeOffer.value : "Unknown Location";
-  };
+  // const gettypeOfferById = (offerId: number) => {
+  //   const typeOffer = typeOfferData.find((cat) => cat.id === offerId);
+  //   return typeOffer ? typeOffer.value : "Unknown Location";
+  // };
 
-  const offersTypeName = () => {
-    if (offersTypeIdNumber === 0) {
-      return gettypeOfferById(0);
-    } else if (offersTypeIdNumber === 1) {
-      return gettypeOfferById(1);
-    } else if (offersTypeIdNumber === 2) {
-      return gettypeOfferById(2);
-    }
-    return "All Types";
-  };
+  // const offersTypeName = () => {
+  //   if (offersTypeIdNumber === 0) {
+  //     return gettypeOfferById(0);
+  //   } else if (offersTypeIdNumber === 1) {
+  //     return gettypeOfferById(1);
+  //   } else if (offersTypeIdNumber === 2) {
+  //     return gettypeOfferById(2);
+  //   }
+  //   return "All Types";
+  // };
 
   return (
     <CategoryPageWrapper>
       <CategoryTextWrapper>
-        <Tile>{offersTypeName()}</Tile>
+        {/* <Tile>{offersTypeName()}</Tile> */}
       </CategoryTextWrapper>
       <OffersWrapper>
-        <OfferCardCopy offers={filteredOffers} />
+        <OfferCardCopy offers={offers} />
       </OffersWrapper>
       {statusOffer === "loading" && <div>Loading...</div>}
       {statusOffer === "success" && (

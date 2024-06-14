@@ -1,3 +1,4 @@
+import { useState } from "react";
 import { MdOutlineCalendarMonth, MdOutlineLocationCity } from "react-icons/md";
 import { BiCategory } from "react-icons/bi";
 import { FiType } from "react-icons/fi";
@@ -5,15 +6,17 @@ import { FaEuroSign } from "react-icons/fa";
 import { Link, useNavigate } from "react-router-dom";
 import { GrStatusInfo } from "react-icons/gr";
 
-import { OfferData } from "store/redux/offer/types.ts";
-import { useAppDispatch, useAppSelector } from "store/hooks.ts";
-import { locationsDataSliceSelectors } from "store/redux/location/locationSlice.ts";
-import { categorysDataSliceSelectors } from "store/redux/category/categorySlice.ts";
-import { typeOfferData } from "pages/CreateOffer/OffersData.ts";
-import { offerDataSliceActions } from "store/redux/offer/offer.ts";
+import { Container } from "pages/Layout/styles";
 
-import { Container } from "../../pages/Layout/styles.ts";
-import Button from "../Button/Button.tsx";
+import { OfferData } from "../../store/redux/offer/types";
+import { useAppDispatch, useAppSelector } from "../../store/hooks";
+import { locationsDataSliceSelectors } from "../../store/redux/location/locationSlice";
+import { categorysDataSliceSelectors } from "../../store/redux/category/categorySlice";
+import { typeOfferData } from "../../pages/CreateOffer/OffersData";
+import { offerDataSliceActions } from "../../store/redux/offer/offer";
+import ModalWindow from "../ModalWindow/ModalWindow";
+import { bidSliceDataActions } from "../../store/redux/bid/bidSlice";
+import Button from "../Button/Button";
 
 import {
   ButtonContainer,
@@ -35,12 +38,28 @@ import {
   LabelContainer,
   TextContainer,
   Status,
-} from "./style.ts";
+  WindowWrapper,
+} from "./style";
 
-function OfferCardCopy({ offers }: { offers: OfferData[] }) {
+interface Props {
+  offers: OfferData[];
+}
+
+const OfferCardCopy: React.FC<Props> = ({ offers }) => {
   const userId = localStorage.getItem("userId");
+  const accessToken = localStorage.getItem("accessToken");
+  const [modalVisible, setModalVisible] = useState(false);
+  const [isBurnout, setBurnOut] = useState(true);
+  const [isApply, setApply] = useState(true);
   const navigate = useNavigate();
   const dispatch = useAppDispatch();
+
+  const openModal = () => setModalVisible(true);
+  const closeModal = () => setModalVisible(false);
+  const closeModalOk = () => {
+    setModalVisible(false);
+    navigate("/auth/user/login");
+  };
 
   const locationsDataSlice = useAppSelector(
     locationsDataSliceSelectors.location,
@@ -82,26 +101,61 @@ function OfferCardCopy({ offers }: { offers: OfferData[] }) {
     return typeOffer ? typeOffer.value : "Unknown Location";
   };
 
-  const handleCancelled = (offersId: number) => {
-    dispatch(offerDataSliceActions.cancelledOfferById(String(offersId)))
+  const handleCancelled = (offerId: number) => {
+    if (!accessToken) {
+      openModal();
+      return;
+    }
+
+    dispatch(offerDataSliceActions.cancelledOfferById(String(offerId)))
       .then((response) => {
-        console.log("rejectedOfferById response:", response);
+        console.log("cancelledOfferById response:", response);
       })
       .catch((error) => {
-        console.error("rejectedOfferById error:", error);
+        console.error("cancelledOfferById error:", error);
       });
-    navigate(`/offers/${offersId}`);
+    navigate(`/offers/${offerId}`);
   };
 
-  const handleBurout = (offersId: number) => {
-    dispatch(offerDataSliceActions.burnoutOfferById(String(offersId)))
+  const handleBurnout = (offerId: number, bidValue: number | null) => {
+    if (!accessToken) {
+      openModal();
+      return;
+    }
+
+    const bidValueNum = bidValue !== null ? bidValue : 0;
+
+    dispatch(
+      bidSliceDataActions.addBid({
+        offerId,
+        bidValue: bidValueNum,
+      }),
+    )
       .then((response) => {
-        console.log("rejectedOfferById response:", response);
+        console.log("BidCreate response:", response);
+        setBurnOut(false);
       })
       .catch((error) => {
-        console.error("rejectedOfferById error:", error);
+        console.error("BidCreate error:", error);
       });
-    navigate(`/offers/${offersId}`);
+  };
+
+  const handleApplyFree = (offerId: number) => {
+    if (!accessToken) {
+      openModal();
+      return;
+    }
+
+    const bidValueNum = 0;
+
+    dispatch(bidSliceDataActions.addBid({ offerId, bidValue: bidValueNum }))
+      .then((response) => {
+        console.log("BidCreate response:", response);
+        setApply(false);
+      })
+      .catch((error) => {
+        console.error("BidCreate error:", error);
+      });
   };
 
   return (
@@ -167,65 +221,81 @@ function OfferCardCopy({ offers }: { offers: OfferData[] }) {
                   </PriceContainer>
                 </LabelContainer>
               )}
-              {userId !== null &&
-              offer.ownerId !== null &&
-              offer.ownerId === parseInt(userId) ? (
-                // &&
-                // (offer.status === "DRAFT" ||
-                //   offer.status === "REJECTED" ||
-                //   offer.status === "VERIFICATION" ||
-                //   offer.status === "AUCTION_STARTED" ||
-                //   offer.status === "QUALIFICATION")
-                <ButtonContainer>
-                  <Button
-                    name="Cancel"
-                    onButtonClick={() => handleCancelled(offer.id)}
-                    background=" #0A5F38"
-                  />
-                </ButtonContainer>
-              ) : (
-                <>
-                  {offer.isFree && (
-                    // && offer.status === "AUCTION_STARTED"
+              {offer.status === "AUCTION_STARTED" ? (
+                userId !== null &&
+                offer.ownerId !== null &&
+                offer.ownerId === parseInt(userId) ? (
+                  <ButtonContainer>
+                    <Button
+                      name="Cancel"
+                      onButtonClick={() => handleCancelled(offer.id)}
+                      background="#d418b"
+                    />
+                  </ButtonContainer>
+                ) : offer.winBid !== null ? (
+                  <>
+                    <Button
+                      background={isBurnout ? "#d418b" : "#999"}
+                      name={
+                        <>
+                          <p>Buyout</p>
+                          <p>{offer.winBid} €</p>
+                        </>
+                      }
+                      onButtonClick={() =>
+                        handleBurnout(offer.id, offer.winBid)
+                      }
+                    />
                     <ButtonContainer>
                       <Button
                         name="Apply"
-                        background=" #0A5F38"
-                        onButtonClick={() => navigate(`/offers/${offer.id}`)}
+                        background={isApply ? "#0A5F38" : "#999"}
+                        onButtonClick={() => handleApplyFree(offer.id)}
                       />
                     </ButtonContainer>
-                  )}
-                  {!offer.isFree && (
-                    // && offer.status === "AUCTION_STARTED"
-                    <>
-                      <ButtonContainer>
-                        <Button
-                          name="Apply"
-                          background=" #0A5F38"
-                          onButtonClick={() => navigate(`/offers/${offer.id}`)}
-                        />
-                      </ButtonContainer>
-                      {offer.winBid !== null && (
-                        <Button
-                          name={
-                            <>
-                              <p>Buyout</p>
-                              <p>{offer.winBid} €</p>{" "}
-                            </>
-                          }
-                          onButtonClick={() => handleBurout(offer.id)}
-                        />
-                      )}
-                    </>
-                  )}
-                </>
+                  </>
+                ) : (
+                  <ButtonContainer>
+                    <Button
+                      name="Apply"
+                      background={isApply ? "#0A5F38" : "#999"}
+                      onButtonClick={() => handleApplyFree(offer.id)}
+                    />
+                  </ButtonContainer>
+                )
+              ) : (
+                userId !== null &&
+                offer.ownerId !== null &&
+                offer.ownerId === parseInt(userId) &&
+                (offer.status === "VERIFICATION" ||
+                  offer.status === "DRAFT" ||
+                  offer.status === "QUALIFICATION") && (
+                  <ButtonContainer>
+                    <Button
+                      name="Cancel"
+                      onButtonClick={() => handleCancelled(offer.id)}
+                      background="#d418b"
+                    />
+                  </ButtonContainer>
+                )
               )}
             </ButtonWrapper>
           </OfferCardContainer>
         </Container>
       ))}
+      {modalVisible && (
+        <ModalWindow
+          title="Access Denied"
+          onOk={closeModalOk}
+          onClose={closeModal}
+        >
+          <WindowWrapper>
+            You need to be logged in to perform this action
+          </WindowWrapper>
+        </ModalWindow>
+      )}
     </OfferCardWrapper>
   );
-}
+};
 
 export default OfferCardCopy;
