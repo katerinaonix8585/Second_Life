@@ -28,7 +28,7 @@ function AboutUs() {
             exchange, we realized that our world is becoming increasingly
             digital and detached. Within this context, our community strives to
             restore human warmth and mutual aid, which are so lacking in modern
-            society. Our mission is to assist people not only in getting rid of
+            Society. Our mission is to assist people not only in getting rid of
             unnecessary items but also in finding them a new life by providing a
             platform for charitable auctions and exchanges. We have created a
             space where everyone can become part of something larger. Here, you
