@@ -24,9 +24,10 @@ const App: React.FC = () => {
   const [page, setPage] = useState(0);
   const size = 50;
   const sortBy = "createdAt";
+  const isAsc = false;
 
   useEffect(() => {
-    dispatch(offersDataSliceActions.getAllOffer({ page, size, sortBy }));
+    dispatch(offersDataSliceActions.getAllOffer({ page, size, sortBy, isAsc }));
   }, [dispatch, page, size, sortBy]);
 
   const categoryDataSlice = useAppSelector(
