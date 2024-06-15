@@ -403,7 +403,8 @@ function ViewOffer() {
                       </ContainerInfo>
                       {offerData && offerData.isFree && isVisibleAuction && (
                         <ContainerInfoParticipant>
-                          <FaUsers />? participants
+                          <FaUsers />
+                          {offerData.bidsCount} participants
                         </ContainerInfoParticipant>
                       )}
                     </ContainerInfoCommon>
@@ -415,12 +416,11 @@ function ViewOffer() {
                             <FaEuroSign size={18} color="#7b001c" />
                           </ContainerInfoPrice>
                           {isVisibleAuction && (
-                            <>
-                              <ContainerInfoPrice>
-                                Last bid price: {offerData.startPrice}
-                                <FaEuroSign size={18} color="#7b001c" />
-                              </ContainerInfoPrice>
-                            </>
+                            <ContainerInfoPrice>
+                              Last bid price:{" "}
+                              {offerData.maxBidvalue ?? offerData.startPrice}
+                              <FaEuroSign size={18} color="#7b001c" />
+                            </ContainerInfoPrice>
                           )}
                         </>
                       </ContainerInfoNoFree>
@@ -442,7 +442,9 @@ function ViewOffer() {
                         {timeRemaining.minutes}m {timeRemaining.seconds}s
                       </ContainerInfo>
                       {!offerData.isFree && (
-                        <ContainerInfo>Bids:</ContainerInfo>
+                        <ContainerInfo>
+                          Bids: {offerData.bidsCount}
+                        </ContainerInfo>
                       )}
                     </OfferInfoPriceWrapper>
                   )}
