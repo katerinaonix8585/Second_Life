@@ -9,16 +9,11 @@ import {
   TextBlock,
 } from "./style.ts";
 
-const BASE_URL = "admin/";
-
 function AboutUs() {
   return (
     <AboutWrapper>
       <Container>
         <ImgContainer>
-          <div>
-            <a href={BASE_URL}>Login as Admin</a>
-          </div>
           <TreePicture />
         </ImgContainer>
         <TextBlock>

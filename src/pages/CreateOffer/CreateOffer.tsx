@@ -151,9 +151,6 @@ function CreateOffer() {
           const startPrice = Number(values.startPrice);
           const winbid = Number(values.winbid);
 
-          console.log("Validating startPrice:", startPrice);
-          console.log("Validating winbid:", winbid);
-
           if (!startPrice || startPrice <= 0 || !Number.isInteger(startPrice)) {
             errors.push({
               field: OFFER_DATA.STARTPRICE,
@@ -170,6 +167,12 @@ function CreateOffer() {
               field: OFFER_DATA.WINBID,
               message:
                 "Field Win bid is required, must be greater than zero and an integer",
+            });
+          } else if (winbid < startPrice) {
+            errors.push({
+              field: OFFER_DATA.WINBID,
+              message:
+                "Field win must be more or equals than field Start Price",
             });
           }
         }

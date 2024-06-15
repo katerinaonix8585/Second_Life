@@ -16,6 +16,8 @@ export interface OfferData {
   locationId: number;
   auctionDurationDays: null | number;
   typeOffer: string;
+  maxBidvalue: number;
+  bidsCount: number;
 }
 
 export interface OfferDataSliceState {

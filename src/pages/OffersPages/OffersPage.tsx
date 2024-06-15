@@ -42,6 +42,7 @@ function OffersPage() {
   const sortBy = "createdAt";
   const isAsc = false;
   const free = offersTypeIdNumber === 0;
+  const status = "AUCTION_STARTED";
 
   useEffect(() => {
     dispatch(
@@ -51,6 +52,7 @@ function OffersPage() {
         sortBy,
         isAsc,
         free,
+        status,
       }),
     );
   }, [dispatch, page, size, free]);

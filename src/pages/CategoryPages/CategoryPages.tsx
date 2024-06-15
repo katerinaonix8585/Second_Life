@@ -44,6 +44,7 @@ function CategoryPage() {
   const sortBy = "createdAt";
   const isAsc = false;
   const category_id = categoryIdNumber;
+  const status = "AUCTION_STARTED";
 
   const categoryDataSlice = useAppSelector(
     categorysDataSliceSelectors.category,
@@ -58,6 +59,7 @@ function CategoryPage() {
         sortBy,
         isAsc,
         category_id,
+        status,
       }),
     );
   }, [dispatch, page, size, category_id]);
