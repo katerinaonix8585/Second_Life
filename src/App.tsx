@@ -63,7 +63,7 @@ function App() {
           </Route>
 
           <Route path="offers">
-            <Route path="all" element={<ListOffers />} />
+            <Route path="all/:status" element={<ListOffers />} />
             <Route path=":offerId" element={<ViewAdminOffer />} />
           </Route>
         </Route>
