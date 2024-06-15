@@ -202,7 +202,7 @@ function ViewAdminOffer() {
               <CategoryInfoTextWrapper>
                 <Tile>Location: </Tile>
                 <TileStatus>
-                  {offerData ? getLocationNameById(offerData.categoryId) : ""}
+                  {offerData ? getLocationNameById(offerData.locationId) : ""}
                 </TileStatus>
               </CategoryInfoTextWrapper>
               <CategoryInfoTextWrapper>
@@ -215,14 +215,20 @@ function ViewAdminOffer() {
               </CategoryInfoTextWrapper>
               <CategoryInfoTextWrapper>
                 <Tile>Auction end: </Tile>
-                <TileStatus>{formatDate(offerData?.auctionStartAt)}</TileStatus>
+                <TileStatus>{formatDate(offerData?.auctionEndAt)}</TileStatus>
               </CategoryInfoTextWrapper>
               <CategoryInfoTextWrapper>
                 <Tile>Timer: </Tile>
-                <TileStatus>
-                  {timeRemaining.days}d {timeRemaining.hours}h{" "}
-                  {timeRemaining.minutes}m {timeRemaining.seconds}s
-                </TileStatus>
+                {offerData?.status === "COMPLETED" ? (
+                  <TileStatus>0d 00h 00m 00s</TileStatus>
+                ) : (
+                  <>
+                    <TileStatus>
+                      {timeRemaining.days}d {timeRemaining.hours}h{" "}
+                      {timeRemaining.minutes}m {timeRemaining.seconds}s
+                    </TileStatus>
+                  </>
+                )}
               </CategoryInfoTextWrapper>
               <CategoryInfoTextWrapper>
                 <Tile>Type offer: </Tile>
@@ -249,7 +255,13 @@ function ViewAdminOffer() {
               {offerData?.winBid !== null && (
                 <CategoryInfoTextWrapper>
                   <Tile>Win bid: </Tile>
-                  <TileStatus>{offerData?.startPrice} €</TileStatus>
+                  <TileStatus>{offerData?.winBid} €</TileStatus>
+                </CategoryInfoTextWrapper>
+              )}
+              {offerData?.isFree && offerData?.status !== "VERIFICATION" && (
+                <CategoryInfoTextWrapper>
+                  <Tile>Participants: </Tile>
+                  <TileStatus>{offerData?.bidsCount}</TileStatus>
                 </CategoryInfoTextWrapper>
               )}
             </CategoryLeftWrapper>
@@ -262,7 +274,9 @@ function ViewAdminOffer() {
                     type="button"
                     background="#7b001c"
                     name="Rejected"
-                    onButtonClick={() => handleRejected}
+                    onButtonClick={() =>
+                      handleRejected(offerData.id.toString())
+                    }
                   />
                 </CategoryButtonWrapper>
                 <CategoryButtonWrapper>
@@ -270,7 +284,7 @@ function ViewAdminOffer() {
                     type="button"
                     background="#0A5F38"
                     name="Verify"
-                    onButtonClick={() => handleVerify}
+                    onButtonClick={() => handleVerify(offerData.id.toString())}
                   />
                 </CategoryButtonWrapper>
               </>
@@ -283,7 +297,7 @@ function ViewAdminOffer() {
                   type="button"
                   background="#7b001c"
                   name="Blocked"
-                  onButtonClick={() => handleBlocked}
+                  onButtonClick={() => handleBlocked(offerData.id.toString())}
                 />
               </CategoryButtonWrapper>
             )}

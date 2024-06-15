@@ -1,7 +1,6 @@
 import React, { useState } from "react";
 import { FilterOutlined, HomeOutlined } from "@ant-design/icons";
-import type { MenuProps } from "antd";
-import { Layout, Menu, theme } from "antd";
+import { Layout, Menu, MenuProps, theme } from "antd";
 import { Link } from "react-router-dom";
 
 const { Content, Sider } = Layout;
@@ -22,6 +21,16 @@ function getItem(
   } as MenuItem;
 }
 
+const statusItems = [
+  { label: "Verification", key: "verification" },
+  { label: "Auction started", key: "auction_started" },
+  { label: "Qualification", key: "qualification" },
+  { label: "Completed", key: "completed" },
+  { label: "Canceled", key: "canceled" },
+  { label: "Rejected", key: "rejected" },
+  { label: "Blocked", key: "blocked_by_admin" },
+];
+
 const items: MenuItem[] = [
   getItem(
     "Home",
@@ -34,15 +43,14 @@ const items: MenuItem[] = [
     getItem(<Link to="categories/all">List category</Link>, "listCategory"),
     getItem(<Link to="categories">New category</Link>, "newCategory"),
   ]),
-  getItem("Offers", "offers", <FilterOutlined />, [
-    getItem(<Link to="offers/all">Verification</Link>, "verification"),
-    getItem(<Link to="offers/all">Rejected</Link>, "rejected"),
-    getItem(<Link to="offers/all">Auction started</Link>, "auction_started"),
-    getItem(<Link to="offers/all">Qualification</Link>, "qualification"),
-    getItem(<Link to="offers/all">Completed</Link>, "completed"),
-    getItem(<Link to="offers/all">Cancelled</Link>, "cancelled"),
-    getItem(<Link to="offers/all">Blocked</Link>, "blocked_by_admin"),
-  ]),
+  getItem(
+    "Offers",
+    "offers",
+    <FilterOutlined />,
+    statusItems.map(({ label, key }) =>
+      getItem(<Link to={`offers/all/${key}`}>{label}</Link>, key),
+    ),
+  ),
 ];
 
 const App: React.FC = () => {

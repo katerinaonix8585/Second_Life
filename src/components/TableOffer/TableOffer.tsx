@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { Space, Table } from "antd";
-import { Link } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
 import { SortOrder } from "antd/lib/table/interface";
 
 import { useAppDispatch, useAppSelector } from "store/hooks";
@@ -14,8 +14,9 @@ import { typeOfferData } from "pages/CreateOffer/OffersData";
 import { OfferData } from "store/redux/offer/types";
 import { offerDataSliceActions } from "store/redux/offer/offer";
 
-const App: React.FC = () => {
+const OffersPage: React.FC = () => {
   const dispatch = useAppDispatch();
+  const { status } = useParams<{ status: string }>();
   const {
     data: offers,
     statusOffer,
@@ -27,8 +28,22 @@ const App: React.FC = () => {
   const isAsc = false;
 
   useEffect(() => {
-    dispatch(offersDataSliceActions.getAllOffer({ page, size, sortBy, isAsc }));
-  }, [dispatch, page, size, sortBy]);
+    if (status) {
+      dispatch(
+        offersDataSliceActions.getAllOffer({
+          page,
+          size,
+          sortBy,
+          isAsc,
+          status,
+        }),
+      );
+    } else {
+      dispatch(
+        offersDataSliceActions.getAllOffer({ page, size, sortBy, isAsc }),
+      );
+    }
+  }, [dispatch, page, size, sortBy, status]);
 
   const categoryDataSlice = useAppSelector(
     categorysDataSliceSelectors.category,
@@ -184,7 +199,7 @@ const App: React.FC = () => {
                 Verify
               </a>
               <a onClick={() => handleRejected(Number(record.id).toString())}>
-                Rejected
+                Reject
               </a>
             </>
           )}
@@ -192,7 +207,7 @@ const App: React.FC = () => {
             record.status === "QUALIFICATION") && (
             <>
               <a onClick={() => handleBlocked(Number(record.id).toString())}>
-                Blocked
+                Block
               </a>
             </>
           )}
@@ -217,4 +232,4 @@ const App: React.FC = () => {
   );
 };
 
-export default App;
+export default OffersPage;
