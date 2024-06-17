@@ -14,6 +14,9 @@ import { OfferData } from "store/redux/offer/types";
 import Button from "components/Button/Button";
 import { userDataSliceActions } from "store/redux/user/userSlice";
 import MakeBid from "components/MakeBid/MakeBid";
+import ModalWindow from "components/ModalWindow/ModalWindow";
+import { WindowWrapper } from "components/OfferCard/style";
+import { bidSliceDataActions } from "store/redux/bid/bidSlice";
 
 import {
   OfferUpWrapper,
@@ -56,6 +59,10 @@ function ViewOffer() {
   const { offersId = "" } = useParams<{ offersId?: string }>();
   const [offerData, setOfferData] = useState<OfferData | null>(null);
   const [isClickedBurout, setisClickedBurout] = useState(false);
+
+  const [confirmModalOpen, setConfirmModalOpen] = useState(false);
+  const [pendingOfferId, setPendingOfferId] = useState<number | null>(null);
+  const [pendingBidValue, setPendingBidValue] = useState<number | null>(null);
 
   const userId = localStorage.getItem("userId");
 
@@ -127,15 +134,14 @@ function ViewOffer() {
     if (!isOwner && !isFree) {
       return (
         <ButtonBidContainer>
-          <MakeBid countValue={offerData?.startPrice ?? 0} />
-          {/* <ButtonContainer>
-            <Button
-              name="Apply"
-              background="#0A5F38"
-              onButtonClick={() => setisClickedBurout(true)}
-              disabled={isClickedBurout}
-            />
-          </ButtonContainer> */}
+          <MakeBid
+            countValue={
+              offerData?.maxBidvalue !== undefined
+                ? offerData.maxBidvalue
+                : offerData?.startPrice ?? 0
+            }
+            onMakeABid={handleMakeABid}
+          />
           <ButtonContainer>
             <Button
               type="button"
@@ -149,6 +155,45 @@ function ViewOffer() {
     } else {
       return null;
     }
+  };
+
+  const handleMakeABid = (bidValue: number) => {
+    console.log("Bid value:", bidValue);
+    if (offerData) {
+      openConfirmModal(offerData.id, bidValue);
+    }
+  };
+
+  const openConfirmModal = (offerId: number, bidValue: number | null) => {
+    setPendingOfferId(offerId);
+    setPendingBidValue(bidValue);
+    setConfirmModalOpen(true);
+  };
+
+  const confirmBurnout = () => {
+    if (pendingOfferId === null) return;
+
+    const bidValueNum = pendingBidValue !== null ? pendingBidValue : 0;
+
+    dispatch(
+      bidSliceDataActions.addBid({
+        offerId: pendingOfferId,
+        bidValue: bidValueNum,
+      }),
+    )
+      .then((response) => {
+        console.log("BidCreate response:", response);
+        setisClickedBurout(false);
+      })
+      .catch((error) => {
+        console.error("BidCreate error:", error);
+      });
+
+    setConfirmModalOpen(false);
+  };
+
+  const cancelBurnout = () => {
+    setConfirmModalOpen(false);
   };
 
   const renderFreeButton = (isFree: boolean, isOwner: boolean) => {
@@ -459,6 +504,17 @@ function ViewOffer() {
           {renderFreeButton(isFree, isOwner)}
           {renderEditButton(isOwner, isVisibleEdit)}
         </OfferButtonWrapper>
+        {confirmModalOpen && (
+          <ModalWindow
+            title="Confirm Action"
+            onOk={confirmBurnout}
+            onClose={cancelBurnout}
+          >
+            <WindowWrapper>
+              Are you sure you want to proceed with this action?
+            </WindowWrapper>
+          </ModalWindow>
+        )}
       </OfferUpWrapper>
     </OfferWrapper>
   );
