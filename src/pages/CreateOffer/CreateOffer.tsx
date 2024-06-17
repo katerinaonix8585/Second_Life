@@ -168,7 +168,7 @@ function CreateOffer() {
               message:
                 "Field Win bid is required, must be greater than zero and an integer",
             });
-          } else if (winbid < startPrice) {
+          } else if (values.type.id === 2 && winbid < startPrice) {
             errors.push({
               field: OFFER_DATA.WINBID,
               message:

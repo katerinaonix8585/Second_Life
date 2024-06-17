@@ -1,6 +1,6 @@
 export interface CounterProps {
   countValue: number;
-  onMakeABid?: () => void;
+  onMakeABid: (bidValue: number) => void;
 }
 
 export interface InputComponentProps {
