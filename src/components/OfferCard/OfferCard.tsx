@@ -54,6 +54,10 @@ const OfferCardCopy: React.FC<Props> = ({ offers }) => {
   const navigate = useNavigate();
   const dispatch = useAppDispatch();
 
+  const [confirmModalOpen, setConfirmModalOpen] = useState(false);
+  const [pendingOfferId, setPendingOfferId] = useState<number | null>(null);
+  const [pendingBidValue, setPendingBidValue] = useState<number | null>(null);
+
   const openModal = () => setModalVisible(true);
   const closeModal = () => setModalVisible(false);
   const closeModalOk = () => {
@@ -78,7 +82,7 @@ const OfferCardCopy: React.FC<Props> = ({ offers }) => {
 
   const getCategoryNameById = (id: number) => {
     const category = categoriesData.find((cat) => cat.id === id);
-    return category ? category.name : "Unknown Location";
+    return category ? category.name : "Unknown Category";
   };
 
   const formatDate = (dateInput: string | Date | null) => {
@@ -98,7 +102,7 @@ const OfferCardCopy: React.FC<Props> = ({ offers }) => {
 
   const gettypeOfferById = (id: number) => {
     const typeOffer = typeOfferData.find((cat) => cat.id === id);
-    return typeOffer ? typeOffer.value : "Unknown Location";
+    return typeOffer ? typeOffer.value : "Unknown Type";
   };
 
   const handleCancelled = (offerId: number) => {
@@ -114,7 +118,12 @@ const OfferCardCopy: React.FC<Props> = ({ offers }) => {
       .catch((error) => {
         console.error("cancelledOfferById error:", error);
       });
-    navigate(`/offers/${offerId}`);
+  };
+
+  const openConfirmModal = (offerId: number, bidValue: number | null) => {
+    setPendingOfferId(offerId);
+    setPendingBidValue(bidValue);
+    setConfirmModalOpen(true);
   };
 
   const handleBurnout = (offerId: number, bidValue: number | null) => {
@@ -123,11 +132,17 @@ const OfferCardCopy: React.FC<Props> = ({ offers }) => {
       return;
     }
 
-    const bidValueNum = bidValue !== null ? bidValue : 0;
+    openConfirmModal(offerId, bidValue);
+  };
+
+  const confirmBurnout = () => {
+    if (pendingOfferId === null) return;
+
+    const bidValueNum = pendingBidValue !== null ? pendingBidValue : 0;
 
     dispatch(
       bidSliceDataActions.addBid({
-        offerId,
+        offerId: pendingOfferId,
         bidValue: bidValueNum,
       }),
     )
@@ -138,6 +153,12 @@ const OfferCardCopy: React.FC<Props> = ({ offers }) => {
       .catch((error) => {
         console.error("BidCreate error:", error);
       });
+
+    setConfirmModalOpen(false);
+  };
+
+  const cancelBurnout = () => {
+    setConfirmModalOpen(false);
   };
 
   const handleApplyFree = (offerId: number) => {
@@ -156,6 +177,14 @@ const OfferCardCopy: React.FC<Props> = ({ offers }) => {
       .catch((error) => {
         console.error("BidCreate error:", error);
       });
+  };
+
+  const handleApply = (offerId: number) => {
+    if (!accessToken) {
+      openModal();
+      return;
+    }
+    navigate(`/offers/${offerId}`);
   };
 
   return (
@@ -216,7 +245,7 @@ const OfferCardCopy: React.FC<Props> = ({ offers }) => {
                 <LabelContainer>
                   <TextContainer>Current Price:</TextContainer>
                   <PriceContainer>
-                    {offer.startPrice}
+                    {offer.winBid === null ? offer.startPrice : offer.winBid}
                     <FaEuroSign size={24} color="green" />
                   </PriceContainer>
                 </LabelContainer>
@@ -229,52 +258,45 @@ const OfferCardCopy: React.FC<Props> = ({ offers }) => {
                     <Button
                       name="Cancel"
                       onButtonClick={() => handleCancelled(offer.id)}
-                      background="#d418b"
+                      background="#960018"
                     />
                   </ButtonContainer>
-                ) : offer.winBid !== null ? (
-                  <>
-                    <Button
-                      background={isBurnout ? "#d418b" : "#999"}
-                      name={
-                        <>
-                          <p>Buyout</p>
-                          <p>{offer.winBid} €</p>
-                        </>
-                      }
-                      onButtonClick={() =>
-                        handleBurnout(offer.id, offer.winBid)
-                      }
-                    />
-                    <ButtonContainer>
-                      <Button
-                        name="Apply"
-                        background={isApply ? "#0A5F38" : "#999"}
-                        onButtonClick={() => handleApplyFree(offer.id)}
-                      />
-                    </ButtonContainer>
-                  </>
                 ) : (
                   <ButtonContainer>
                     <Button
                       name="Apply"
                       background={isApply ? "#0A5F38" : "#999"}
-                      onButtonClick={() => handleApplyFree(offer.id)}
+                      onButtonClick={() =>
+                        offer.isFree
+                          ? handleApplyFree(offer.id)
+                          : handleApply(offer.id)
+                      }
                     />
+                    {offer.winBid !== null && (
+                      <Button
+                        background={isBurnout ? "#960018" : "#999999"}
+                        name={
+                          <>
+                            <p>Buyout</p>
+                            <p>{offer.winBid} €</p>
+                          </>
+                        }
+                        onButtonClick={() =>
+                          handleBurnout(offer.id, offer.winBid)
+                        }
+                      />
+                    )}
                   </ButtonContainer>
                 )
               ) : (
                 userId !== null &&
                 offer.ownerId !== null &&
-                offer.ownerId === parseInt(userId) &&
-                (offer.status === "VERIFICATION" ||
-                  offer.status === "DRAFT" ||
-                  offer.status === "QUALIFICATION") && (
+                offer.ownerId === parseInt(userId) && (
                   <ButtonContainer>
                     <Button
                       name="Cancel"
                       onButtonClick={() => handleCancelled(offer.id)}
-                      background="#d418b"
+                      background="#960018"
                     />
                   </ButtonContainer>
                 )
@@ -283,6 +305,17 @@ const OfferCardCopy: React.FC<Props> = ({ offers }) => {
           </OfferCardContainer>
         </Container>
       ))}
+      {confirmModalOpen && (
+        <ModalWindow
+          title="Confirm Action"
+          onOk={confirmBurnout}
+          onClose={cancelBurnout}
+        >
+          <WindowWrapper>
+            Are you sure you want to proceed with this action?
+          </WindowWrapper>
+        </ModalWindow>
+      )}
       {modalVisible && (
         <ModalWindow
           title="Access Denied"
