@@ -27,19 +27,19 @@ const OffersPage: React.FC = () => {
   const sortBy = "createdAt";
   const isAsc = false;
 
-  useEffect(() => {
-    const fetchData = async () => {
-      await dispatch(
-        offersDataSliceActions.getAllOffer({
-          page,
-          size,
-          sortBy,
-          isAsc,
-          status: routeStatus,
-        }),
-      );
-    };
+  const fetchData = async () => {
+    await dispatch(
+      offersDataSliceActions.getAllOffer({
+        page,
+        size,
+        sortBy,
+        isAsc,
+        status: routeStatus,
+      }),
+    );
+  };
 
+  useEffect(() => {
     fetchData();
   }, [dispatch, page, size, sortBy, routeStatus, isAsc]);
 
@@ -99,6 +99,7 @@ const OffersPage: React.FC = () => {
     )
       .then((response) => {
         console.log("rejectedOfferById response:", response);
+        fetchData();
       })
       .catch((error) => {
         console.error("rejectedOfferById error:", error);
@@ -109,6 +110,7 @@ const OffersPage: React.FC = () => {
     dispatch(offerDataSliceActions.verifyOfferById(id))
       .then((response) => {
         console.log("verifyOfferById response:", response);
+        fetchData();
       })
       .catch((error) => {
         console.error("verifyOfferById error:", error);
@@ -119,6 +121,7 @@ const OffersPage: React.FC = () => {
     dispatch(offerDataSliceActions.blockedOfferById(id))
       .then((response) => {
         console.log("blockedOfferById response:", response);
+        fetchData();
       })
       .catch((error) => {
         console.error("blockedOfferById error:", error);

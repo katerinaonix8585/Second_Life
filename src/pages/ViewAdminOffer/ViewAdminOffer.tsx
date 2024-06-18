@@ -131,6 +131,19 @@ function ViewAdminOffer() {
     };
   }, [offerData]);
 
+  const fetchData = () => {
+    if (offerId) {
+      dispatch(offerDataSliceActions.getOfferAdminById(offerId))
+        .then((response) => {
+          console.log("getOfferById response:", response);
+          setOfferData(response.payload);
+        })
+        .catch((error) => {
+          console.error("getOfferById error:", error);
+        });
+    }
+  };
+
   const handleCancel = () => {
     navigate(-1);
   };
@@ -144,6 +157,7 @@ function ViewAdminOffer() {
     )
       .then((response) => {
         console.log("rejectedOfferById response:", response);
+        fetchData();
       })
       .catch((error) => {
         console.error("rejectedOfferById error:", error);
@@ -154,6 +168,7 @@ function ViewAdminOffer() {
     dispatch(offerDataSliceActions.verifyOfferById(id))
       .then((response) => {
         console.log("verifyOfferById response:", response);
+        fetchData();
       })
       .catch((error) => {
         console.error("verifyOfferById error:", error);
@@ -164,6 +179,7 @@ function ViewAdminOffer() {
     dispatch(offerDataSliceActions.blockedOfferById(id))
       .then((response) => {
         console.log("blockedOfferById response:", response);
+        fetchData();
       })
       .catch((error) => {
         console.error("blockedOfferById error:", error);
@@ -273,7 +289,7 @@ function ViewAdminOffer() {
                   <Button
                     type="button"
                     background="#7b001c"
-                    name="Rejected"
+                    name="Reject"
                     onButtonClick={() =>
                       handleRejected(offerData.id.toString())
                     }
@@ -296,7 +312,7 @@ function ViewAdminOffer() {
                 <Button
                   type="button"
                   background="#7b001c"
-                  name="Blocked"
+                  name="Block"
                   onButtonClick={() => handleBlocked(offerData.id.toString())}
                 />
               </CategoryButtonWrapper>
