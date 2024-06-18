@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { MdOutlineCalendarMonth, MdOutlineLocationCity } from "react-icons/md";
 import { BiCategory } from "react-icons/bi";
 import { FiType } from "react-icons/fi";
@@ -55,8 +55,8 @@ const OfferCardCopy: React.FC<Props> = ({ offers }) => {
   const dispatch = useAppDispatch();
 
   const [modalVisible, setModalVisible] = useState(false);
-  const [isBurnout, setBurnOut] = useState(true);
-  const [isApply, setApply] = useState(true);
+  // const [isBurnout, setBurnOut] = useState(true);
+  // const [isApply, setApply] = useState(true);
   const [confirmModalOpen, setConfirmModalOpen] = useState(false);
   const [pendingOfferId, setPendingOfferId] = useState<number | null>(null);
   const [pendingBidValue, setPendingBidValue] = useState<number | null>(null);
@@ -151,7 +151,7 @@ const OfferCardCopy: React.FC<Props> = ({ offers }) => {
     )
       .then((response) => {
         console.log("BidCreate response:", response);
-        setBurnOut(false);
+        // setBurnOut(false);
       })
       .catch((error) => {
         console.error("BidCreate error:", error);
@@ -175,7 +175,7 @@ const OfferCardCopy: React.FC<Props> = ({ offers }) => {
     dispatch(bidSliceDataActions.addBid({ offerId, bidValue: bidValueNum }))
       .then((response) => {
         console.log("BidCreate response:", response);
-        setApply(false);
+        // setApply(false);
       })
       .catch((error) => {
         console.error("BidCreate error:", error);
@@ -190,6 +190,10 @@ const OfferCardCopy: React.FC<Props> = ({ offers }) => {
     navigate(`/offers/${offerId}`);
   };
 
+  useEffect(() => {
+    console.log("Offers updated:", offers);
+  }, [offers]);
+
   return (
     <OfferCardWrapper>
       {offers.map((offer) => (
@@ -200,7 +204,13 @@ const OfferCardCopy: React.FC<Props> = ({ offers }) => {
             </ImgContainer>
             <DescriptionContainer>
               <Link
-                to={`/offers/${offer.id}`}
+                to={accessToken ? `/offers/${offer.id}` : "#"}
+                onClick={(e) => {
+                  if (!accessToken) {
+                    e.preventDefault();
+                    openModal();
+                  }
+                }}
                 style={{ textDecoration: "none" }}
               >
                 <Title>{offer.title}</Title>
@@ -253,10 +263,15 @@ const OfferCardCopy: React.FC<Props> = ({ offers }) => {
                   </PriceContainer>
                 </LabelContainer>
               )}
-              {offer.status === "AUCTION_STARTED" ? (
-                userId !== null &&
-                offer.ownerId !== null &&
-                offer.ownerId === parseInt(userId) ? (
+              {userId !== null &&
+              offer.ownerId !== null &&
+              offer.ownerId === parseInt(userId) &&
+              (offer.status === "DRAFT" ||
+                offer.status === "REJECTED" ||
+                offer.status === "VERIFICATION" ||
+                offer.status === "AUCTION_STARTED" ||
+                offer.status === "QUALIFICATION") ? (
+                <>
                   <ButtonContainer>
                     <Button
                       name="Cancel"
@@ -264,45 +279,55 @@ const OfferCardCopy: React.FC<Props> = ({ offers }) => {
                       background="#960018"
                     />
                   </ButtonContainer>
-                ) : (
+                </>
+              ) : (
+                <></>
+              )}
+              {userId !== null &&
+              offer.ownerId !== null &&
+              offer.ownerId !== parseInt(userId) &&
+              offer.status === "AUCTION_STARTED" ? (
+                <>
                   <ButtonContainer>
                     <Button
                       name="Apply"
-                      background={isApply ? "#0A5F38" : "#999"}
+                      // background={isApply ? "#0A5F38" : "#999"}
+                      background="#0A5F38"
                       onButtonClick={() =>
                         offer.isFree
                           ? handleApplyFree(offer.id)
                           : handleApply(offer.id)
                       }
                     />
-                    {offer.winBid !== null && (
-                      <Button
-                        background={isBurnout ? "#960018" : "#999999"}
-                        name={
-                          <>
-                            <p>Buyout</p>
-                            <p>{offer.winBid} €</p>
-                          </>
-                        }
-                        onButtonClick={() =>
-                          handleBurnout(offer.id, offer.winBid)
-                        }
-                      />
-                    )}
                   </ButtonContainer>
-                )
+                </>
               ) : (
-                userId !== null &&
-                offer.ownerId !== null &&
-                offer.ownerId === parseInt(userId) && (
+                <></>
+              )}
+              {userId !== null &&
+              offer.ownerId !== null &&
+              offer.ownerId !== parseInt(userId) &&
+              offer.status === "AUCTION_STARTED" &&
+              offer.winBid !== null ? (
+                <>
                   <ButtonContainer>
                     <Button
-                      name="Cancel"
-                      onButtonClick={() => handleCancelled(offer.id)}
+                      // background={isBurnout ? "#960018" : "#999999"}
                       background="#960018"
+                      name={
+                        <>
+                          <p>Buyout</p>
+                          <p>{offer.winBid} €</p>
+                        </>
+                      }
+                      onButtonClick={() =>
+                        handleBurnout(offer.id, offer.winBid)
+                      }
                     />
                   </ButtonContainer>
-                )
+                </>
+              ) : (
+                <></>
               )}
             </ButtonWrapper>
           </OfferCardContainer>
@@ -315,7 +340,9 @@ const OfferCardCopy: React.FC<Props> = ({ offers }) => {
           onClose={cancelBurnout}
         >
           <WindowWrapper>
-            Are you sure you want to proceed with this action?
+            You have set a buyout price for this offer. Upon confirmation, the
+            offer will be considered purchased. Are you sure you want to proceed
+            with this action?
           </WindowWrapper>
         </ModalWindow>
       )}

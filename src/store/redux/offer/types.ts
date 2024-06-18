@@ -16,7 +16,7 @@ export interface OfferData {
   locationId: number;
   auctionDurationDays: null | number;
   typeOffer: string;
-  maxBidvalue: number;
+  maxBidValue: number;
   bidsCount: number;
 }
 
