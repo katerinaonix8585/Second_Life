@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { Space, Table } from "antd";
 import { Link } from "react-router-dom";
 import { SortOrder } from "antd/lib/table/interface";
@@ -13,37 +13,47 @@ import { categorysOneDataSliceActions } from "store/redux/categoryOne/categoryOn
 
 const App: React.FC = () => {
   const dispatch = useAppDispatch();
-
-  const { data: categoriesData, status } = useAppSelector(
-    categorysDataSliceSelectors.category,
-  );
+  const { status } = useAppSelector(categorysDataSliceSelectors.category);
+  const [localData, setLocalData] = useState<CategoryData[]>([]);
 
   useEffect(() => {
-    dispatch(categorysDataSliceActions.getCategory());
+    dispatch(categorysDataSliceActions.getCategoryAdmin()).then((response) => {
+      setLocalData(response.payload);
+    });
   }, [dispatch]);
 
   const handleEdit = (id: number) => {
-    window.location.href = `/admin/categories/edit/${id}`;
+    window.location.href = `#/admin/categories/edit/${id}`;
   };
 
-  const handleHide = (id: string) => {
-    dispatch(categorysOneDataSliceActions.hideCategoryById(id))
-      .then((response) => {
-        console.log("hideCategoryById response:", response);
-      })
-      .catch((error) => {
-        console.error("hideCategoryById error:", error);
-      });
+  const handleHide = async (id: string) => {
+    try {
+      await dispatch(
+        categorysOneDataSliceActions.hideCategoryById(id),
+      ).unwrap();
+      setLocalData((prevData) =>
+        prevData.map((item) =>
+          item.id === parseInt(id) ? { ...item, active: false } : item,
+        ),
+      );
+    } catch (error) {
+      console.error("hideCategoryById error:", error);
+    }
   };
 
-  const handleActive = (id: string) => {
-    dispatch(categorysOneDataSliceActions.hideCategoryById(id))
-      .then((response) => {
-        console.log("hideCategoryById response:", response);
-      })
-      .catch((error) => {
-        console.error("hideCategoryById error:", error);
-      });
+  const handleActive = async (id: string) => {
+    try {
+      await dispatch(
+        categorysOneDataSliceActions.activateCategoryById(id),
+      ).unwrap();
+      setLocalData((prevData) =>
+        prevData.map((item) =>
+          item.id === parseInt(id) ? { ...item, active: true } : item,
+        ),
+      );
+    } catch (error) {
+      console.error("activateCategoryById error:", error);
+    }
   };
 
   const columns = [
@@ -81,11 +91,9 @@ const App: React.FC = () => {
         <Space size="middle">
           <a onClick={() => handleEdit(record.id)}>Edit</a>
           {record.active ? (
-            <a onClick={() => handleHide(Number(record.id).toString())}>Hide</a>
+            <a onClick={() => handleHide(record.id.toString())}>Hide</a>
           ) : (
-            <a onClick={() => handleActive(Number(record.id).toString())}>
-              Active
-            </a>
+            <a onClick={() => handleActive(record.id.toString())}>Activate</a>
           )}
         </Space>
       ),
@@ -95,7 +103,7 @@ const App: React.FC = () => {
   return (
     <Table
       columns={columns}
-      dataSource={categoriesData}
+      dataSource={localData}
       loading={status === "loading"}
       rowKey="id"
     />
