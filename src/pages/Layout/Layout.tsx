@@ -15,7 +15,7 @@ import {
   categorysDataSliceSelectors,
 } from "store/redux/category/categorySlice";
 import DropDownMenu from "components/DropDownMenu/DropDownMenu";
-import { typeOfferData } from "pages/CreateOffer/OffersData";
+import { typeOfferDataMenu } from "pages/CreateOffer/OffersData";
 import DropDownUser from "components/DropDownUser/DropDownUser";
 import { userDataSliceActions } from "store/redux/user/userSlice";
 
@@ -233,7 +233,7 @@ const Layout: React.FC = () => {
               />
 
               <DropDownMenu
-                items={typeOfferData.map((typeOffer) => ({
+                items={typeOfferDataMenu.map((typeOffer) => ({
                   id: typeOffer.id,
                   value: typeOffer.value,
                   to: `/offers/all/id=${typeOffer.id}`,

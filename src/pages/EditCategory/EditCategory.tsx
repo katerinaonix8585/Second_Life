@@ -135,7 +135,7 @@ function EditCategory() {
 
         console.log("Category updated successfully:", responseData);
 
-        navigate(`/categories/${id}`);
+        navigate(`/admin/categories/${id}`);
       } catch (errors: unknown) {
         console.error("Errors updating category:", errors);
         if (Array.isArray(errors)) {
@@ -203,7 +203,7 @@ function EditCategory() {
                     type="button"
                     background="grey"
                     name="Back"
-                    onButtonClick={() => navigate(`/categories/${id}`)}
+                    onButtonClick={() => navigate(-1)}
                   />
                 </CategoryButtonWrapper>
               </CategoryButtonsWrapper>

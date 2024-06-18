@@ -55,18 +55,18 @@ function ViewCategory() {
       .catch((error) => {
         console.error("hideCategoryById error:", error);
       });
-    // navigate(`/admin/categories/${id}`);
+    navigate(`/admin/categories/${id}`);
   };
 
   const handleActive = (categoryId: string) => {
-    dispatch(categorysOneDataSliceActions.hideCategoryById(categoryId))
+    dispatch(categorysOneDataSliceActions.activateCategoryById(categoryId))
       .then((response) => {
         console.log("hideCategoryById response:", response);
       })
       .catch((error) => {
         console.error("hideCategoryById error:", error);
       });
-    // navigate(`/admin/categories/${id}`);
+    navigate(`/admin/categories/${id}`);
   };
 
   return (

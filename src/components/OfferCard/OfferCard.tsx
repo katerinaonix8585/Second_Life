@@ -46,14 +46,17 @@ interface Props {
 }
 
 const OfferCardCopy: React.FC<Props> = ({ offers }) => {
+  // Данные для проверки, является ли текущий пользователь собственником оффера
   const userId = localStorage.getItem("userId");
+  // Данные для проверки, является ли текущий пользователь авторизованным
   const accessToken = localStorage.getItem("accessToken");
-  const [modalVisible, setModalVisible] = useState(false);
-  const [isBurnout, setBurnOut] = useState(true);
-  const [isApply, setApply] = useState(true);
+
   const navigate = useNavigate();
   const dispatch = useAppDispatch();
 
+  const [modalVisible, setModalVisible] = useState(false);
+  const [isBurnout, setBurnOut] = useState(true);
+  const [isApply, setApply] = useState(true);
   const [confirmModalOpen, setConfirmModalOpen] = useState(false);
   const [pendingOfferId, setPendingOfferId] = useState<number | null>(null);
   const [pendingBidValue, setPendingBidValue] = useState<number | null>(null);

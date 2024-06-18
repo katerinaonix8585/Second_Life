@@ -16,7 +16,7 @@ import { offerDataSliceActions } from "store/redux/offer/offer";
 
 const OffersPage: React.FC = () => {
   const dispatch = useAppDispatch();
-  const { status } = useParams<{ status: string }>();
+  const { status: routeStatus } = useParams<{ status: string }>();
   const {
     data: offers,
     statusOffer,
@@ -28,22 +28,20 @@ const OffersPage: React.FC = () => {
   const isAsc = false;
 
   useEffect(() => {
-    if (status) {
-      dispatch(
+    const fetchData = async () => {
+      await dispatch(
         offersDataSliceActions.getAllOffer({
           page,
           size,
           sortBy,
           isAsc,
-          status,
+          status: routeStatus,
         }),
       );
-    } else {
-      dispatch(
-        offersDataSliceActions.getAllOffer({ page, size, sortBy, isAsc }),
-      );
-    }
-  }, [dispatch, page, size, sortBy, status]);
+    };
+
+    fetchData();
+  }, [dispatch, page, size, sortBy, routeStatus, isAsc]);
 
   const categoryDataSlice = useAppSelector(
     categorysDataSliceSelectors.category,

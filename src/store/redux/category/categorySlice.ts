@@ -44,6 +44,64 @@ export const categorySlice = createAppSlice({
         },
       },
     ),
+    getCategoryAdmin: create.asyncThunk(
+      async (_, thunkApi) => {
+        const accessToken = localStorage.getItem("accessAdminToken");
+        if (!accessToken) {
+          return thunkApi.rejectWithValue({
+            message: "Access token not found",
+          });
+        }
+
+        try {
+          const response = await fetch(
+            `${BASE_URL}/v1/categories/get-all-for-admin`,
+            {
+              method: "GET",
+              headers: {
+                Authorization: `Bearer ${accessToken}`,
+              },
+            },
+          );
+          const result = await response.json();
+
+          if (!response.ok) {
+            console.log("Response not OK, rejecting with value:", result);
+            return thunkApi.rejectWithValue(result);
+          } else {
+            console.log("Fetch successful, returning result:", result);
+            return result;
+          }
+        } catch (error) {
+          console.error("Network error:", error);
+          return thunkApi.rejectWithValue({ message: "Network error" });
+        }
+      },
+      {
+        pending: (state: CategoryDataSliceState) => {
+          console.log("Fetching user data - pending");
+          state.status = "loading";
+          state.error = undefined;
+        },
+        fulfilled: (state: CategoryDataSliceState, action) => {
+          console.log(
+            "Fetching user data - fulfilled with payload:",
+            action.payload,
+          );
+          state.status = "success";
+          state.data = action.payload;
+          state.error = undefined;
+        },
+        rejected: (state: CategoryDataSliceState, action) => {
+          console.error(
+            "Fetching user data - rejected with payload:",
+            action.payload,
+          );
+          state.status = "error";
+          state.error = action.payload;
+        },
+      },
+    ),
   }),
   selectors: {
     category: (state) => state,

@@ -32,11 +32,14 @@ function Offers() {
   const size = 10;
   const sortBy = "createdAt";
   const isAsc = false;
+  const status = "AUCTION_STARTED";
 
   console.log("Offers data:", offers);
 
   useEffect(() => {
-    dispatch(offersDataSliceActions.getAllOffer({ page, size, sortBy, isAsc }));
+    dispatch(
+      offersDataSliceActions.getAllOffer({ page, size, sortBy, isAsc, status }),
+    );
   }, [dispatch, page, size, sortBy]);
 
   const handlePageChange = (newPage: number) => {
