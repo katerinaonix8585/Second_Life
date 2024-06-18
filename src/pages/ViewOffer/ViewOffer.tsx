@@ -119,7 +119,7 @@ function ViewOffer() {
           {offerData !== null && (
             <Button
               name={`Buyout ${offerData.winBid} €`}
-              onButtonClick={handleBurnout}
+              onButtonClick={() => handleMakeABid(offerData?.winBid ?? 0)}
               disabled={isClickedBurout}
             />
           )}
@@ -132,16 +132,10 @@ function ViewOffer() {
 
   const renderWinBidButton = (isFree: boolean, isOwner: boolean) => {
     if (!isOwner && !isFree) {
+      const countValue = offerData?.maxBidValue ?? offerData?.startPrice ?? 0;
       return (
         <ButtonBidContainer>
-          <MakeBid
-            countValue={
-              offerData?.maxBidvalue !== undefined
-                ? offerData.maxBidvalue
-                : offerData?.startPrice ?? 0
-            }
-            onMakeABid={handleMakeABid}
-          />
+          <MakeBid countValue={countValue} onMakeABid={handleMakeABid} />
           <ButtonContainer>
             <Button
               type="button"
@@ -159,8 +153,27 @@ function ViewOffer() {
 
   const handleMakeABid = (bidValue: number) => {
     console.log("Bid value:", bidValue);
-    if (offerData) {
+    if (
+      offerData?.winBid !== undefined &&
+      offerData?.winBid !== null &&
+      bidValue >= offerData?.winBid
+    ) {
       openConfirmModal(offerData.id, bidValue);
+    } else {
+      const bidValueNum = bidValue !== null ? bidValue : 0;
+      dispatch(
+        bidSliceDataActions.addBid({
+          offerId: offerData?.id ?? 0,
+          bidValue: bidValueNum,
+        }),
+      )
+        .then((response) => {
+          console.log("BidCreate response:", response);
+          setisClickedBurout(false);
+        })
+        .catch((error) => {
+          console.error("BidCreate error:", error);
+        });
     }
   };
 
@@ -196,6 +209,19 @@ function ViewOffer() {
     setConfirmModalOpen(false);
   };
 
+  const handleApplyFree = (offerId: number) => {
+    const bidValueNum = 0;
+
+    dispatch(bidSliceDataActions.addBid({ offerId, bidValue: bidValueNum }))
+      .then((response) => {
+        console.log("BidCreate response:", response);
+        // setApply(false);
+      })
+      .catch((error) => {
+        console.error("BidCreate error:", error);
+      });
+  };
+
   const renderFreeButton = (isFree: boolean, isOwner: boolean) => {
     if (isFree && !isOwner) {
       return (
@@ -204,7 +230,9 @@ function ViewOffer() {
             <Button
               name="Apply"
               background="#0A5F38"
-              onButtonClick={() => setisClickedBurout(true)}
+              onButtonClick={() =>
+                offerData?.id && handleApplyFree(offerData.id)
+              }
               disabled={isClickedBurout}
             />
           </ButtonContainer>
@@ -234,18 +262,21 @@ function ViewOffer() {
           <>
             <ButtonContainer>
               <Button
-                background="#B00000"
-                name="Cancel"
-                onButtonClick={handleCancelled}
-                disabled={isClickedBurout}
-              />
-            </ButtonContainer>
-
-            <ButtonContainer>
-              <Button
                 background="#0A5F38"
                 name="Edit"
                 onButtonClick={() => navigate(`/offers/edit/${offersId}`)}
+                disabled={isClickedBurout}
+              />
+            </ButtonContainer>
+          </>
+        )}
+        {isVisibleCancel && (
+          <>
+            <ButtonContainer>
+              <Button
+                background="#B00000"
+                name="Cancel"
+                onButtonClick={handleCancelled}
                 disabled={isClickedBurout}
               />
             </ButtonContainer>
@@ -328,7 +359,17 @@ function ViewOffer() {
     offerData.ownerId !== null &&
     offerData.ownerId === parseInt(userId);
 
-  const isVisibleEdit = offerData !== null && offerData.status === "DRAFT";
+  const isVisibleEdit =
+    offerData !== null &&
+    (offerData.status === "DRAFT" || offerData?.status === "REJECTED");
+
+  const isVisibleCancel =
+    offerData !== null &&
+    (offerData.status === "DRAFT" ||
+      offerData?.status === "VERIFICATION" ||
+      offerData?.status === "REJECTED" ||
+      offerData?.status === "AUCTION_STARTED" ||
+      offerData?.status === "QUALFICATION");
 
   const isBurnOut = offerData !== null && offerData.winBid !== null;
 
@@ -357,16 +398,16 @@ function ViewOffer() {
     navigate(`/offers/${offersId}`);
   };
 
-  const handleBurnout = () => {
-    dispatch(offerDataSliceActions.completedOfferById(offersId))
-      .then((response) => {
-        console.log("completedOfferById response:", response);
-      })
-      .catch((error) => {
-        console.error("completedOfferById error:", error);
-      });
-    navigate(`/offers/${offersId}`);
-  };
+  // const handleBurnout = () => {
+  //   dispatch(offerDataSliceActions.completedOfferById(offersId))
+  //     .then((response) => {
+  //       console.log("completedOfferById response:", response);
+  //     })
+  //     .catch((error) => {
+  //       console.error("completedOfferById error:", error);
+  //     });
+  //   navigate(`/offers/${offersId}`);
+  // };
 
   return (
     <OfferWrapper>
@@ -463,7 +504,9 @@ function ViewOffer() {
                           {isVisibleAuction && (
                             <ContainerInfoPrice>
                               Last bid price:{" "}
-                              {offerData.maxBidvalue ?? offerData.startPrice}
+                              {offerData.maxBidValue !== null
+                                ? offerData.maxBidValue
+                                : offerData.startPrice}
                               <FaEuroSign size={18} color="#7b001c" />
                             </ContainerInfoPrice>
                           )}

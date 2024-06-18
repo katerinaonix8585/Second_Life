@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { Outlet } from "react-router-dom";
+import { Outlet, useLocation } from "react-router-dom";
 import { FaSearch } from "react-icons/fa";
 import { Link, useNavigate } from "react-router-dom";
 
@@ -57,6 +57,7 @@ const BASE_URL = "https://second-life-app-y2el9.ondigitalocean.app/api";
 const Layout: React.FC = () => {
   const navigate = useNavigate();
   const dispatch = useAppDispatch();
+  const location_page = useLocation();
 
   const [accessToken, setAccessToken] = useState<string | null>(
     localStorage.getItem("accessToken"),
@@ -164,6 +165,8 @@ const Layout: React.FC = () => {
     return <div>Loading...</div>;
   }
 
+  console.log(location.pathname);
+
   return (
     <LayoutWrapper>
       <Header>
@@ -218,7 +221,7 @@ const Layout: React.FC = () => {
         <DownWrapper>
           <Container>
             <NavContainer>
-              <StyledNavLink to="/" isActive={location.pathname === "/"}>
+              <StyledNavLink to="/" isActive={location_page.pathname === "/"}>
                 Home
               </StyledNavLink>
 
@@ -243,7 +246,7 @@ const Layout: React.FC = () => {
               />
 
               <StyledNavLink
-                isActive={location.pathname === "/aboutUs"}
+                isActive={location_page.pathname === "/aboutUs"}
                 to="/aboutUs"
               >
                 About us

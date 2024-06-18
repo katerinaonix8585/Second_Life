@@ -293,7 +293,7 @@ export const offerSlice = createAppSlice({
           "/cancel",
           thunkApi,
           "DELETE",
-          "accessAdminToken",
+          "accessToken",
         );
       },
       {
