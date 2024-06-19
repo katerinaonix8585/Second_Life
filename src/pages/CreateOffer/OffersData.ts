@@ -14,14 +14,3 @@ export const typeOfferData: TypeOfferData[] = [
     value: "Offer + auction with win bid",
   },
 ];
-
-export const typeOfferDataMenu: TypeOfferData[] = [
-  {
-    id: 0,
-    value: "Free offer",
-  },
-  {
-    id: 1,
-    value: "Auction",
-  },
-];

@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
-import { Outlet, useLocation } from "react-router-dom";
+import { Outlet, useLocation, useNavigate } from "react-router-dom";
 import { FaSearch } from "react-icons/fa";
-import { Link, useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
 
 import Select from "components/Select/Select";
 import { SelectDataProps } from "components/Select/types";
@@ -15,7 +15,6 @@ import {
   categorysDataSliceSelectors,
 } from "store/redux/category/categorySlice";
 import DropDownMenu from "components/DropDownMenu/DropDownMenu";
-import { typeOfferDataMenu } from "pages/CreateOffer/OffersData";
 import DropDownUser from "components/DropDownUser/DropDownUser";
 import { userDataSliceActions } from "store/redux/user/userSlice";
 
@@ -51,6 +50,7 @@ import {
   SelectWrapper,
 } from "./styles";
 import { LocationData } from "./types";
+import { typeOfferDataMenu } from "./OffersDataMenu";
 
 const BASE_URL = "https://second-life-app-y2el9.ondigitalocean.app/api";
 
@@ -67,6 +67,7 @@ const Layout: React.FC = () => {
     const savedLocation = localStorage.getItem("selectedLocation");
     return savedLocation || "";
   });
+  const [searchTerm, setSearchTerm] = useState<string>("");
 
   const { data: locationsData } = useAppSelector(
     locationsDataSliceSelectors.location,
@@ -74,41 +75,26 @@ const Layout: React.FC = () => {
   const { data: catigoriesData } = useAppSelector(
     categorysDataSliceSelectors.category,
   );
-  console.log(catigoriesData);
 
   useEffect(() => {
     dispatch(locationsDataSliceActions.getLocation());
-  }, [dispatch]);
-
-  useEffect(() => {
+    dispatch(categorysDataSliceActions.getCategory());
     if (accessToken) {
       dispatch(userDataSliceActions.getUserData());
     }
-  }, [setAccessToken]);
+  }, [dispatch, accessToken]);
 
   useEffect(() => {
-    dispatch(categorysDataSliceActions.getCategory());
-  }, [dispatch]);
-
-  useEffect(() => {
-    if (selectedLocation === "" && locationsData.length > 0) {
-      setSelectedLocation(locationsData[0].name);
-    }
-  }, [selectedLocation, locationsData]);
-
-  useEffect(() => {
-    const handleTokenUpdate = () => {
-      setAccessToken(localStorage.getItem("accessToken"));
+    if (locationsData.length > 0) {
+      const defaultLocation = locationsData.find(
+        (loc) => loc.name === "All Germany",
+      );
+      setSelectedLocation(
+        defaultLocation ? defaultLocation.name : locationsData[0].name,
+      );
       setLoading(false);
-    };
-
-    window.addEventListener("tokenUpdated", handleTokenUpdate);
-    handleTokenUpdate();
-
-    return () => {
-      window.removeEventListener("tokenUpdated", handleTokenUpdate);
-    };
-  }, []);
+    }
+  }, [locationsData]);
 
   const locationOptions: SelectDataProps<string>[] = locationsData
     .map((location: LocationData) => ({
@@ -161,11 +147,26 @@ const Layout: React.FC = () => {
     console.log("Selected location:", selectedValue);
   };
 
+  const handleSearch = () => {
+    console.log("Search Term:", searchTerm);
+    console.log("Selected Location:", selectedLocation);
+    if (selectedLocation !== "All Germany") {
+      const selectedLocationData = locationsData.find(
+        (loc) => loc.name === selectedLocation,
+      );
+      if (selectedLocationData) {
+        navigate(
+          `/search/${encodeURIComponent(searchTerm)}/${selectedLocationData.id}`,
+        );
+      }
+    } else {
+      navigate(`/search/${encodeURIComponent(searchTerm)}`);
+    }
+  };
+
   if (loading) {
     return <div>Loading...</div>;
   }
-
-  console.log(location.pathname);
 
   return (
     <LayoutWrapper>
@@ -180,8 +181,12 @@ const Layout: React.FC = () => {
             </HeaderTitleContainer>
             <SearchSelectContainer>
               <SearchWrapper>
-                <SearchInput placeholder="Search..." />
-                <SearchButton>
+                <SearchInput
+                  placeholder="Search..."
+                  value={searchTerm}
+                  onChange={(e) => setSearchTerm(e.target.value)}
+                />
+                <SearchButton onClick={handleSearch}>
                   <FaSearch />
                 </SearchButton>
               </SearchWrapper>

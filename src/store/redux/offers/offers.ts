@@ -176,6 +176,83 @@ export const offersSlice = createAppSlice({
         },
       },
     ),
+    searchOffer: create.asyncThunk(
+      async (
+        {
+          pattern,
+          page,
+          size,
+          sortBy,
+          isAsc,
+          location_id,
+        }: {
+          pattern: string;
+          page: number;
+          size: number;
+          sortBy: string;
+          isAsc: boolean;
+          location_id?: number;
+        },
+        thunkApi,
+      ) => {
+        const queryParams = [
+          `pattern=${pattern}`,
+          `page=${page}`,
+          `size=${size}`,
+          `sortBy=${sortBy}`,
+          `isAsc=${isAsc}`,
+        ];
+
+        if (location_id !== undefined) {
+          queryParams.push(`location_id=${location_id}`);
+        }
+
+        const queryString = queryParams.join("&");
+
+        const response = await fetch(
+          `${BASE_URL}/v1/offers/search?${queryString}`,
+        );
+        const result = await response.json();
+
+        if (!response.ok) {
+          return thunkApi.rejectWithValue(result);
+        } else {
+          return result;
+        }
+      },
+      {
+        pending: (state: OffersDataSliceState) => {
+          state.statusOffer = "loading";
+          state.errorOffer = undefined;
+        },
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        fulfilled: (state: OffersDataSliceState, action: any) => {
+          const {
+            offers,
+            isFirstPage,
+            isLastPage,
+            pageNumber,
+            pageSize,
+            totalElements,
+            totalPages,
+          } = action.payload;
+
+          state.statusOffer = "success";
+          state.data = offers;
+          state.isFirstPage = isFirstPage;
+          state.isLastPage = isLastPage;
+          state.pageNumber = pageNumber;
+          state.pageSize = pageSize;
+          state.totalElements = totalElements;
+          state.totalPages = totalPages;
+        },
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        rejected: (state: OffersDataSliceState, action: any) => {
+          state.statusOffer = "error";
+          state.errorOffer = action.payload;
+        },
+      },
+    ),
   }),
   selectors: {
     offer: (state) => state,

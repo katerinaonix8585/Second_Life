@@ -16,6 +16,7 @@ import ViewCategory from "pages/ViewCategory/ViewCategory.tsx";
 import EditCategory from "pages/EditCategory/EditCategory.tsx";
 import ListOffers from "pages/ListOffers/ListOffers.tsx";
 import ViewAdminOffer from "pages/ViewAdminOffer/ViewAdminOffer.tsx";
+import SearchPages from "pages/SearchPages/SearchPages.tsx";
 
 import Layout from "./pages/Layout/Layout";
 import AdminLayout from "./pages/AdminLayout/AdminLayout";
@@ -35,6 +36,11 @@ function App() {
           <Route path="signup" element={<SignUp />} />
           <Route path="aboutMe" element={<PersonalInformation />} />
           <Route path="aboutUs" element={<AboutUs />} />
+          <Route
+            path="search/:pattern_request/:location_id"
+            element={<SearchPages />}
+          />
+          <Route path="search/:pattern_request" element={<SearchPages />} />
 
           <Route path="offers">
             <Route index element={<CreateOffer />} />
