@@ -35,11 +35,11 @@ function PersonalInformation() {
     dispatch(userDataSliceActions.getUserData());
   }, [dispatch]);
 
-  const handleCancel = () => {
-    navigate(-1);
-  };
+  // const handleCancel = () => {
+  //   navigate(-1);
+  // };
 
-  const location = localStorage.getItem("selectedLocation");
+  // const location = localStorage.getItem("selectedLocation");
 
   return (
     <OfferWrapper>
@@ -62,7 +62,7 @@ function PersonalInformation() {
             </ContainerInfo>
             <ContainerInfo>
               <MdOutlineLocationCity />
-              {location}
+              {userData.locationId}
             </ContainerInfo>
           </ContainerInfoCommon>
         </UserInfoContainer>
@@ -72,7 +72,7 @@ function PersonalInformation() {
               type="button"
               background="grey"
               name="Back"
-              onButtonClick={handleCancel}
+              onButtonClick={() => navigate(-1)}
             />
           </OfferButtonWrapper>
         </OfferInfoOfferWrapper>
