@@ -26,7 +26,6 @@ const DropDownMenu: React.FC<DropDownMenuProps> = ({ items, label, link }) => {
   };
 
   const isActive = location.pathname === link;
-  console.log(isActive);
 
   const handleMenuButtonClick = () => {
     setIsOpen(!isOpen);

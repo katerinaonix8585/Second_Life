@@ -72,7 +72,7 @@ function PersonalInformation() {
               type="button"
               background="grey"
               name="Back"
-              onButtonClick={() => navigate(-1)}
+              onButtonClick={() => navigate("/")}
             />
           </OfferButtonWrapper>
         </OfferInfoOfferWrapper>
