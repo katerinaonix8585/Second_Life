@@ -41,14 +41,16 @@ function MyParticipantsPages() {
   const [page, setPage] = useState(0);
   const size = 10;
   const sortBy = "createdAt";
+  const isAsc = true;
 
   useEffect(() => {
     dispatch(
-      offersDataSliceActions.getAllUsersOffer({
+      offersDataSliceActions.getAllUsersParticipationsOffer({
         user,
         page,
         size,
         sortBy,
+        isAsc,
       }),
     );
   }, [dispatch, user, page, size, sortBy]);

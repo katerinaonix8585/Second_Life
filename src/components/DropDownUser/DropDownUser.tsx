@@ -38,7 +38,10 @@ const DropDownUser: React.FC = () => {
   const menuItems = [
     { to: "/offers", value: "Create new offer" },
     { to: `/offers/users/userId=${userId}`, value: "My creator offers" },
-    { to: `/offers/users/userId=${userId}`, value: "My participant offers" },
+    {
+      to: `/offers/participations/users/userId=${userId}`,
+      value: "My participant offers",
+    },
     { to: "/aboutMe", value: "Personal information" },
   ];
 
