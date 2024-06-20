@@ -60,6 +60,7 @@ const OfferCardCopy: React.FC<Props> = ({ offers }) => {
   const [confirmModalOpen, setConfirmModalOpen] = useState(false);
   const [pendingOfferId, setPendingOfferId] = useState<number | null>(null);
   const [pendingBidValue, setPendingBidValue] = useState<number | null>(null);
+  const [isModalOpen, setIsModalOpen] = useState(false);
 
   const openModal = () => setModalVisible(true);
   const closeModal = () => setModalVisible(false);
@@ -67,6 +68,8 @@ const OfferCardCopy: React.FC<Props> = ({ offers }) => {
     setModalVisible(false);
     navigate("/auth/user/login");
   };
+
+  const closeModalApply = () => setIsModalOpen(false);
 
   const locationsDataSlice = useAppSelector(
     locationsDataSliceSelectors.location,
@@ -194,6 +197,18 @@ const OfferCardCopy: React.FC<Props> = ({ offers }) => {
     console.log("Offers updated:", offers);
   }, [offers]);
 
+  const handleButtonClick = (offer: OfferData) => {
+    console.log(
+      `offer.id: ${offer.id}, isCurrentUserAuctionParticipant: ${offer.isCurrentUserAuctionParticipant}, isFree: ${offer.isFree}`,
+    );
+
+    if (offer.isCurrentUserAuctionParticipant && offer.isFree) {
+      setIsModalOpen(true);
+    } else {
+      offer.isFree ? handleApplyFree(offer.id) : handleApply(offer.id);
+    }
+  };
+
   return (
     <OfferCardWrapper>
       {offers.map((offer) => (
@@ -291,13 +306,12 @@ const OfferCardCopy: React.FC<Props> = ({ offers }) => {
                   <ButtonContainer>
                     <Button
                       name="Apply"
-                      // background={isApply ? "#0A5F38" : "#999"}
-                      background="#0A5F38"
-                      onButtonClick={() =>
-                        offer.isFree
-                          ? handleApplyFree(offer.id)
-                          : handleApply(offer.id)
+                      background={
+                        offer.isCurrentUserAuctionParticipant && offer.isFree
+                          ? "#999999"
+                          : "#0A5F38"
                       }
+                      onButtonClick={() => handleButtonClick(offer)}
                     />
                   </ButtonContainer>
                 </>
@@ -354,6 +368,17 @@ const OfferCardCopy: React.FC<Props> = ({ offers }) => {
         >
           <WindowWrapper>
             You need to be logged in to perform this action
+          </WindowWrapper>
+        </ModalWindow>
+      )}
+      {isModalOpen && (
+        <ModalWindow
+          title="Repeat bid"
+          onOk={closeModalApply}
+          onClose={closeModalApply}
+        >
+          <WindowWrapper>
+            You have already placed a bid on this offer.
           </WindowWrapper>
         </ModalWindow>
       )}

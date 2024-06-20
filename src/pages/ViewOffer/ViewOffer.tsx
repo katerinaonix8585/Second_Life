@@ -63,6 +63,9 @@ function ViewOffer() {
   const [confirmModalOpen, setConfirmModalOpen] = useState(false);
   const [pendingOfferId, setPendingOfferId] = useState<number | null>(null);
   const [pendingBidValue, setPendingBidValue] = useState<number | null>(null);
+  const [isModalOpen, setIsModalOpen] = useState(false);
+
+  const closeModalApply = () => setIsModalOpen(false);
 
   const userId = localStorage.getItem("userId");
 
@@ -555,6 +558,17 @@ function ViewOffer() {
           >
             <WindowWrapper>
               Are you sure you want to proceed with this action?
+            </WindowWrapper>
+          </ModalWindow>
+        )}
+        {isModalOpen && (
+          <ModalWindow
+            title="Repeat bid"
+            onOk={closeModalApply}
+            onClose={closeModalApply}
+          >
+            <WindowWrapper>
+              You have already placed a bid on this offer.
             </WindowWrapper>
           </ModalWindow>
         )}

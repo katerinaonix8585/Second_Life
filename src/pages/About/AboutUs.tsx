@@ -10,6 +10,8 @@ import {
 } from "./style.ts";
 
 function AboutUs() {
+  const adminUrl = `${window.location.origin}/#/admin`;
+
   return (
     <AboutWrapper>
       <Container>
@@ -50,6 +52,12 @@ function AboutUs() {
             Lorem ipsum Lorem ipsum Lorem ipsum Lorem ipsum Lorem ipsum Lorem
             ipsum Lorem ipsum Lorem ipsum Lorem ipsum Lorem ipsum Lorem ipsum
           </Description>
+        </TextBlock>
+      </Container>
+      <Container>
+        <TextBlock>
+          <Tile>Admin Section:</Tile>
+          <a href={adminUrl}>Go to Admin</a>
         </TextBlock>
       </Container>
     </AboutWrapper>

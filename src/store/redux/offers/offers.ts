@@ -58,10 +58,17 @@ export const offersSlice = createAppSlice({
           queryParams.push(`free=${free}`);
         }
 
+        const accessToken = localStorage.getItem("accessToken");
         const queryString = queryParams.join("&");
 
         const response = await fetch(
           `${BASE_URL}/v1/offers/all?${queryString}`,
+          {
+            method: "GET",
+            headers: {
+              Authorization: `Bearer ${accessToken}`,
+            },
+          },
         );
         const result = await response.json();
 
@@ -203,6 +210,8 @@ export const offersSlice = createAppSlice({
           `isAsc=${isAsc}`,
         ];
 
+        const accessToken = localStorage.getItem("accessToken");
+
         if (location_id !== undefined) {
           queryParams.push(`location_id=${location_id}`);
         }
@@ -211,6 +220,12 @@ export const offersSlice = createAppSlice({
 
         const response = await fetch(
           `${BASE_URL}/v1/offers/search?${queryString}`,
+          {
+            method: "GET",
+            headers: {
+              Authorization: `Bearer ${accessToken}`,
+            },
+          },
         );
         const result = await response.json();
 
