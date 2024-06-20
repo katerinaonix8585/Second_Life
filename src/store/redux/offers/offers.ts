@@ -253,6 +253,85 @@ export const offersSlice = createAppSlice({
         },
       },
     ),
+    getAllUsersParticipationsOffer: create.asyncThunk(
+      async (
+        {
+          user,
+          page,
+          size,
+          sortBy,
+          isAsc,
+        }: {
+          user: number;
+          page: number;
+          size: number;
+          sortBy: string;
+          isAsc: boolean;
+        },
+        thunkApi,
+      ) => {
+        const accessToken = localStorage.getItem("accessToken");
+        if (!accessToken) {
+          return thunkApi.rejectWithValue({
+            message: "Access token not found",
+          });
+        }
+
+        try {
+          const response = await fetch(
+            `${BASE_URL}/v1/offers/participations/user/${user}?page=${page}&size=${size}&sortBy=${sortBy}&isAsc=${isAsc}`,
+            {
+              method: "GET",
+              headers: {
+                Authorization: `Bearer ${accessToken}`,
+              },
+            },
+          );
+          const result = await response.json();
+
+          if (!response.ok) {
+            return thunkApi.rejectWithValue(result);
+          } else {
+            return result;
+          }
+        } catch (error) {
+          console.error("Network error:", error);
+          return thunkApi.rejectWithValue({ message: "Network error" });
+        }
+      },
+      {
+        pending: (state: OffersDataSliceState) => {
+          state.statusOffer = "loading";
+          state.errorOffer = undefined;
+        },
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        fulfilled: (state: OffersDataSliceState, action: any) => {
+          const {
+            offers,
+            isFirstPage,
+            isLastPage,
+            pageNumber,
+            pageSize,
+            totalElements,
+            totalPages,
+          } = action.payload;
+
+          state.statusOffer = "success";
+          state.data = offers;
+          state.isFirstPage = isFirstPage;
+          state.isLastPage = isLastPage;
+          state.pageNumber = pageNumber;
+          state.pageSize = pageSize;
+          state.totalElements = totalElements;
+          state.totalPages = totalPages;
+        },
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        rejected: (state: OffersDataSliceState, action: any) => {
+          state.statusOffer = "error";
+          state.errorOffer = action.payload;
+        },
+      },
+    ),
   }),
   selectors: {
     offer: (state) => state,

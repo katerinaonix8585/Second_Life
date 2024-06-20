@@ -17,6 +17,7 @@ import EditCategory from "pages/EditCategory/EditCategory.tsx";
 import ListOffers from "pages/ListOffers/ListOffers.tsx";
 import ViewAdminOffer from "pages/ViewAdminOffer/ViewAdminOffer.tsx";
 import SearchPages from "pages/SearchPages/SearchPages.tsx";
+import MyParticipantsPages from "pages/MyParticipantsPages/MyParticipantsPages.tsx";
 
 import Layout from "./pages/Layout/Layout";
 import AdminLayout from "./pages/AdminLayout/AdminLayout";
@@ -49,6 +50,10 @@ function App() {
             <Route path="all" element={<Offers />} />
             <Route path="all/:id" element={<OffersPage />} />
             <Route path="users/:userId" element={<MyOffersPages />} />
+            <Route
+              path="participations/users/:userId"
+              element={<MyParticipantsPages />}
+            />
           </Route>
 
           <Route path="category">
