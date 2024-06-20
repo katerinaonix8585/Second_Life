@@ -18,6 +18,7 @@ export interface OfferData {
   typeOffer: string;
   maxBidValue: number;
   bidsCount: number;
+  isCurrentUserAuctionParticipant: boolean;
 }
 
 export interface OfferDataSliceState {
