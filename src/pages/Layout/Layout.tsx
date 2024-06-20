@@ -126,6 +126,20 @@ const Layout: React.FC = () => {
     }
   };
 
+  useEffect(() => {
+    const handleTokenUpdate = () => {
+      setAccessToken(localStorage.getItem("accessToken"));
+      setLoading(false);
+    };
+
+    window.addEventListener("tokenUpdated", handleTokenUpdate);
+    handleTokenUpdate();
+
+    return () => {
+      window.removeEventListener("tokenUpdated", handleTokenUpdate);
+    };
+  }, []);
+
   const sendLogoutRequest = async () => {
     try {
       const response = await fetch(`${BASE_URL}/v1/auth/user/logout`, {
