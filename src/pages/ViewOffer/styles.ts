@@ -294,3 +294,16 @@ export const StatusContainer = styled.div`
   font-weight: bold;
   font-size: 20px;
 `;
+
+export const BidsContainer = styled.div`
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  padding: 10px;
+  gap: 10px;
+`;
+
+export const BidsContainerOneBid = styled.div`
+  display: flex;
+  gap: 10px;
+`;

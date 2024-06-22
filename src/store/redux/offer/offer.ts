@@ -18,6 +18,7 @@ const fetchOfferById = async (
   method: string = "GET",
   accessToken: string,
   rejectionReasonId?: number,
+  winnerBidId?: number,
 ) => {
   const token =
     accessToken === "accessAdminToken"
@@ -42,12 +43,17 @@ const fetchOfferById = async (
       body.rejectionReasonId = rejectionReasonId;
     }
 
+    // Only include winnerBidId if endpoint is not "/reject"
+    if (endpoint !== "/reject" && winnerBidId !== undefined) {
+      body.winnerBidId = winnerBidId;
+    }
+
     const response = await fetch(
       `${BASE_URL}/v1/offers/${offerId}${endpoint}`,
       {
         method,
         headers,
-        body: method === "PATCH" ? JSON.stringify(body) : undefined, // Преобразуем body в строку JSON для PATCH запроса
+        body: method === "PATCH" ? JSON.stringify(body) : undefined,
       },
     );
     const result = await response.json();
@@ -132,13 +138,18 @@ export const offerSlice = createAppSlice({
       },
     ),
     completedOfferById: create.asyncThunk(
-      async (offerId: string, thunkApi) => {
+      async (
+        { offerId, winnerBidId }: { offerId: string; winnerBidId: number },
+        thunkApi,
+      ) => {
         return fetchOfferById(
           offerId,
           "/complete",
           thunkApi,
           "PATCH",
           "accessToken",
+          undefined,
+          winnerBidId,
         );
       },
       {

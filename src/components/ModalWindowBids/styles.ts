@@ -20,9 +20,9 @@ export const ModalContent = styled.div`
   justify-content: space-evenly;
   padding: 20px;
   border-radius: 8px;
-  max-width: 500px;
-  height: 200px;
-  width: 100%;
+  /* max-width: auto; */
+  height: auto;
+  width: auto;
   box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
 `;
 

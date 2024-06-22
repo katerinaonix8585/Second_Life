@@ -11,7 +11,12 @@ import {
 } from "./styles";
 import { ModalProps } from "./types";
 
-const Modal: React.FC<ModalProps> = ({ title, children, onClose, onOk }) => {
+const ModalWindowBids: React.FC<ModalProps> = ({
+  title,
+  children,
+  onClose,
+  onOk,
+}) => {
   return (
     <ModalOverlay>
       <ModalContent>
@@ -23,7 +28,7 @@ const Modal: React.FC<ModalProps> = ({ title, children, onClose, onOk }) => {
           <ButtonWrapper>
             <Button
               type="submit"
-              name="ОК"
+              name="Set winner"
               background="#0A5F38"
               onButtonClick={onOk}
             />
@@ -42,4 +47,4 @@ const Modal: React.FC<ModalProps> = ({ title, children, onClose, onOk }) => {
   );
 };
 
-export default Modal;
+export default ModalWindowBids;

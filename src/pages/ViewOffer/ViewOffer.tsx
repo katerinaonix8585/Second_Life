@@ -17,6 +17,11 @@ import MakeBid from "components/MakeBid/MakeBid";
 import ModalWindow from "components/ModalWindow/ModalWindow";
 import { WindowWrapper } from "components/OfferCard/style";
 import { bidSliceDataActions } from "store/redux/bid/bidSlice";
+import {
+  bidsSliceDataActions,
+  bidsSliceDataSelectors,
+} from "store/redux/bids/bidsSlice";
+import ModalWindowBids from "components/ModalWindowBids/ModalWindowBids";
 
 import {
   OfferUpWrapper,
@@ -52,6 +57,8 @@ import {
   ButtonFreeContainer,
   ButtonBidContainer,
   ButtonWinBidContainer,
+  BidsContainer,
+  BidsContainerOneBid,
 } from "./styles";
 
 function ViewOffer() {
@@ -64,8 +71,14 @@ function ViewOffer() {
   const [pendingOfferId, setPendingOfferId] = useState<number | null>(null);
   const [pendingBidValue, setPendingBidValue] = useState<number | null>(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [isModaWinnerlOpen, setIsModalWinnerOpen] = useState(false);
+  const [selectedBidId, setSelectedBidId] = useState<number | null>(null);
+  const [selectedUserId, setSelectedUserId] = useState<number | null>(null);
+  console.log(selectedUserId);
 
   const closeModalApply = () => setIsModalOpen(false);
+
+  const closeModalWinnerApply = () => setIsModalWinnerOpen(false);
 
   const userId = localStorage.getItem("userId");
 
@@ -225,17 +238,50 @@ function ViewOffer() {
       });
   };
 
+  const isActiveAuction = offerData?.status === "AUCTION_STARTED";
+
   const renderFreeButton = (isFree: boolean, isOwner: boolean) => {
     if (isFree && !isOwner) {
       return (
         <ButtonFreeContainer>
+          {isActiveAuction && (
+            <ButtonContainer>
+              <Button
+                name="Apply"
+                background="#0A5F38"
+                onButtonClick={() =>
+                  offerData?.id && handleApplyFree(offerData.id)
+                }
+                disabled={isClickedBurout}
+              />
+            </ButtonContainer>
+          )}
           <ButtonContainer>
             <Button
-              name="Apply"
+              type="button"
+              background="grey"
+              name="Back"
+              onButtonClick={handleCancel}
+            />
+          </ButtonContainer>
+        </ButtonFreeContainer>
+      );
+    } else {
+      return null;
+    }
+  };
+
+  const isActiveQualification = offerData?.status === "QUALIFICATION";
+
+  const renderQualification = (isOwner: boolean) => {
+    if (isOwner && isActiveQualification) {
+      return (
+        <ButtonFreeContainer>
+          <ButtonContainer>
+            <Button
+              name="Choose winner"
               background="#0A5F38"
-              onButtonClick={() =>
-                offerData?.id && handleApplyFree(offerData.id)
-              }
+              onButtonClick={() => setIsModalWinnerOpen(true)}
               disabled={isClickedBurout}
             />
           </ButtonContainer>
@@ -285,14 +331,16 @@ function ViewOffer() {
             </ButtonContainer>
           </>
         )}
-        <ButtonContainer>
-          <Button
-            type="button"
-            background="grey"
-            name="Back"
-            onButtonClick={handleCancel}
-          />
-        </ButtonContainer>
+        {!isActiveQualification && (
+          <ButtonContainer>
+            <Button
+              type="button"
+              background="grey"
+              name="Back"
+              onButtonClick={handleCancel}
+            />
+          </ButtonContainer>
+        )}
       </ButtonEditContainer>
     );
   };
@@ -401,16 +449,78 @@ function ViewOffer() {
     navigate(`/offers/${offersId}`);
   };
 
-  // const handleBurnout = () => {
-  //   dispatch(offerDataSliceActions.completedOfferById(offersId))
-  //     .then((response) => {
-  //       console.log("completedOfferById response:", response);
-  //     })
-  //     .catch((error) => {
-  //       console.error("completedOfferById error:", error);
-  //     });
-  //   navigate(`/offers/${offersId}`);
-  // };
+  const { bids } = useAppSelector(bidsSliceDataSelectors.bids);
+
+  useEffect(() => {
+    const offerIdNumber = Number(offersId);
+    console.log(offerIdNumber);
+    if (isNaN(offerIdNumber)) {
+      console.error(`Invalid offerId: ${offersId}`);
+      return; // Handle the error gracefully
+    }
+
+    dispatch(bidsSliceDataActions.getAllBid({ offerId: offerIdNumber }));
+  }, [dispatch, offersId]);
+
+  // eslint-disable-next-line @typescript-eslint/no-shadow
+  const setWinner = async (selectedUserId: number | null) => {
+    if (selectedUserId !== null) {
+      const offerId = offersId;
+      const winnerBidId = selectedUserId;
+      console.log(winnerBidId);
+      try {
+        const response = await dispatch(
+          offerDataSliceActions.completedOfferById({
+            offerId,
+            winnerBidId,
+          }),
+        );
+        console.log("SetWinner response:", response);
+        setIsModalWinnerOpen(false);
+      } catch (error) {
+        console.error("SetWinner error:", error);
+      }
+    }
+  };
+
+  const handleRadioChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const bidId = Number(event.target.value);
+    setSelectedBidId(bidId);
+
+    const selectedBid = bids.find((bid) => bid.id === bidId);
+    console.log(selectedBid);
+    if (selectedBid) {
+      setSelectedUserId(selectedBid.userId);
+      console.log(selectedUserId);
+    }
+  };
+
+  const renderBids = () => {
+    if (bids?.length === 0) {
+      return <BidsContainer>No bids available</BidsContainer>;
+    }
+
+    return (
+      <BidsContainer>
+        {bids?.map((bid) => (
+          <BidsContainerOneBid key={bid.id}>
+            <input
+              type="radio"
+              id={`bid_${bid.id}`}
+              name="bid"
+              value={bid.id}
+              checked={selectedBidId === bid.id}
+              onChange={handleRadioChange}
+            />
+            <label htmlFor={`bid_${bid.id}`}>
+              Bid by {bid.userNameShorted}: {bid.bidValue} €
+            </label>
+            <p>E-mail: {bid.userEmail}</p>
+          </BidsContainerOneBid>
+        ))}
+      </BidsContainer>
+    );
+  };
 
   return (
     <OfferWrapper>
@@ -549,6 +659,7 @@ function ViewOffer() {
           {renderWinBidButton(isFree, isOwner)}
           {renderFreeButton(isFree, isOwner)}
           {renderEditButton(isOwner, isVisibleEdit)}
+          {renderQualification(isOwner)}
         </OfferButtonWrapper>
         {confirmModalOpen && (
           <ModalWindow
@@ -571,6 +682,20 @@ function ViewOffer() {
               You have already placed a bid on this offer.
             </WindowWrapper>
           </ModalWindow>
+        )}
+        {isModaWinnerlOpen && (
+          <ModalWindowBids
+            title="Choose winner"
+            onOk={() => {
+              if (selectedBidId !== null) {
+                setWinner(selectedBidId);
+              }
+              closeModalWinnerApply();
+            }}
+            onClose={closeModalWinnerApply}
+          >
+            <WindowWrapper>{renderBids()}</WindowWrapper>
+          </ModalWindowBids>
         )}
       </OfferUpWrapper>
     </OfferWrapper>
