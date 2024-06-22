@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { Space, Table } from "antd";
-import { Link, useParams } from "react-router-dom";
+import { Link, useNavigate, useParams } from "react-router-dom";
 import { SortOrder } from "antd/lib/table/interface";
 
 import { useAppDispatch, useAppSelector } from "store/hooks";
@@ -15,6 +15,7 @@ import { OfferData } from "store/redux/offer/types";
 import { offerDataSliceActions } from "store/redux/offer/offer";
 
 const OffersPage: React.FC = () => {
+  const navigate = useNavigate();
   const dispatch = useAppDispatch();
   const { status: routeStatus } = useParams<{ status: string }>();
   const {
@@ -90,21 +91,21 @@ const OffersPage: React.FC = () => {
     }
   };
 
-  const handleRejected = (id: string) => {
-    dispatch(
-      offerDataSliceActions.rejectedOfferById({
-        offerId: id,
-        rejectionReasonId: 1,
-      }),
-    )
-      .then((response) => {
-        console.log("rejectedOfferById response:", response);
-        fetchData();
-      })
-      .catch((error) => {
-        console.error("rejectedOfferById error:", error);
-      });
-  };
+  // const handleRejected = (id: string) => {
+  //   dispatch(
+  //     offerDataSliceActions.rejectedOfferById({
+  //       offerId: id,
+  //       rejectionReasonId: 1,
+  //     }),
+  //   )
+  //     .then((response) => {
+  //       console.log("rejectedOfferById response:", response);
+  //       fetchData();
+  //     })
+  //     .catch((error) => {
+  //       console.error("rejectedOfferById error:", error);
+  //     });
+  // };
 
   const handleVerify = (id: string) => {
     dispatch(offerDataSliceActions.verifyOfferById(id))
@@ -199,7 +200,7 @@ const OffersPage: React.FC = () => {
               <a onClick={() => handleVerify(Number(record.id).toString())}>
                 Verify
               </a>
-              <a onClick={() => handleRejected(Number(record.id).toString())}>
+              <a onClick={() => navigate(`/admin/offers/${record.id}`)}>
                 Reject
               </a>
             </>

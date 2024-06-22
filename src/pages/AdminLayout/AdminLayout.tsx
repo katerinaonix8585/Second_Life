@@ -10,6 +10,10 @@ import {
   categorysDataSliceActions,
   categorysDataSliceSelectors,
 } from "store/redux/category/categorySlice.ts";
+import {
+  rejectDataSliceActions,
+  rejectDataSliceSelectors,
+} from "store/redux/reject/rejectSlice.ts";
 
 import Button from "../../components/Button/Button.tsx";
 import { SideBarContainer } from "../AdminHomePage/style.ts";
@@ -50,9 +54,13 @@ const AdminLayout: React.FC = () => {
   const { data: catigoriesData } = useAppSelector(
     categorysDataSliceSelectors.category,
   );
+  const { rejects: rejectData } = useAppSelector(
+    rejectDataSliceSelectors.reject,
+  );
 
   console.log(locationsData);
   console.log(catigoriesData);
+  console.log(rejectData);
 
   useEffect(() => {
     dispatch(locationsDataSliceActions.getLocation());
@@ -60,6 +68,10 @@ const AdminLayout: React.FC = () => {
 
   useEffect(() => {
     dispatch(categorysDataSliceActions.getCategory());
+  }, [dispatch]);
+
+  useEffect(() => {
+    dispatch(rejectDataSliceActions.getReject());
   }, [dispatch]);
 
   const isVisible = pathname !== "/admin/auth/admin/login";

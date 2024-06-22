@@ -19,6 +19,13 @@ export interface OfferData {
   maxBidValue: number;
   bidsCount: number;
   isCurrentUserAuctionParticipant: boolean;
+  images: {
+    [key: string]: {
+      "1024x1024": string;
+      "320x320": string;
+      "64x64": string;
+    };
+  };
 }
 
 export interface OfferDataSliceState {
