@@ -11,6 +11,9 @@ const userInitialState: UserDataSliceState = {
     createdAt: 0,
     locationId: 0,
     lastActive: "",
+    images: {
+      values: {},
+    },
   },
   status: "default",
   error: undefined,
@@ -86,6 +89,9 @@ export const userSlice = createAppSlice({
         createdAt: 0,
         locationId: 0,
         lastActive: "",
+        images: {
+          values: {},
+        },
       };
       state.status = "default";
       state.error = undefined;

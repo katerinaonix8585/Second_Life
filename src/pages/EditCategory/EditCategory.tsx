@@ -2,13 +2,13 @@ import { useFormik } from "formik";
 import { useNavigate, useParams } from "react-router-dom";
 import { useEffect, useState } from "react";
 
-import ImageUpload from "components/ImageUpload/ImageUpload.tsx";
 import Input from "components/Input/Input.tsx";
 import TextArea from "components/TextArea/TestArea.tsx";
 import Button from "components/Button/Button.tsx";
 import { useAppDispatch } from "store/hooks.ts";
 import { categorysOneDataSliceActions } from "store/redux/categoryOne/categoryOneSlice.ts";
 import { CategoryData } from "store/redux/categoryOne/types.ts";
+import ImageUploadOld from "components/ImageUploadOld/ImageUploadOld.tsx";
 
 import {
   CategoryButtonWrapper,
@@ -160,7 +160,7 @@ function EditCategory() {
           </CategoryHeadWrapper>
           <CatogoryInfoWrapper>
             <CategoryImageWrapper>
-              <ImageUpload />
+              <ImageUploadOld />
             </CategoryImageWrapper>
             <CategoryLeftWrapper>
               <CategoryInfoWrapper>

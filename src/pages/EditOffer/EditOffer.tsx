@@ -14,7 +14,6 @@ import { LocationData } from "pages/Layout/types";
 import { useAppDispatch, useAppSelector } from "store/hooks";
 import { locationsDataSliceSelectors } from "store/redux/location/locationSlice";
 import { categorysDataSliceSelectors } from "store/redux/category/categorySlice";
-import ImageUpload from "components/ImageUpload/ImageUpload";
 import { OfferData } from "store/redux/offer/types";
 
 import {

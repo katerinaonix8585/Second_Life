@@ -1,10 +1,10 @@
 import { useFormik } from "formik";
 import { useNavigate } from "react-router-dom";
 
-import ImageUpload from "components/ImageUpload/ImageUpload.tsx";
 import Input from "components/Input/Input.tsx";
 import TextArea from "components/TextArea/TestArea.tsx";
 import Button from "components/Button/Button.tsx";
+import ImageUploadOld from "components/ImageUploadOld/ImageUploadOld.tsx";
 
 import {
   CategoryButtonWrapper,
@@ -138,7 +138,7 @@ function CreateCategory() {
           </CategoryHeadWrapper>
           <CatogoryInfoWrapper>
             <CategoryImageWrapper>
-              <ImageUpload />
+              <ImageUploadOld />
             </CategoryImageWrapper>
             <CategoryLeftWrapper>
               <CategoryInfoWrapper>
