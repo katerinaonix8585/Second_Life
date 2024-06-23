@@ -17,26 +17,25 @@ import {
   OfferButtonWrapper,
   OfferTitleContainer,
   Tile,
-  Image as StyledImage, // Renamed to avoid conflict with HTML Image element
+  Image as StyledImage,
   OfferInfoImageContainer,
   ContainerInfo,
   ContainerInfoCommon,
   UserInfoContainer,
   OfferInfoOfferWrapper,
-  ButtonWrapper,
 } from "./styles";
 
-const BASE_URL = "https://second-life-app-y2el9.ondigitalocean.app/api";
+// const BASE_URL = "https://second-life-app-y2el9.ondigitalocean.app/api";
 
 function PersonalInformation() {
   const navigate = useNavigate();
   const dispatch = useAppDispatch();
-  const [baseName, setBaseName] = useState<string | null>(null); // State for storing baseName of the image
-  const [error, setError] = useState<string | undefined>(undefined); // State for handling errors
-  const [status, setStatus] = useState<
-    "idle" | "loading" | "success" | "error"
-  >("idle");
-  console.log(error);
+  const [baseName, setBaseName] = useState<string | null>(null);
+  // const [error, setError] = useState<string | undefined>(undefined); // State for handling errors
+  // const [status, setStatus] = useState<
+  //   "idle" | "loading" | "success" | "error"
+  // >("idle");
+  console.log(baseName);
 
   const userDataSlice = useAppSelector(userDataSliceSelectors.user);
   const userData = userDataSlice.data;
@@ -45,43 +44,43 @@ function PersonalInformation() {
     dispatch(userDataSliceActions.getUserData());
   }, [dispatch]);
 
-  const handleFileRemove = async () => {
-    setStatus("loading");
-    setError(undefined);
+  // const handleFileRemove = async () => {
+  //   setStatus("loading");
+  //   setError(undefined);
 
-    const accessToken = localStorage.getItem("accessToken");
-    if (!accessToken) {
-      setError("Access token not found");
-      setStatus("error");
-      return;
-    }
+  //   const accessToken = localStorage.getItem("accessToken");
+  //   if (!accessToken) {
+  //     setError("Access token not found");
+  //     setStatus("error");
+  //     return;
+  //   }
 
-    try {
-      const response = await fetch(`${BASE_URL}/v1/images`, {
-        method: "DELETE",
-        headers: {
-          Authorization: `Bearer ${accessToken}`,
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({ baseName }),
-      });
+  //   try {
+  //     const response = await fetch(`${BASE_URL}/v1/images`, {
+  //       method: "DELETE",
+  //       headers: {
+  //         Authorization: `Bearer ${accessToken}`,
+  //         "Content-Type": "application/json",
+  //       },
+  //       body: JSON.stringify({ baseName }),
+  //     });
 
-      if (!response.ok) {
-        const result = await response.json();
-        console.error("Fetch error:", result);
-        setError(result.message || "Error deleting image");
-        setStatus("error");
-      } else {
-        console.log("Image deleted successfully");
-        setBaseName(null); // Clear baseName on successful deletion
-        setStatus("idle");
-      }
-    } catch (fetchError) {
-      console.error("Network error:", fetchError);
-      setError("Network error");
-      setStatus("error");
-    }
-  };
+  //     if (!response.ok) {
+  //       const result = await response.json();
+  //       console.error("Fetch error:", result);
+  //       setError(result.message || "Error deleting image");
+  //       setStatus("error");
+  //     } else {
+  //       console.log("Image deleted successfully");
+  //       setBaseName(null); // Clear baseName on successful deletion
+  //       setStatus("idle");
+  //     }
+  //   } catch (fetchError) {
+  //     console.error("Network error:", fetchError);
+  //     setError("Network error");
+  //     setStatus("error");
+  //   }
+  // };
 
   // Function to handle navigation back
   const handleBackButtonClick = () => {
@@ -109,14 +108,14 @@ function PersonalInformation() {
                   alt="User Image"
                 />
               </OfferInfoImageContainer>
-              <ButtonWrapper>
+              {/* <ButtonWrapper>
                 <Button
                   onButtonClick={handleFileRemove}
                   type="button"
                   name="Remove Image"
                   disabled={status === "loading"} // Disable button during loading state
                 />
-              </ButtonWrapper>
+              </ButtonWrapper> */}
               <ContainerInfoCommon>
                 <ContainerInfo>
                   <FaUser />
