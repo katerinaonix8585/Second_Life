@@ -23,6 +23,8 @@ import {
 } from "store/redux/bids/bidsSlice";
 import ModalWindowBids from "components/ModalWindowBids/ModalWindowBids";
 
+import { defaultImage } from "../../assets/images/index.ts";
+
 import {
   OfferUpWrapper,
   OfferWrapper,
@@ -36,7 +38,6 @@ import {
   OfferInfoImageContainer,
   OfferInfoTextContainer,
   ImgContainer,
-  Img,
   TextAreaWrapper,
   OfferTextAreaWrapper,
   OfferInfoWrapper,
@@ -58,6 +59,7 @@ import {
   ButtonBidContainer,
   ButtonWinBidContainer,
   BidsContainer,
+  Image,
   BidsContainerOneBid,
 } from "./styles";
 
@@ -79,6 +81,8 @@ function ViewOffer() {
   const closeModalApply = () => setIsModalOpen(false);
 
   const closeModalWinnerApply = () => setIsModalWinnerOpen(false);
+
+  const cancelBurnout = () => setConfirmModalOpen(false);
 
   const userId = localStorage.getItem("userId");
 
@@ -132,7 +136,7 @@ function ViewOffer() {
     if (!isFree && !isOwner && isBurnOut) {
       return (
         <ButtonWinBidContainer>
-          {offerData !== null && (
+          {offerData !== null && isActiveAuction && (
             <Button
               name={`Buyout ${offerData.winBid} €`}
               onButtonClick={() => handleMakeABid(offerData?.winBid ?? 0)}
@@ -146,12 +150,16 @@ function ViewOffer() {
     }
   };
 
+  const isActiveBid = offerData?.status === "AUCTION_STARTED";
+
   const renderWinBidButton = (isFree: boolean, isOwner: boolean) => {
     if (!isOwner && !isFree) {
       const countValue = offerData?.maxBidValue ?? offerData?.startPrice ?? 0;
       return (
         <ButtonBidContainer>
-          <MakeBid countValue={countValue} onMakeABid={handleMakeABid} />
+          {isActiveBid && (
+            <MakeBid countValue={countValue} onMakeABid={handleMakeABid} />
+          )}
           <ButtonContainer>
             <Button
               type="button"
@@ -186,6 +194,7 @@ function ViewOffer() {
         .then((response) => {
           console.log("BidCreate response:", response);
           setisClickedBurout(false);
+          window.location.reload();
         })
         .catch((error) => {
           console.error("BidCreate error:", error);
@@ -213,32 +222,38 @@ function ViewOffer() {
       .then((response) => {
         console.log("BidCreate response:", response);
         setisClickedBurout(false);
+        window.location.reload();
       })
       .catch((error) => {
         console.error("BidCreate error:", error);
       });
 
-    setConfirmModalOpen(false);
-  };
-
-  const cancelBurnout = () => {
     setConfirmModalOpen(false);
   };
 
   const handleApplyFree = (offerId: number) => {
     const bidValueNum = 0;
 
-    dispatch(bidSliceDataActions.addBid({ offerId, bidValue: bidValueNum }))
-      .then((response) => {
-        console.log("BidCreate response:", response);
-        // setApply(false);
-      })
-      .catch((error) => {
-        console.error("BidCreate error:", error);
-      });
+    if (isParticipant) {
+      openModalApply();
+    } else {
+      dispatch(bidSliceDataActions.addBid({ offerId, bidValue: bidValueNum }))
+        .then((response) => {
+          console.log("BidCreate response:", response);
+          window.location.reload();
+        })
+        .catch((error) => {
+          console.error("BidCreate error:", error);
+        });
+    }
+  };
+
+  const openModalApply = () => {
+    setIsModalOpen(true);
   };
 
   const isActiveAuction = offerData?.status === "AUCTION_STARTED";
+  const isParticipant = offerData?.isCurrentUserAuctionParticipant;
 
   const renderFreeButton = (isFree: boolean, isOwner: boolean) => {
     if (isFree && !isOwner) {
@@ -248,7 +263,7 @@ function ViewOffer() {
             <ButtonContainer>
               <Button
                 name="Apply"
-                background="#0A5F38"
+                background={isParticipant ? "#999999" : "#0A5F38"}
                 onButtonClick={() =>
                   offerData?.id && handleApplyFree(offerData.id)
                 }
@@ -442,6 +457,7 @@ function ViewOffer() {
     dispatch(offerDataSliceActions.cancelledOfferById(offersId))
       .then((response) => {
         console.log("rejectedOfferById response:", response);
+        window.location.reload();
       })
       .catch((error) => {
         console.error("rejectedOfferById error:", error);
@@ -477,6 +493,7 @@ function ViewOffer() {
         );
         console.log("SetWinner response:", response);
         setIsModalWinnerOpen(false);
+        window.location.reload();
       } catch (error) {
         console.error("SetWinner error:", error);
       }
@@ -513,8 +530,11 @@ function ViewOffer() {
               onChange={handleRadioChange}
             />
             <label htmlFor={`bid_${bid.id}`}>
-              Bid by {bid.userNameShorted}: {bid.bidValue} €
+              Bid by {bid.userNameShorted}
             </label>
+            {!isFree && (
+              <label htmlFor={`bid_${bid.id}`}>: {bid.bidValue} €</label>
+            )}
             <p>E-mail: {bid.userEmail}</p>
           </BidsContainerOneBid>
         ))}
@@ -539,7 +559,10 @@ function ViewOffer() {
               ) : (
                 <PriceStatusContainer>
                   <PriceContainer>
-                    Current price: {offerData?.startPrice}
+                    Current price:{" "}
+                    {offerData?.maxBidValue !== null
+                      ? offerData?.maxBidValue
+                      : offerData?.startPrice}
                     <FaEuroSign size={24} color="green" />
                   </PriceContainer>
                   <StatusContainer>
@@ -551,7 +574,13 @@ function ViewOffer() {
             <OfferInfoOfferContainer>
               <OfferInfoImageContainer>
                 <ImgContainer>
-                  <Img />
+                  <Image
+                    src={
+                      offerData?.images?.values?.[
+                        Object.keys(offerData?.images.values)[0]
+                      ]?.["320x320"] || defaultImage
+                    }
+                  />
                 </ImgContainer>
               </OfferInfoImageContainer>
               <OfferInfoTextContainer>
@@ -638,13 +667,23 @@ function ViewOffer() {
                           ? formatDate(offerData.auctionEndAt)
                           : "Unknown Date"}
                       </ContainerInfo>
-                      <ContainerInfo>
-                        Timer: {timeRemaining.days}d {timeRemaining.hours}h{" "}
-                        {timeRemaining.minutes}m {timeRemaining.seconds}s
-                      </ContainerInfo>
+                      {isActiveAuction && (
+                        <ContainerInfo>
+                          Timer: {timeRemaining.days}d {timeRemaining.hours}h{" "}
+                          {timeRemaining.minutes}m {timeRemaining.seconds}s
+                        </ContainerInfo>
+                      )}
                       {!offerData.isFree && (
                         <ContainerInfo>
                           Bids: {offerData.bidsCount}
+                        </ContainerInfo>
+                      )}
+                      {offerData.status === "COMPLETED" && (
+                        <ContainerInfo>
+                          Winner:{" "}
+                          {offerData.winnerBidId !== null
+                            ? offerData.winnerBidId
+                            : "No winner"}
                         </ContainerInfo>
                       )}
                     </OfferInfoPriceWrapper>
@@ -668,7 +707,9 @@ function ViewOffer() {
             onClose={cancelBurnout}
           >
             <WindowWrapper>
-              Are you sure you want to proceed with this action?
+              You have set a buyout price for this offer. Upon confirmation, the
+              offer will be considered purchased. Are you sure you want to
+              proceed with this action?
             </WindowWrapper>
           </ModalWindow>
         )}

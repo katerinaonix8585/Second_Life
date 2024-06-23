@@ -50,6 +50,7 @@ function CreateOffer() {
   const [selectedType, setSelectedType] = useState<TypeOfferData | null>(null);
   const [isSelectOpen, setSelectOpenState] = useState(false);
   const [toVerification, setToVerification] = useState(false);
+  const [baseNameOfImages, setBaseNameOfImages] = useState<string[]>([]);
 
   const typeOfferOptions: SelectDataProps<string>[] = typeOfferData.map(
     (offer) => ({
@@ -218,6 +219,7 @@ function CreateOffer() {
           categoryId: values.category.id,
           locationId: values.location.id === 0 ? "" : values.location.id,
           sendToVerification: toVerification,
+          baseNameOfImages: baseNameOfImages,
         };
 
         console.log("Request body:", requestBody);
@@ -513,7 +515,10 @@ function CreateOffer() {
               />
             </OfferSelectLeftWrapper>
             <OfferImageWrapper>
-              <ImageUpload />
+              <ImageUpload
+                setBaseNamesOfImages={setBaseNameOfImages}
+                entityType="offer"
+              />
             </OfferImageWrapper>
           </OfferRightWrapper>
         </OfferContentWrapper>

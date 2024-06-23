@@ -88,3 +88,14 @@ export const UserInfoContainer = styled.div`
   justify-content: center;
   padding: 0 0 0 40px;
 `;
+
+export const Image = styled.img`
+  width: 300px;
+  height: 300px;
+  object-fit: cover;
+`;
+
+export const ButtonWrapper = styled.div`
+  width: 200px;
+  padding: 0 0 10px 0;
+`;

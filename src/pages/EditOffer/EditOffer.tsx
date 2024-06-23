@@ -344,7 +344,6 @@ function EditOffer() {
 
             if (selectedOption?.id === 0) {
               formik.setFieldValue(OFFER_DATA.STARTPRICE, null);
-              formik.setFieldValue(OFFER_DATA.STEP, null);
               formik.setFieldValue(OFFER_DATA.WINBID, null);
             }
             if (selectedOption?.id === 1) {
@@ -383,11 +382,13 @@ function EditOffer() {
   const handleSubmit = () => {
     setToVerification(true);
     formik.handleSubmit();
+    navigate(`/offers/${offersId}`);
   };
 
   const handleSave = () => {
     setToVerification(false);
     formik.handleSubmit();
+    navigate(`/offers/${offersId}`);
   };
 
   const handleCancelled = () => {
@@ -473,18 +474,6 @@ function EditOffer() {
                           error={formik.errors[OFFER_DATA.STARTPRICE]}
                           onBlur={formik.handleBlur}
                           onFocus={() => handleFocus(OFFER_DATA.STARTPRICE)}
-                        />
-                      </OfferSelectWrapper>
-                      <OfferSelectWrapper>
-                        <Input
-                          required={true}
-                          label="Step"
-                          name={OFFER_DATA.STEP}
-                          onInputChange={formik.handleChange}
-                          value={formik.values[OFFER_DATA.STEP] || ""}
-                          error={formik.errors[OFFER_DATA.STEP]}
-                          onBlur={formik.handleBlur}
-                          onFocus={() => handleFocus(OFFER_DATA.STEP)}
                         />
                       </OfferSelectWrapper>
                       {selectedType.id === 2 && (
@@ -598,9 +587,7 @@ function EditOffer() {
                 onFocus={() => handleFocus(OFFER_DATA.DURATIONAUCTION)}
               />
             </OfferSelectLeftWrapper>
-            <OfferImageWrapper>
-              <ImageUpload />
-            </OfferImageWrapper>
+            <OfferImageWrapper>{/* <ImageUpload /> */}</OfferImageWrapper>
           </OfferRightWrapper>
         </OfferContentWrapper>
       </OfferUpWrapper>
