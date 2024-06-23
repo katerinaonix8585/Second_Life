@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { MdOutlineCalendarMonth, MdOutlineLocationCity } from "react-icons/md";
 import { BiCategory } from "react-icons/bi";
 import { FiType } from "react-icons/fi";
@@ -62,23 +62,12 @@ const OfferCardCopy: React.FC<Props> = ({ offers }) => {
   const [pendingBidValue, setPendingBidValue] = useState<number | null>(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
 
-  const [buttonApplyClicked, setButtonApplyClicked] = useState(false);
-  const [buttonBurnoutClicked, setButtoBurnoutClicked] = useState(false);
-  const [buttonCancelClicked, setButtonCancelClicked] = useState(false);
-
   const openModal = () => setModalVisible(true);
   const closeModal = () => setModalVisible(false);
   const closeModalOk = () => {
     setModalVisible(false);
     navigate("/auth/user/login");
   };
-
-  useEffect(() => {
-    if (buttonApplyClicked || buttonBurnoutClicked || buttonCancelClicked) {
-      console.log("Button 1 or Button 2 was clicked");
-      window.location.reload();
-    }
-  }, [buttonApplyClicked, buttonBurnoutClicked, buttonCancelClicked]);
 
   const closeModalApply = () => setIsModalOpen(false);
 
@@ -131,8 +120,7 @@ const OfferCardCopy: React.FC<Props> = ({ offers }) => {
     dispatch(offerDataSliceActions.cancelledOfferById(String(offerId)))
       .then((response) => {
         console.log("cancelledOfferById response:", response);
-        setButtonCancelClicked(true);
-        dispatch(offerDataSliceActions.getOfferById(String(offerId)));
+        window.location.reload();
       })
       .catch((error) => {
         console.error("cancelledOfferById error:", error);
@@ -167,8 +155,7 @@ const OfferCardCopy: React.FC<Props> = ({ offers }) => {
     )
       .then((response) => {
         console.log("BidCreate response:", response);
-        setButtoBurnoutClicked(true);
-        dispatch(offerDataSliceActions.getOfferById(String(pendingOfferId)));
+        window.location.reload();
       })
       .catch((error) => {
         console.error("BidCreate error:", error);
@@ -192,8 +179,7 @@ const OfferCardCopy: React.FC<Props> = ({ offers }) => {
     dispatch(bidSliceDataActions.addBid({ offerId, bidValue: bidValueNum }))
       .then((response) => {
         console.log("BidCreate response:", response);
-        setButtonApplyClicked(true);
-        dispatch(offerDataSliceActions.getOfferById(String(offerId)));
+        window.location.reload();
       })
       .catch((error) => {
         console.error("BidCreate error:", error);
