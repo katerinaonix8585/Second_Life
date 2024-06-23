@@ -254,6 +254,7 @@ function ViewOffer() {
 
   const isActiveAuction = offerData?.status === "AUCTION_STARTED";
   const isParticipant = offerData?.isCurrentUserAuctionParticipant;
+  const isWinner = offerData?.currentUser.isWinner;
 
   const renderFreeButton = (isFree: boolean, isOwner: boolean) => {
     if (isFree && !isOwner) {
@@ -681,11 +682,45 @@ function ViewOffer() {
                       {offerData.status === "COMPLETED" && (
                         <ContainerInfo>
                           Winner:{" "}
-                          {offerData.winnerBidId !== null
-                            ? offerData.winnerBidId
+                          {offerData.winner.nameShorted !== null
+                            ? offerData.winner.nameShorted
                             : "No winner"}
                         </ContainerInfo>
                       )}
+                      {offerData.status === "COMPLETED" && isOwner && (
+                        <ContainerInfo>
+                          Winner e-mail:{" "}
+                          {offerData.winner.email !== null
+                            ? offerData.winner.email
+                            : "No e-mail"}
+                        </ContainerInfo>
+                      )}
+                      {offerData.status === "COMPLETED" &&
+                        isParticipant &&
+                        (isWinner ? (
+                          <ContainerInfo>
+                            You are winner with bid:{" "}
+                            {offerData.winner.bidValue !== null
+                              ? offerData.winner.bidValue
+                              : " "}
+                          </ContainerInfo>
+                        ) : (
+                          <>
+                            <ContainerInfo>You are not winner.</ContainerInfo>
+                            <ContainerInfo>
+                              Winner bid:{" "}
+                              {offerData.winner.bidValue !== null
+                                ? offerData.winner.bidValue
+                                : " "}
+                            </ContainerInfo>
+                            <ContainerInfo>
+                              Your bid:{" "}
+                              {offerData.currentUser.maxBidValue !== null
+                                ? offerData.currentUser.maxBidValue
+                                : " "}
+                            </ContainerInfo>
+                          </>
+                        ))}
                     </OfferInfoPriceWrapper>
                   )}
                 </OfferInfoWrapper>

@@ -28,6 +28,17 @@ export interface OfferData {
       };
     };
   };
+  winner: {
+    bidId: number;
+    nameShorted: string;
+    email: string;
+    bidValue: number;
+  };
+  currentUser: {
+    isAuctionParticipant: boolean;
+    isWinner: boolean;
+    maxBidValue: number;
+  };
 }
 
 export interface OfferDataSliceState {
