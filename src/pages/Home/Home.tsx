@@ -114,7 +114,7 @@ function Home() {
       <CategoryWrapper>
         <GridContainer>
           {categoryCardElements}
-          <CardLink href="/category">
+          <CardLink href="/#/category">
             <Card>
               <CardTextContainer>VIEW CATEGORIES</CardTextContainer>
 

@@ -62,12 +62,23 @@ const OfferCardCopy: React.FC<Props> = ({ offers }) => {
   const [pendingBidValue, setPendingBidValue] = useState<number | null>(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
 
+  const [buttonApplyClicked, setButtonApplyClicked] = useState(false);
+  const [buttonBurnoutClicked, setButtoBurnoutClicked] = useState(false);
+  const [buttonCancelClicked, setButtonCancelClicked] = useState(false);
+
   const openModal = () => setModalVisible(true);
   const closeModal = () => setModalVisible(false);
   const closeModalOk = () => {
     setModalVisible(false);
     navigate("/auth/user/login");
   };
+
+  useEffect(() => {
+    if (buttonApplyClicked || buttonBurnoutClicked || buttonCancelClicked) {
+      console.log("Button 1 or Button 2 was clicked");
+      window.location.reload();
+    }
+  }, [buttonApplyClicked, buttonBurnoutClicked, buttonCancelClicked]);
 
   const closeModalApply = () => setIsModalOpen(false);
 
@@ -120,6 +131,8 @@ const OfferCardCopy: React.FC<Props> = ({ offers }) => {
     dispatch(offerDataSliceActions.cancelledOfferById(String(offerId)))
       .then((response) => {
         console.log("cancelledOfferById response:", response);
+        setButtonCancelClicked(true);
+        dispatch(offerDataSliceActions.getOfferById(String(offerId)));
       })
       .catch((error) => {
         console.error("cancelledOfferById error:", error);
@@ -154,7 +167,8 @@ const OfferCardCopy: React.FC<Props> = ({ offers }) => {
     )
       .then((response) => {
         console.log("BidCreate response:", response);
-        // setBurnOut(false);
+        setButtoBurnoutClicked(true);
+        dispatch(offerDataSliceActions.getOfferById(String(pendingOfferId)));
       })
       .catch((error) => {
         console.error("BidCreate error:", error);
@@ -178,7 +192,8 @@ const OfferCardCopy: React.FC<Props> = ({ offers }) => {
     dispatch(bidSliceDataActions.addBid({ offerId, bidValue: bidValueNum }))
       .then((response) => {
         console.log("BidCreate response:", response);
-        // setApply(false);
+        setButtonApplyClicked(true);
+        dispatch(offerDataSliceActions.getOfferById(String(offerId)));
       })
       .catch((error) => {
         console.error("BidCreate error:", error);
@@ -193,11 +208,11 @@ const OfferCardCopy: React.FC<Props> = ({ offers }) => {
     navigate(`/offers/${offerId}`);
   };
 
-  useEffect(() => {
-    console.log("Offers updated:", offers);
-  }, [offers]);
+  // useEffect(() => {
+  //   console.log("Offers updated:", offers);
+  // }, [offers]);
 
-  const handleButtonClick = (offer: OfferData) => {
+  const handleButtonClickCancel = (offer: OfferData) => {
     console.log(
       `offer.id: ${offer.id}, isCurrentUserAuctionParticipant: ${offer.isCurrentUserAuctionParticipant}, isFree: ${offer.isFree}`,
     );
@@ -273,7 +288,9 @@ const OfferCardCopy: React.FC<Props> = ({ offers }) => {
                 <LabelContainer>
                   <TextContainer>Current Price:</TextContainer>
                   <PriceContainer>
-                    {offer.winBid === null ? offer.startPrice : offer.winBid}
+                    {offer.maxBidValue === null
+                      ? offer.startPrice
+                      : offer.maxBidValue}
                     <FaEuroSign size={24} color="green" />
                   </PriceContainer>
                 </LabelContainer>
@@ -311,7 +328,7 @@ const OfferCardCopy: React.FC<Props> = ({ offers }) => {
                           ? "#999999"
                           : "#0A5F38"
                       }
-                      onButtonClick={() => handleButtonClick(offer)}
+                      onButtonClick={() => handleButtonClickCancel(offer)}
                     />
                   </ButtonContainer>
                 </>

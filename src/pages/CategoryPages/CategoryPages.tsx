@@ -18,6 +18,7 @@ import {
   PaginationEllipsis,
   PaginationWrapper,
   Tile,
+  TileLeer,
 } from "./styles";
 
 function CategoryPage() {
@@ -62,7 +63,7 @@ function CategoryPage() {
         status,
       }),
     );
-  }, [dispatch, page, size, category_id]);
+  }, [dispatch, page, size, sortBy, isAsc, category_id, status]);
 
   const filteredOffers = offers.filter(
     (offer) => offer.categoryId === categoryIdNumber,
@@ -81,51 +82,63 @@ function CategoryPage() {
       <CategoryTextWrapper>
         <Tile>{name}</Tile>
       </CategoryTextWrapper>
-      <OffersWrapper>
-        <OfferCardCopy offers={filteredOffers} />
-      </OffersWrapper>
-      {statusOffer === "loading" && <div>Loading...</div>}
-      {statusOffer === "success" && (
-        <PaginationWrapper>
-          {!isFirstPage && pageNumber !== null && (
-            <PaginationButton onClick={() => handlePageChange(pageNumber - 1)}>
-              {pageNumber}
-            </PaginationButton>
-          )}
-
-          {pageNumber !== null && (
-            <PaginationCurrentButton
-              onClick={() => handlePageChange(pageNumber)}
-            >
-              {pageNumber + 1}
-            </PaginationCurrentButton>
-          )}
-
-          {!isLastPage && pageNumber !== null && totalPages !== null && (
-            <>
-              {pageNumber < totalPages - 2 && (
+      {filteredOffers.length === 0 ? (
+        <OffersWrapper>
+          <TileLeer>
+            There are no active offers found for this category.
+          </TileLeer>
+        </OffersWrapper>
+      ) : (
+        <>
+          <OffersWrapper>
+            <OfferCardCopy offers={filteredOffers} />
+          </OffersWrapper>
+          {statusOffer === "loading" && <div>Loading...</div>}
+          {statusOffer === "success" && (
+            <PaginationWrapper>
+              {!isFirstPage && pageNumber !== null && (
                 <PaginationButton
-                  onClick={() => handlePageChange(pageNumber + 1)}
+                  onClick={() => handlePageChange(pageNumber - 1)}
                 >
-                  {pageNumber + 2}
+                  {pageNumber}
                 </PaginationButton>
               )}
-            </>
-          )}
 
-          {!isLastPage && totalPages !== null && totalPages > 1 && (
-            <>
-              {pageNumber !== null && pageNumber < totalPages - 2 && (
-                <PaginationEllipsis>...</PaginationEllipsis>
+              {pageNumber !== null && (
+                <PaginationCurrentButton
+                  onClick={() => handlePageChange(pageNumber)}
+                >
+                  {pageNumber + 1}
+                </PaginationCurrentButton>
               )}
-              <PaginationButton
-                onClick={() => handlePageChange(totalPages - 1)}
-              >
-                {totalPages}
-              </PaginationButton>
-            </>
+
+              {!isLastPage && pageNumber !== null && totalPages !== null && (
+                <>
+                  {pageNumber < totalPages - 2 && (
+                    <PaginationButton
+                      onClick={() => handlePageChange(pageNumber + 1)}
+                    >
+                      {pageNumber + 2}
+                    </PaginationButton>
+                  )}
+                </>
+              )}
+
+              {!isLastPage && totalPages !== null && totalPages > 1 && (
+                <>
+                  {pageNumber !== null && pageNumber < totalPages - 2 && (
+                    <PaginationEllipsis>...</PaginationEllipsis>
+                  )}
+                  <PaginationButton
+                    onClick={() => handlePageChange(totalPages - 1)}
+                  >
+                    {totalPages}
+                  </PaginationButton>
+                </>
+              )}
+            </PaginationWrapper>
           )}
-        </PaginationWrapper>
+        </>
       )}
     </CategoryPageWrapper>
   );

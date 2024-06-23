@@ -74,3 +74,9 @@ export const PaginationEllipsis = styled.span`
   margin: 0 5px;
   font-size: 16px;
 `;
+
+export const TileLeer = styled.div`
+  font-size: 16px;
+  font-family: "LXGW WenKai TC", cursive;
+  padding-left: 60px;
+`;
