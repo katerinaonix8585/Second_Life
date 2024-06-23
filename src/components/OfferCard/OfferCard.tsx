@@ -8,6 +8,7 @@ import { GrStatusInfo } from "react-icons/gr";
 
 import { Container } from "pages/Layout/styles";
 
+import { defaultImage } from "../../assets/images/index.ts";
 import { OfferData } from "../../store/redux/offer/types";
 import { useAppDispatch, useAppSelector } from "../../store/hooks";
 import { locationsDataSliceSelectors } from "../../store/redux/location/locationSlice";
@@ -216,7 +217,13 @@ const OfferCardCopy: React.FC<Props> = ({ offers }) => {
         <Container key={offer.id}>
           <OfferCardContainer>
             <ImgContainer>
-              <Image />
+              <Image
+                src={
+                  offer.images?.values?.[Object.keys(offer.images.values)[0]]?.[
+                    "320x320"
+                  ] || defaultImage
+                }
+              />
             </ImgContainer>
             <DescriptionContainer>
               <Link
