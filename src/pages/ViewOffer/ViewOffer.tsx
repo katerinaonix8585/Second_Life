@@ -155,7 +155,8 @@ function ViewOffer() {
   const renderWinBidButton = (isFree: boolean, isOwner: boolean) => {
     if (!isOwner && !isFree) {
       const countValue = offerData?.maxBidValue ?? offerData?.startPrice ?? 0;
-      const isFirst = offerData?.bidsCount === 0;
+      const isFirst =
+        offerData?.bidsCount === undefined && offerData?.bidsCount === 0;
       return (
         <ButtonBidContainer>
           {isActiveBid && (
