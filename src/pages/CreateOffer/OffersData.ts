@@ -7,10 +7,10 @@ export const typeOfferData: TypeOfferData[] = [
   },
   {
     id: 1,
-    value: "Offer + auction",
+    value: "Auction Offer",
   },
   {
     id: 2,
-    value: "Offer + auction with win bid",
+    value: "Buyout Auction Offer",
   },
 ];

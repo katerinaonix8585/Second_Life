@@ -95,6 +95,13 @@ function LoginForm() {
           ) {
             setErrorMessage("User not found");
           } else if (
+            response.status === 400 &&
+            errorData.message === "User is not active"
+          ) {
+            setErrorMessage(
+              "User is not active. Please, confirm your email by clicking the link on your email address.",
+            );
+          } else if (
             response.status === 401 &&
             errorData.message === "Password is incorrect"
           ) {

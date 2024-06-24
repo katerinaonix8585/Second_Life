@@ -230,7 +230,7 @@ function RegistrationForm() {
       {registrationSuccess && (
         <ModalWindowRegistration title="Message" onOk={handleOkClick}>
           <WindowWrapper>
-            Registration successful. Please sign in.
+            Registration successful. Please comfirm your account and sign in.
           </WindowWrapper>
         </ModalWindowRegistration>
       )}
