@@ -294,7 +294,7 @@ const Layout: React.FC = () => {
                 <MailContainerText>+3 333-333-333</MailContainerText>
               </MailContainer>
               <MailContainer>
-                <MailContainerText>example@gmail.com</MailContainerText>
+                <MailContainerText>info@second-life.space</MailContainerText>
               </MailContainer>
             </InfoContainerWrapper>
           </FooterWrapper>
