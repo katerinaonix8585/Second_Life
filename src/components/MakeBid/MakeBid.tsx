@@ -11,7 +11,7 @@ import {
 } from "./styles";
 import { CounterProps } from "./types";
 
-function Counter({ countValue, onMakeABid }: CounterProps) {
+function Counter({ countValue, onMakeABid, isFirstBid }: CounterProps) {
   const initialBidAmount =
     countValue !== null && countValue !== undefined
       ? countValue.toString()
@@ -40,8 +40,13 @@ function Counter({ countValue, onMakeABid }: CounterProps) {
       return;
     }
 
-    if (bidValue <= countValue) {
+    if (bidValue < countValue && isFirstBid) {
       setError("New bid amount must be greater than the current bid amount.");
+      return;
+    }
+
+    if (bidValue < countValue && !isFirstBid) {
+      setError("First bid amount must be greater than the current bid amount.");
       return;
     }
 
