@@ -76,7 +76,6 @@ function ViewOffer() {
   const [isModaWinnerlOpen, setIsModalWinnerOpen] = useState(false);
   const [selectedBidId, setSelectedBidId] = useState<number | null>(null);
   const [selectedUserId, setSelectedUserId] = useState<number | null>(null);
-  console.log(selectedUserId);
 
   const closeModalApply = () => setIsModalOpen(false);
 
@@ -155,8 +154,7 @@ function ViewOffer() {
   const renderWinBidButton = (isFree: boolean, isOwner: boolean) => {
     if (!isOwner && !isFree) {
       const countValue = offerData?.maxBidValue ?? offerData?.startPrice ?? 0;
-      const isFirst =
-        offerData?.bidsCount === null && offerData?.bidsCount === 0;
+      const isFirst = offerData?.bidsCount === 0;
       return (
         <ButtonBidContainer>
           {isActiveBid && (
