@@ -679,7 +679,7 @@ function ViewOffer() {
                           Bids: {offerData.bidsCount}
                         </ContainerInfo>
                       )}
-                      {offerData.status === "COMPLETED" && (
+                      {offerData.status === "COMPLETED" && isOwner && (
                         <ContainerInfo>
                           Winner:{" "}
                           {offerData.winner.nameShorted !== null
@@ -721,6 +721,21 @@ function ViewOffer() {
                             </ContainerInfo>
                           </>
                         ))}
+                      {offerData.status === "AUCTION_STARTED" &&
+                      !isFree &&
+                      isParticipant ? (
+                        <>
+                          <ContainerInfoPrice>
+                            You are participant. Your last bid:{" "}
+                            {offerData.currentUser.maxBidValue !== null
+                              ? offerData.currentUser.maxBidValue
+                              : " "}
+                            <FaEuroSign size={18} color="#7b001c" />
+                          </ContainerInfoPrice>
+                        </>
+                      ) : (
+                        <></>
+                      )}
                     </OfferInfoPriceWrapper>
                   )}
                 </OfferInfoWrapper>
