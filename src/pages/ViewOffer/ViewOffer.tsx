@@ -156,7 +156,7 @@ function ViewOffer() {
     if (!isOwner && !isFree) {
       const countValue = offerData?.maxBidValue ?? offerData?.startPrice ?? 0;
       const isFirst =
-        offerData?.bidsCount === undefined && offerData?.bidsCount === 0;
+        offerData?.bidsCount === null && offerData?.bidsCount === 0;
       return (
         <ButtonBidContainer>
           {isActiveBid && (
