@@ -40,7 +40,7 @@ function Counter({ countValue, onMakeABid, isFirstBid }: CounterProps) {
       return;
     }
 
-    if (bidValue < countValue && isFirstBid) {
+    if (bidValue <= countValue && isFirstBid) {
       setError("New bid amount must be greater than the current bid amount.");
       return;
     }
